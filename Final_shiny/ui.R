@@ -6,21 +6,24 @@ library("shinythemes")
 shinyUI(fluidPage(
 
     # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Exploring Covid Data"),
 
     # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+            sliderInput("Year",
+                        "Current Year",
+                        min = 2020,
+                        max = 2021,
+                        value = 2020,
+                        sep="",
+                        animate=animationOptions(interval=2000))
         ),
 
         # Show a plot of the generated distribution
         mainPanel(
-            plotOutput("distPlot")
+            plotOutput("linePlot"), # a time series plot??
+            plotOutput("Heatmap")   # global map
         )
     )
 ))

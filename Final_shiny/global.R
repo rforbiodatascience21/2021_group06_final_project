@@ -2,6 +2,8 @@
 
 library("shiny")
 library("tidyverse")
+library("maps")
+library("mapproj")
 
 # need to load all the final/cleaned data we are using for the graphics.
 
