@@ -1,4 +1,4 @@
-# Exam Project Group 6
+# Exam Project Group 6 (Christian, Anna, Hanna, Joen)
 
-This is the GitHub repository for group 6 exam project
+This is the GitHub repository for Group 6 exam project
 
