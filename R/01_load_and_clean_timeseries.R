@@ -57,10 +57,20 @@ combined_timeseries_province <- confirmed_global %>%
   left_join(recovered_global, by = c("Country/Region", "Date", "Province/State")) %>%
   select(-ends_with(c('.x', '.y')))
 
+# Pivot longer to make a "Status variable"
+combined_timeseries_country <- combined_timeseries_country %>%
+  pivot_longer(cols = c(Confirmed, Deaths, Recovered),
+               names_to = "Status",
+               values_to = "Cases")
+
+combined_timeseries_province <- combined_timeseries_province %>%
+  pivot_longer(cols = c(Confirmed, Deaths, Recovered),
+               names_to = "Status",
+               values_to = "Cases")
 
 # Write data --------------------------------------------------------------
 combined_timeseries_country %>%
-  write_csv("data/01_timeseries_country.csv'´")
+  write_csv("data/01_timeseries_country.csv")
 
 combined_timeseries_province %>%
   write_csv("data/01_timeseries_province.csv")
