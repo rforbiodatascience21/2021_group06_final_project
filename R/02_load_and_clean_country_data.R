@@ -51,6 +51,71 @@ combined_tibble <- population %>%
   full_join(sex_ratio, by = "country") %>%
   full_join(inequality, by = "country")
 
+# Fix discrepancies between country name in this data and timeseries
+
+combined_tibble <- combined_tibble %>%
+  mutate(country = str_replace(country, 
+                               pattern = "Myanmar", 
+                               replacement = "Burma")) %>%
+  
+  mutate(country = str_replace(country,
+                               pattern = "Cape Verde",
+                               replacement = "Cabo Verde")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "Congo, Rep.", 
+                               replacement = "Congo (Brazzaville)")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "Congo, Dem. Rep.",
+                               replacement = "Congo (Kinshasa)")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "Czech Republic",
+                               replacement = "Czechia")) %>%
+  
+  mutate(country = str_replace(country,
+                               pattern = "South Korea",
+                               replacement = "Korea, South")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "Kyrgyz Republic",
+                               replacement = "Kyrgyzstan")) %>%
+  
+  mutate(country = str_replace(country,
+                               pattern = "Lao", 
+                               replacement = "Laos")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "Micronesia, Fed. Sts.",
+                               replacement = "Micronesia")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "St. Kitts and Nevis",
+                               replacement = "Saint Kitts and Nevis")) %>%
+  
+  mutate(country = str_replace(country,
+                               pattern = "St. Lucia",
+                               replacement = "Saint Lucia")) %>%
+  
+  mutate(country = str_replace(country,
+                               pattern = "St. Vincent and the Grenadines",
+                               replacement = "Saint Vincent and the Grenadines")) %>%
+  
+  mutate(country = str_replace(country,
+                               pattern = "Slovak Republic", 
+                               replacement = "Slovakia")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "United States",
+                               replacement = "US")) %>%
+  
+  mutate(country = str_replace(country, 
+                               pattern = "Palestine", 
+                               replacement = "West Bank and Gaza"))
+  
+
+  
 
 # Write Data --------------------------------------------------------------
 combined_tibble %>%
