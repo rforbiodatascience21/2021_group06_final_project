@@ -13,8 +13,11 @@ shinyUI(fluidPage(
         mainPanel(
             
             # Output: global map ----
-            plotOutput(outputId = "Heatmap")
+            plotOutput(outputId = "Heatmap", click = "map_click")
             
+        ),
+        mainPanel(
+            textOutput(outputId = "closest_match")   
         )
     )
 )
