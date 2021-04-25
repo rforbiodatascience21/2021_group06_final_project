@@ -20,6 +20,8 @@ country_data <- read_csv("data/02_country_data.csv")
 timeseries_augment <- timeseries_country %>%
   left_join(country_data, by = c("Country/Region" = "country"))
 
+timeseries_augment <- timeseries_augment %>%
+  mutate("Cases_per_100k_citizen" = Cases/Population * 100000)
 
 
 
