@@ -36,6 +36,7 @@ timeseries_augment <- timeseries_country %>%
   left_join(country_data, by = c("country")) %>%
   mutate("Cases_per_100k_citizen" = Cases/Population * 100000)
 
+
 # Add Lat and Long to country level data ----------------------------------
 
 world_map <- 
