@@ -18,7 +18,6 @@ world_map <- read_csv("data/02_world_map_data.csv")
 
 # Augment timeseries ------------------------------------------------------
 
-
 timeseries_augment <- timeseries_country %>%
   left_join(country_data, by = c("Country/Region" = "country")) %>%
   mutate("Cases_per_100k_citizen" = Confirmed/Population * 100000,
