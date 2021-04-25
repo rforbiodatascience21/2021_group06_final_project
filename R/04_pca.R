@@ -27,6 +27,7 @@ latest_date_data <- timeseries_data %>%
 
 
 # Does it matter if there are 3 entries for each country?
+# Include more of the new variables
 pca_fit <- latest_date_data %>%
   select(Population, Pop_density, Age_median, Gdp, Sex_ratio, Inequality) %>%
   prcomp(scale = TRUE)
