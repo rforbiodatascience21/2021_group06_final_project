@@ -34,7 +34,6 @@ pca_fit <- latest_date_data %>%
 # Investigate what the outer data points are?
 confirmed_plot <- pca_fit %>%
   augment(latest_date_data) %>%
-  filter(Status == "Confirmed") %>%
   
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, 
              color = Cases_per_100k_citizen)) + 
@@ -51,10 +50,9 @@ confirmed_plot <- pca_fit %>%
 
 deaths_plot <- pca_fit %>%
   augment(latest_date_data) %>%
-  filter(Status == "Deaths") %>%
   
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, 
-             color = Cases_per_100k_citizen)) + 
+             color = Deaths_per_100k_citizen)) + 
   geom_point(size = 1.5,
              alpha = 0.5) +
   labs(x = "PC 1",

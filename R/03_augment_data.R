@@ -5,9 +5,9 @@
 rm(list=ls(all=TRUE))
 # Load Libraries ----------------------------------------------------------
 
-library("tidyverse")
-library("maps")
-library("mapproj")
+library(tidyverse)
+library(maps)
+library(mapproj)
 
 
 # Load Data ---------------------------------------------------------------
@@ -21,7 +21,9 @@ world_map <- read_csv("data/02_world_map_data.csv")
 
 timeseries_augment <- timeseries_country %>%
   left_join(country_data, by = c("Country/Region" = "country")) %>%
-  mutate("Cases_per_100k_citizen" = Cases/Population * 100000)
+  mutate("Cases_per_100k_citizen" = Confirmed/Population * 100000,
+         "Deaths_per_100k_citizen" = Deaths/Population * 100000,
+         "Recovered_per_100k_citizen" = Recovered/Population * 100000)
 
 
 # Add Lat and Long to country level data ----------------------------------

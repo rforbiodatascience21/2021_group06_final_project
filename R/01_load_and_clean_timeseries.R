@@ -60,16 +60,7 @@ combined_timeseries_country <- combined_timeseries_country %>%
 combined_timeseries_province <- combined_timeseries_province %>%
   mutate(Date = lubridate::mdy(Date))
 
-# Pivot longer to make a "Status variable"
-combined_timeseries_country <- combined_timeseries_country %>%
-  pivot_longer(cols = c(Confirmed, Deaths, Recovered),
-               names_to = "Status",
-               values_to = "Cases")
 
-combined_timeseries_province <- combined_timeseries_province %>%
-  pivot_longer(cols = c(Confirmed, Deaths, Recovered),
-               names_to = "Status",
-               values_to = "Cases")
 
 # Write data --------------------------------------------------------------
 combined_timeseries_country %>%
