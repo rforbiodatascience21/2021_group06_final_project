@@ -24,12 +24,6 @@ shinyServer(function(input, output) {
         country_plot
 
     })
-    vals <- reactiveValues(
-        nearest_point = "Click Somewhere on the map"
-    )
-    observeEvent(input$map_click, {
-        vals$nearest_point = input$map_click
-    })
     output$closest_match <- renderText(map.where(database = "world",
                                                  x = input$map_click$x,
                                                  y = input$map_click$y))
