@@ -4,6 +4,8 @@ rm(list=ls(all=TRUE))
 # Load Libraries ----------------------------------------------------------
 
 library(tidyverse)
+library(maps)
+library(mapproj)
 
 # Load Data ---------------------------------------------------------------
 
@@ -14,6 +16,7 @@ gdp <- read_csv("data/_raw/gdp_per_capita.csv")
 sex_ratio <- read_csv("data/_raw/sex_ratio_all_age_groups.csv")
 inequality <- read_csv("data/_raw/gini.csv")
 
+world_map <- map_data("world") # data in R giving country Lat and Long. 
 
 
 # Wrangle Data ------------------------------------------------------------
@@ -115,8 +118,26 @@ combined_tibble <- combined_tibble %>%
                                replacement = "West Bank and Gaza"))
   
 
-  
+# World map data ----------------------------------------------------------
+
+world_map <- 
+  world_map %>% 
+  rename("country" = "region") %>%
+  select(-"subregion") %>% 
+  mutate(country = str_replace(country, 
+                               pattern = "USA", 
+                               replacement = "US")) %>%
+  mutate(country = str_replace(country, 
+                               pattern = "UK", 
+                               replacement = "United Kingdom")) %>%
+  mutate(country = str_replace(country, 
+                               pattern = "Democratic Republic of the Congo", 
+                               replacement = "Congo (Kinshasa)")) 
+
 
 # Write Data --------------------------------------------------------------
 combined_tibble %>%
   write_csv("data/02_country_data.csv")
+
+world_map %>%
+  write_csv("data/02_world_map_data.csv")
