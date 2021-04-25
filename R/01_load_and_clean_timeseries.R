@@ -57,6 +57,13 @@ combined_timeseries_province <- confirmed_global %>%
   left_join(recovered_global, by = c("Country/Region", "Date", "Province/State")) %>%
   select(-ends_with(c('.x', '.y')))
 
+# Mutate date format
+combined_timeseries_country <- combined_timeseries_country %>%
+  mutate(Date = lubridate::mdy(Date))
+
+combined_timeseries_province <- combined_timeseries_province %>%
+  mutate(Date = lubridate::mdy(Date))
+
 # Pivot longer to make a "Status variable"
 combined_timeseries_country <- combined_timeseries_country %>%
   pivot_longer(cols = c(Confirmed, Deaths, Recovered),
