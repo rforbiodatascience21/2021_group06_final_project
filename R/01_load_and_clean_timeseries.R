@@ -3,8 +3,9 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
-library(tidyverse)
-
+library("tidyverse")
+library("maps")
+library("mapproj")
 
 
 # Load data ---------------------------------------------------------------
@@ -13,7 +14,7 @@ confirmed_global <- read_csv("data/_raw/time_series_covid19_confirmed_global.csv
 deaths_global <- read_csv("data/_raw/time_series_covid19_deaths_global.csv")
 recovered_global <- read_csv("data/_raw/time_series_covid19_recovered_global.csv")
 
-
+world_map <- map_data("world") # data in R giving country Lat and Long. 
 
 # Wrangle data ------------------------------------------------------------
 
@@ -74,6 +75,17 @@ combined_timeseries_province <- combined_timeseries_province %>%
   pivot_longer(cols = c(Confirmed, Deaths, Recovered),
                names_to = "Status",
                values_to = "Cases")
+
+# Add Lat and Long to country level data ----------------------------------
+
+world_map <- 
+  world_map %>% 
+  rename(
+    "Country/Region" = "region",   # rename the column name
+  ) %>%
+  select(-"subregion") # dont need this column
+  
+combined_timeseries_country <- full_join(world_map,combined_timeseries_country,by="Country/Region")
 
 # Write data --------------------------------------------------------------
 combined_timeseries_country %>%
