@@ -9,12 +9,17 @@ library(mapproj)
 
 # Load Data ---------------------------------------------------------------
 
+# data from gapminder?
 population <- read_csv("data/_raw/population_total.csv")
 pop_density <- read_csv("data/_raw/population_density_per_square_km.csv")
 age <- read_csv("data/_raw/median_age_years.csv")
 gdp <- read_csv("data/_raw/gdp_per_capita.csv")
 sex_ratio <- read_csv("data/_raw/sex_ratio_all_age_groups.csv")
 inequality <- read_csv("data/_raw/gini.csv")
+
+# Data from the world bank
+Income_grp <- read_csv("data/_raw/Income_grp.csv")
+Population_above65 <- read_csv("data/_raw/Population_65.csv")
 
 world_map <- map_data("world") # data in R giving country Lat and Long. 
 
@@ -46,13 +51,25 @@ inequality <- inequality %>%
   select(country, "2020") %>%
   rename("Inequality" = "2020")
 
+Income_grp <- Income_grp %>%
+  select(Region,IncomeGroup,TableName) %>%
+  rename(country = TableName)
+  
+Population_above65 <- 
+  Population_above65 %>%
+  select("Country Name","2019") %>% #no data for 2020, so most recent yr then
+  rename(country = "Country Name",
+         "Pop%_above65" = "2019")
+
 # Join the data
 combined_tibble <- population %>%
   full_join(pop_density, by = "country") %>%
   full_join(age, by = "country") %>%
   full_join(gdp, by = "country") %>%
   full_join(sex_ratio, by = "country") %>%
-  full_join(inequality, by = "country")
+  full_join(inequality, by = "country") %>%
+  left_join(Population_above65, by = "country") %>% # since this is from a diff data source...only want countries with all the data, so left join
+  left_join(Income_grp, by = "country") # same as prev. line
 
 # Fix discrepancies between country name in this data and timeseries
 
