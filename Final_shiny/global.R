@@ -5,8 +5,12 @@ library("tidyverse")
 library("maps")
 library("mapproj")
 
+#test
 # need to load all the final/cleaned data we are using for the graphics.
 
-timeseries_augment <- 
-  read_csv("data/03_augmented_timeseries.csv")
+augmented_map_data <- 
+  read_csv("shiny_data/03_augmented_map_data.csv")
+
+
+
 
