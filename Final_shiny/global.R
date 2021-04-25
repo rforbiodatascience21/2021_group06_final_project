@@ -7,5 +7,6 @@ library("mapproj")
 
 # need to load all the final/cleaned data we are using for the graphics.
 
-load('/data/Tidy_Covid_data.csv')
+timeseries_augment <- 
+  read_csv("data/03_augmented_timeseries.csv")
 
