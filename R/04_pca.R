@@ -6,7 +6,7 @@ library(tidyverse)
 library(broom)
 library(patchwork)
 library(ggrepel)
-
+source("R/99_functions.R")
 
 
 # Load Data ---------------------------------------------------------------
@@ -18,9 +18,7 @@ timeseries_data <- read_csv("data/03_augmented_timeseries.csv")
 
 # Subset to latest date
 
-latest_date_data <- timeseries_data %>%
-  filter(Date == max(Date)) %>%
-  drop_na()
+latest_date_data <- get_latest_date_data(timeseries_data)
 
 
 # PCA ---------------------------------------------------------------------

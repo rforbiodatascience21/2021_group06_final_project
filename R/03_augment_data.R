@@ -8,6 +8,7 @@ rm(list=ls(all=TRUE))
 library(tidyverse)
 library(maps)
 library(mapproj)
+source("R/99_functions.R")
 
 
 # Load Data ---------------------------------------------------------------
@@ -29,13 +30,22 @@ timeseries_augment <- timeseries_country %>%
 
 
 map_data_augment <- 
-  country_data%>%
-  full_join(world_map, by = c("country")) 
+  country_data %>%
+  full_join(world_map, by = "country") 
+
+map_data_augment <- timeseries_augment %>%
+  get_latest_date_data() %>%
+  full_join(world_map, by = c("Country/Region" = "country"))
+  
+  
 
 
 # Write Data --------------------------------------------------------------
 timeseries_augment %>%
   write_csv("data/03_augmented_timeseries.csv")
+
+timeseries_augment %>%
+  write_csv("Final_shiny/shiny_data/03_augmented_timeseries.csv")
 
 map_data_augment %>%
   write_csv("data/03_augmented_map_data.csv")
