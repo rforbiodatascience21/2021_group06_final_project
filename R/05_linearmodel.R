@@ -5,6 +5,7 @@ library(tidyverse)
 source("R/99_functions.R")
 library(stringr)
 library(purrr)
+library(broom)
 
 # Load Data ---------------------------------------------------------------
 
@@ -26,13 +27,27 @@ model_data <- latest_date_data %>%
   group_by(IncomeGroup) %>% 
   nest() %>% 
   ungroup() %>%  
-  mutate(mdl = purrr::map(conf.int = TRUE,data,
+  mutate(mdl = purrr::map(data,
                    ~glm(Deaths_per_100k_citizen ~ `Pop%_above65`, 
                        data = .x,
-                       )))
+                       family = gaussian()
+                       ))) 
+model_data
+
+model_data %>% 
+  mutate(mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>% 
+  unnest(mdl_tidy)
 
 
+ggplot(latest_date_data, aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
+  geom_point(aes(color = factor(IncomeGroup))) +
+  geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
+  coord_cartesian() 
 
+ggplot(latest_date_data, aes(Age_median, Deaths_per_100k_citizen)) +
+  geom_point(aes(color = factor(IncomeGroup))) +
+  geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
+  facet_wrap(IncomeGroup ~ .,scale="free_x")
 
 
 
