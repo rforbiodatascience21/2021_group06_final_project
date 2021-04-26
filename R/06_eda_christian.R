@@ -1,0 +1,54 @@
+rm(list=ls(all=TRUE))
+
+
+# Load Libraries ----------------------------------------------------------
+library(tidyverse)
+
+source("R/99_functions.R")
+
+
+# Load Data ---------------------------------------------------------------
+timeseries_data <- read_csv("data/03_augmented_timeseries.csv")
+
+# Subset to latest date
+
+latest_date_data <- get_latest_date_data(timeseries_data)
+
+
+# Plots -------------------------------------------------------------------
+
+strat_region_plot <- latest_date_data %>%
+  group_by(Region) %>%
+  arrange(desc(Cases_per_100k_citizen)) %>%
+  slice_head(n = 10) %>%
+  ungroup() %>%
+  mutate(`Country/Region` = as_factor(`Country/Region`)) %>%
+  mutate(`Country/Region` = fct_reorder(`Country/Region`,
+                                        Cases_per_100k_citizen)) %>%
+  
+  ggplot(mapping = aes(x = Cases_per_100k_citizen,
+                       y = `Country/Region`))+
+  facet_wrap(~ Region, scales = "free")+
+  geom_bar(stat="identity")+
+  labs(x = 'Cases per 100k citizens',
+       y = 'Country')
+
+
+latest_date_data %>%
+  mutate(IncomeGroup = as_factor(IncomeGroup)) %>%
+  mutate(IncomeGroup = fct_reorder(IncomeGroup,
+                                    desc(Deaths_per_100k_citizen))) %>%
+  ggplot(mapping = aes(x = IncomeGroup,
+                       y = Deaths_per_100k_citizen,
+                       fill = IncomeGroup))+
+  geom_boxplot()+
+  labs(x = "Income Group",
+       y = "Deaths per 100k citizens")+
+  theme_minimal()+
+  theme(legend.position = "none")
+
+# Write plots -------------------------------------------------------------
+
+ggsave("results/06_highest_cases_per_region.png")
+ggsave("results/06_Deaths_by_income.png")
+
