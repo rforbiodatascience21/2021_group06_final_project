@@ -1,6 +1,7 @@
 library("shiny")
 library("tidyverse")
 library("maps")
+library(rlang)
 #test
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -10,7 +11,9 @@ shinyServer(function(input, output) {
                                aes(x=long,
                                    y=lat,
                                    group=group,
-                                   fill=Cases_per_100k_citizen))+
+                                   fill=!!sym(
+                                       str_c(input$fill_selection,
+                                             "_per_100k_citizen"))))+
             geom_polygon()+
             scale_fill_gradient(low = "grey",
                                 high = "red")+
@@ -24,7 +27,7 @@ shinyServer(function(input, output) {
                   axis.title.x= element_blank(),
                   axis.line.x = element_blank(),
                   axis.line.y = element_blank())+
-            labs(fill = "Cases per 100k citizen")
+            labs(fill = str_c(input$fill_selection, " per 100k citizen"))
         
         country_plot
 
