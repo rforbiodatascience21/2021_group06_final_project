@@ -6,10 +6,14 @@ library("maps")
 shinyServer(function(input, output) {
     output$Heatmap <- renderPlot({
         
-        country_plot <- ggplot()+
-            geom_polygon(data=augmented_map_data, 
-                         aes(x=long,y=lat,group=group, fill=Age_median), 
-                         color="grey50")+
+        country_plot <- ggplot(data=augmented_map_data, 
+                               aes(x=long,
+                                   y=lat,
+                                   group=group,
+                                   fill=Cases_per_100k_citizen))+
+            geom_polygon()+
+            scale_fill_gradient(low = "grey",
+                                high = "red")+
             coord_map(xlim=c(-180,180),ylim=c(-55,90))+ 
             theme_classic()+
             theme(axis.ticks.x = element_blank(), 
@@ -19,7 +23,8 @@ shinyServer(function(input, output) {
                   axis.title.y= element_blank(),
                   axis.title.x= element_blank(),
                   axis.line.x = element_blank(),
-                  axis.line.y = element_blank())
+                  axis.line.y = element_blank())+
+            labs(fill = "Cases per 100k citizen")
         
         country_plot
 
