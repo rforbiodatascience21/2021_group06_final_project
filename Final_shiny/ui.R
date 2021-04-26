@@ -25,6 +25,7 @@ shinyUI(fluidPage(
             # Output: global map ----
             plotOutput(outputId = "Heatmap", click = "map_click"),
             textOutput(outputId = "closest_match")   
+            
         ),
         position = c("left", "right")
 )

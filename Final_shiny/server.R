@@ -1,11 +1,15 @@
 library("shiny")
 library("tidyverse")
 library("maps")
-library(rlang)
+library("rlang")
+library("wesanderson")
+
 #test
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     output$Heatmap <- renderPlot({
+        
+        pal <- wes_palette("Zissou1", 100, type = "continuous")
         
         country_plot <- ggplot(data=augmented_map_data, 
                                aes(x=long,
@@ -15,8 +19,9 @@ shinyServer(function(input, output) {
                                        str_c(input$fill_selection,
                                              "_per_100k_citizen"))))+
             geom_polygon()+
-            scale_fill_gradient(low = "grey",
-                                high = "red")+
+            scale_fill_gradientn(colours = pal)+
+            #scale_fill_gradient(low = "grey",
+             #                   high = "red")+
             coord_map(xlim=c(-180,180),ylim=c(-55,90))+ 
             theme_classic()+
             theme(axis.ticks.x = element_blank(), 
@@ -34,6 +39,9 @@ shinyServer(function(input, output) {
     })
     output$closest_match <- renderText(map.where(database = "world",
                                                  x = input$map_click$x,
-                                                 y = input$map_click$y))
+                                                y = input$map_click$y))
+    
+    
+
 })
 
