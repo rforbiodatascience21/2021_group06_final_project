@@ -27,9 +27,9 @@ model_data <- latest_date_data %>%
   nest() %>% 
   ungroup() %>%  
   mutate(mdl = purrr::map(conf.int = TRUE,data,
-                   ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`, 
+                   ~glm(Deaths_per_100k_citizen ~ `Pop%_above65`, 
                        data = .x,
-                       family = gaussian())))
+                       )))
 
 
 
