@@ -54,7 +54,19 @@ inequality <- inequality %>%
 
 Income_grp <- Income_grp %>%
   select(Region,IncomeGroup,TableName) %>%
-  rename(country = TableName)
+  rename(country = TableName) %>%
+  mutate(Region = str_replace(Region, 
+                               pattern = "South Asia", 
+                               replacement = "Asia & Pacific"))%>%
+  mutate(Region = str_replace(Region, 
+                              pattern = "North America", 
+                              replacement = "Americas & Caribbean")) %>%
+  mutate(Region = str_replace(Region, 
+                              pattern = "East Asia & Pacific", 
+                              replacement = "Asia & Pacific"))%>%
+  mutate(Region = str_replace(Region, 
+                              pattern = "Latin America & Caribbean", 
+                              replacement = "Americas & Caribbean"))
   
 Population_above65 <- 
   Population_above65 %>%
@@ -162,3 +174,4 @@ combined_tibble %>%
 
 world_map %>%
   write_csv("data/02_world_map_data.csv")
+
