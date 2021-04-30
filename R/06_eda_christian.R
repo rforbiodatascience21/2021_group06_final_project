@@ -34,7 +34,7 @@ strat_region_plot <- latest_date_data %>%
        y = 'Country')
 
 
-latest_date_data %>%
+deaths_income <- latest_date_data %>%
   mutate(IncomeGroup = as_factor(IncomeGroup)) %>%
   mutate(IncomeGroup = fct_reorder(IncomeGroup,
                                     desc(Deaths_per_100k_citizen))) %>%
@@ -49,19 +49,26 @@ latest_date_data %>%
 
 # another way to possibly visualize this data...? --> note from Anna
 
-latest_date_data  %>%
+cases_by_income_region_plot<- latest_date_data  %>%
   mutate(IncomeGroup = fct_relevel(IncomeGroup, c("High income", "Upper middle income", "Lower middle income", "Low income"))) %>%
-  ggplot(aes(x=IncomeGroup, y=Cases_per_100k_citizen, size = `Pop%_above65`,color=Region)) +
-  geom_point(alpha=0.5, position = position_jitter(w = 0.2, h = .2)) +
+  ggplot(aes(x=IncomeGroup,
+             y=Cases_per_100k_citizen,
+             size = `Population`,
+             color=Region)) +
+  geom_point(alpha=0.5,
+             position = position_jitter(w = 0.2, h = .2)) +
   coord_flip()+
   scale_x_discrete(limits=rev)+
-  theme_classic()+
   labs(x = " ",
        y = "Cases per 100k citizens")+
-  theme_minimal()
+  theme_minimal()+
+  guides(size=FALSE)
 
 # Write plots -------------------------------------------------------------
 
-ggsave("results/06_highest_cases_per_region.png")
-ggsave("results/06_Deaths_by_income.png")
+ggsave("results/06_highest_cases_per_region.png",
+       plot = strat_region_plot)
+ggsave("results/06_deaths_by_income.png",
+       plot = deaths_income)
+ggsave("results/06_cases_by_income_and_region.png")
 
