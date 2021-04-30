@@ -19,7 +19,8 @@ timeseries_data <- read_csv("data/03_augmented_timeseries.csv")
 
 # Subset to latest date
 
-latest_date_data <- get_latest_date_data(timeseries_data)
+latest_date_data <- get_latest_date_data(timeseries_data) %>%
+  drop_na
 
 
 # PCA ---------------------------------------------------------------------

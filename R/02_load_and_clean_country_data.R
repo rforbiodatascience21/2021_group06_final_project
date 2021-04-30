@@ -165,7 +165,13 @@ world_map <-
                                replacement = "United Kingdom")) %>%
   mutate(country = str_replace(country, 
                                pattern = "Democratic Republic of the Congo", 
-                               replacement = "Congo (Kinshasa)")) 
+                               replacement = "Congo (Kinshasa)")) %>%
+  mutate(country = str_replace(country, 
+                               pattern = "Myanmar", 
+                               replacement = "Burma")) %>%
+  mutate(country = str_replace(country,
+                               pattern = "Cape Verde",
+                               replacement = "Cabo Verde"))
 
 
 # Write Data --------------------------------------------------------------

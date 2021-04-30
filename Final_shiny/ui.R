@@ -13,7 +13,7 @@ shinyUI(fluidPage(
         sidebarPanel(
             selectInput(inputId = "fill_selection",
                         label = "Choose status",
-                        choices = c("Cases" = "Cases", 
+                        choices = c("Cases" = "Confirmed", 
                                     "Deaths" = "Deaths",
                                     "Recovered" = "Recovered"))
         ),
@@ -24,10 +24,9 @@ shinyUI(fluidPage(
             
             # Output: global map ----
             plotOutput(outputId = "Heatmap", click = "map_click"),
-            textOutput(outputId = "closest_match")   
+            plotOutput(outputId = "timeseries_plot")   
             
         ),
-        position = c("left", "right")
-)
+        position = c("left", "right"))
 ))
 

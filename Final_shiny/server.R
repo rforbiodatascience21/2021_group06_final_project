@@ -7,6 +7,13 @@ library("wesanderson")
 #test
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+    
+    country <- reactive({map.where(database = "world",
+                                  x = input$map_click$x,
+                                  y = input$map_click$y) %>%
+                            str_extract("[^:]+")})
+    
+    output$country <- renderText(country)
     output$Heatmap <- renderPlot({
         
         pal <- wes_palette("Zissou1", 100, type = "continuous")
@@ -37,11 +44,19 @@ shinyServer(function(input, output) {
         country_plot
 
     })
-    output$closest_match <- renderText(map.where(database = "world",
-                                                 x = input$map_click$x,
-                                                y = input$map_click$y))
-    
-    
-
+    output$timeseries_plot <- renderPlot({
+        validate(
+            need(input$map_click$x, "Click map for Timeseries data"))
+        
+        timeseries %>%
+        filter(`Country/Region` == country()) %>%
+            
+            ggplot(mapping = aes(x = Date,
+                                 y = !!sym(input$fill_selection)))+
+                geom_point()+
+                labs(x = 'Date', 
+                     y = input$fill_selection,
+                     title = country())
+     })
 })
 
