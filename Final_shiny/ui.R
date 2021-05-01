@@ -15,7 +15,8 @@ shinyUI(fluidPage(
                         label = "Choose status",
                         choices = c("Cases" = "Confirmed", 
                                     "Deaths" = "Deaths",
-                                    "Recovered" = "Recovered"))
+                                    "Recovered" = "Recovered")),
+            checkboxInput("yLog", "Display Y-Axis on a Log Scale?")
         ),
     
     
@@ -24,7 +25,7 @@ shinyUI(fluidPage(
             
             # Output: global map ----
             plotOutput(outputId = "Heatmap", click = "map_click"),
-            plotOutput(outputId = "timeseries_plot")   
+            plotOutput(outputId = "timeseries_plot")
             
         ),
         position = c("left", "right"))

@@ -44,19 +44,37 @@ shinyServer(function(input, output) {
         country_plot
 
     })
+    
     output$timeseries_plot <- renderPlot({
         validate(
             need(input$map_click$x, "Click map for Timeseries data"))
         
+    timeseries_plot <- 
         timeseries %>%
         filter(`Country/Region` == country()) %>%
             
             ggplot(mapping = aes(x = Date,
                                  y = !!sym(input$fill_selection)))+
                 geom_point()+
-                labs(x = 'Date', 
+                labs(x = ' ', 
                      y = input$fill_selection,
-                     title = country())
-     })
+                     title = country())+ 
+            scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y") +
+            theme_minimal()+
+            theme(axis.text.x = element_text(angle=45, hjust = 1))
+            
+        if(input$yLog){
+            timeseries_plot <- timeseries_plot + scale_y_continuous(trans="log2",
+                                        labels=scales::comma,
+                                        name= input$fill_selection)
+        } else {
+            timeseries_plot <- timeseries_plot + scale_y_continuous(trans="identity",
+                                        labels=scales::comma,
+                                        name= input$fill_selection)
+        }
+        
+    timeseries_plot
+    })
+     
 })
 
