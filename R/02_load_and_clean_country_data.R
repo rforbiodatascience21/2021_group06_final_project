@@ -3,9 +3,9 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
-library(tidyverse)
-library(maps)
-library(mapproj)
+library("tidyverse")
+library("maps")
+library("mapproj")
 source("R/99_functions.R")
 
 # Load Data ---------------------------------------------------------------
@@ -21,6 +21,7 @@ inequality <- read_csv("data/_raw/gini.csv")
 # Data from the world bank
 Income_grp <- read_csv("data/_raw/Income_grp.csv")
 Population_above65 <- read_csv("data/_raw/Population_65.csv")
+Urban_pop_per <- read_csv("data/_raw/urban_pop_perct.csv")
 
 world_map <- map_data("world") # data in R giving country Lat and Long. 
 
@@ -74,6 +75,12 @@ Population_above65 <-
   rename(country = "Country Name",
          "Pop%_above65" = "2019")
 
+Urban_pop_per <-
+  Urban_pop_per %>%
+  select("Country Name","2019") %>% #no data for 2020, so most recent yr then
+  rename(country = "Country Name",
+         "Urban_pop_perct" = "2019")
+
 # Join the data
 combined_tibble <- population %>%
   full_join(pop_density, by = "country") %>%
@@ -85,7 +92,8 @@ combined_tibble <- population %>%
   # since this is from a diff data source...
   # only want countries with all the data, so left join
   left_join(Population_above65, by = "country") %>% 
-  left_join(Income_grp, by = "country") # same as prev. line
+  left_join(Income_grp, by = "country")  %>% 
+  left_join(Urban_pop_per, by = "country")
 
 # Fix discrepancies between country name in this data and timeseries
 
