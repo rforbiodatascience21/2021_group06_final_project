@@ -56,7 +56,6 @@ ggplot(latest_date_data, aes(Age_median, Deaths_per_100k_citizen)) +
   theme_minimal()+
   labs(y="Deaths per 100k", x = "Median Age", color = "Income Group")
 
-# working on this....
 model_data %>%
   filter(term!="(Intercept)") %>%
   ggplot(aes(x=estimate,
@@ -65,14 +64,14 @@ model_data %>%
   geom_point()+
   geom_errorbarh(aes(xmin=conf.low,xmax=conf.high))
   
-  library(ggplot2)
+library(ggplot2)
   td <- tidy(fit, conf.int = TRUE)
   ggplot(td, aes(estimate, term, color = term)) +
     geom_point() +
     geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
     geom_vline()
 
-## second model:
+## second GLM model:
 
 model_data2 <- 
   latest_date_data %>% 
@@ -80,12 +79,13 @@ model_data2 <-
          Confirmed_per_100k_citizen, 
          Gdp,
          Inequality,
-         Sex_ratio) %>% 
+         Urban_pop_perct,
+         Pop_density) %>% 
   group_by(Region) %>% 
   nest() %>% 
   ungroup() %>%  
   mutate(mdl = purrr::map(data,
-                          ~glm(Confirmed_per_100k_citizen ~ Gdp+Inequality+Sex_ratio, 
+                          ~glm(Confirmed_per_100k_citizen ~ Gdp+Inequality+Urban_pop_perct+Pop_density, 
                                data = .x,
                                family = gaussian()
                           ))) 
