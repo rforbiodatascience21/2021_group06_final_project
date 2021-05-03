@@ -1,0 +1,20 @@
+---
+title: "Joen_Making_slides"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+## Data format
+- The timeseries data is not tidy
+----
+```{r, message=FALSE}
+deaths_data <- read_csv(file = "../data/_raw/time_series_covid19_deaths_global.csv")
+head(deaths_data,10)
+```
+
+## Slide with Plot
+
