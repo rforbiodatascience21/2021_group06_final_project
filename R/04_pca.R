@@ -25,8 +25,6 @@ latest_date_data <- get_latest_date_data(timeseries_data) %>%
 # PCA ---------------------------------------------------------------------
 
 
-# Does it matter if there are 3 entries for each country?
-# Include more of the new variables
 pca_fit <- latest_date_data %>%
   select(Population, Pop_density, Age_median, Gdp, Sex_ratio, Inequality) %>%
   prcomp(scale = TRUE)
@@ -34,11 +32,16 @@ pca_fit <- latest_date_data %>%
 # Investigate what the outer data points are?
 confirmed_plot <- pca_fit %>%
   augment(latest_date_data) %>%
-  
-  ggplot(aes(x = .fittedPC1, y = .fittedPC2, 
-             color = Cases_per_100k_citizen)) + 
+  mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
+                         true = `Country/Region`,
+                         false = '')) %>%
+  ggplot(aes(x = .fittedPC1,
+             y = .fittedPC2, 
+             color = Confirmed_per_100k_citizen,
+             label = label)) + 
   geom_point(size = 1.5,
              alpha = 0.7) +
+  geom_text_repel() +
   labs(x = "PC 1",
        y = "PC 2",
        color = "Cases per 100k citizens",
@@ -50,11 +53,16 @@ confirmed_plot <- pca_fit %>%
 
 deaths_plot <- pca_fit %>%
   augment(latest_date_data) %>%
+  mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
+                         true = `Country/Region`,
+                         false = '')) %>%
   
   ggplot(aes(x = .fittedPC1, y = .fittedPC2, 
-             color = Deaths_per_100k_citizen)) + 
+             color = Deaths_per_100k_citizen,
+             label = label)) + 
   geom_point(size = 1.5,
              alpha = 0.5) +
+  geom_text_repel() +
   labs(x = "PC 1",
        y = "PC 2",
        color = "Deaths per 100k citizens",
@@ -64,31 +72,39 @@ deaths_plot <- pca_fit %>%
   scale_color_gradient(low = "#00BFC4",
                        high = "#F8766D")
 
-cases_death_pca_plot<- confirmed_plot + deaths_plot
+cases_death_pca_plot <- confirmed_plot + deaths_plot
 
 
-arrow_style <- arrow(
-  angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
-)
+arrow_style <- arrow(angle = 20, 
+                     ends = "first", 
+                     type = "closed", 
+                     length = grid::unit(8, "pt"))
 
 PC_directions_plot <- pca_fit %>%
   tidy(matrix = "rotation") %>%
-  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") %>%
-  
-  ggplot(aes(PC1, PC2,label = column)) +
-  geom_segment(xend = 0, yend = 0, arrow = arrow_style)+
-  geom_text_repel(color = "#904C2F")+
+  pivot_wider(names_from = "PC",
+              names_prefix = "PC", 
+              values_from = "value") %>%
+  ggplot(aes(x = PC1,
+             y = PC2,
+             label = column,
+             color = "darkgrey")) +
+  geom_segment(xend = 0,
+               yend = 0, 
+               arrow = arrow_style)+
+  geom_text_repel()+
   labs(title = "Principal component directions in feature space")+
   theme_minimal()
 
 variance_explained_plot <- pca_fit %>%
   tidy(matrix = "eigenvalues") %>%
-  ggplot(aes(PC, percent)) +
-  geom_col(fill = "#56B4E9", alpha = 0.8, ) +
+  ggplot(aes(x = PC,
+             y = percent)) +
+  geom_col(fill = "#56B4E9",
+           alpha = 0.8, ) +
   scale_x_continuous(breaks = 1:6) +
-  scale_y_continuous(
-    labels = scales::percent_format(),
-    expand = expansion(mult = c(0, 0.01)))+
+  scale_y_continuous(labels = scales::percent_format(),
+                     expand = expansion(mult = c(0, 0.01)))+
   labs(x = "Principal Component", 
        y = "Percent", 
        title = "Variance explained by each principal component")+
