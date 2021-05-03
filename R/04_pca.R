@@ -18,9 +18,8 @@ timeseries_data <- read_csv("data/03_augmented_timeseries.csv")
 # Wrangle data ------------------------------------------------------------
 
 # Subset to latest date
-
 latest_date_data <- get_latest_date_data(timeseries_data) %>%
-  drop_na
+  drop_na()
 
 
 # PCA ---------------------------------------------------------------------

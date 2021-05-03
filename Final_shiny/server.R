@@ -1,10 +1,15 @@
+
+# Load Libraries ----------------------------------------------------------
+
 library("shiny")
 library("tidyverse")
 library("maps")
 library("rlang")
 library("wesanderson")
 
-#test
+
+# Server Code -------------------------------------------------------------
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     
