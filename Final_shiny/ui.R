@@ -1,8 +1,12 @@
+
+# Load Libraries ----------------------------------------------------------
+
 library("shiny")
 library("shinythemes")
 
 
-#test
+# UI Code -----------------------------------------------------------------
+
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
     

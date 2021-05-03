@@ -1,12 +1,11 @@
-# global file for shiny app 
+
+# Load Libraries ----------------------------------------------------------
 
 library("shiny")
 library("tidyverse")
-library("maps")
-library("mapproj")
 
-#test
-# need to load all the final/cleaned data we are using for the graphics.
+
+# Load Data ---------------------------------------------------------------
 
 augmented_map_data <-
   read_csv("shiny_data/03_augmented_map_data.csv")
@@ -14,7 +13,10 @@ augmented_map_data <-
 timeseries <-
   read_csv("shiny_data/03_augmented_timeseries.csv")
 
-# Clean up country names to be compatiable with map.where()
+
+# Wrangle Data ------------------------------------------------------------
+
+# Clean up country names to be compatible with map.where()
 timeseries <- timeseries %>%
   mutate("Country/Region" = str_replace(`Country/Region`,
                                         pattern = "United Kingdom",
