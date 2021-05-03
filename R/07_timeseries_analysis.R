@@ -78,7 +78,7 @@ augmented_timeseries %>%
        y="Number of countries")
 
 ### select a country
-selected_country <-  "Sweden"
+selected_country <-  "Germany"
 
 augmented_timeseries_single_country <- augmented_timeseries %>% 
   filter(`Country/Region` == selected_country)
@@ -128,3 +128,4 @@ augmented_timeseries_single_country %>%
   labs(title = "Case fatality ratio spike right after a drop of confirmed cases",
        subtitle = "Case fatility rates differ over time",
        x = "Date")
+
