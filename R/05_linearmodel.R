@@ -81,7 +81,12 @@ model_data %>%
   theme_minimal()+
   labs(y="", x = " Slope Estimate", color = "Indep. Variable")+
   scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Slope estimates for deaths per 100k grouped by income level")
+  ggtitle("Slope estimates for deaths per 100k grouped by income level") + 
+  annotate("text", 
+           x = c(6.3, 6.6, 1, 5), 
+           y = c(3.2, 2.2, 2.2, 1.2), 
+           label = "*"
+           )
 
 model_data %>%
   filter(term != "(Intercept)",
@@ -125,7 +130,12 @@ model_data2 %>%
   geom_vline(xintercept = 0, linetype="dashed")+
   labs(y="", x = "Slope Estimate", color = "Indep. Variable")+
   scale_color_manual(labels = c("Gdp", "Pop Density"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Slope estimates for cases per 100k grouped by region")
+  ggtitle("Slope estimates for cases per 100k grouped by region")+
+  annotate("text", 
+           x = c(1, 2.95, -7, 1), 
+           y = c(5, 4.2, 1.2, 1), 
+           label = "*"
+  )
 
 
 # Only the sig ones. 
