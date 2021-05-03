@@ -1,18 +1,19 @@
 
 # Load Libraries ----------------------------------------------------------
 
-library(shiny)
-library(tidyverse)
-library(maps)
-library(mapproj)
-library(rlang)
-library(wesanderson)
+library("shiny")
+library("tidyverse")
+library("maps")
+library("mapproj")
+library("rlang")
+library("wesanderson")
 
 
 # Server Code -------------------------------------------------------------
 
 # colorpalette for plotting
 pal <- wes_palette("Zissou1", 100, type = "continuous")
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     
@@ -28,8 +29,7 @@ shinyServer(function(input, output) {
         ggplot(aes(x=long,
                    y=lat,
                    group=group,
-                   fill=!!sym(str_c(input$status,
-                                    "_per_100k_citizen"))))+
+                   fill=!!sym(str_c(input$status, "_per_100k_citizen"))))+
             geom_polygon()+
             scale_fill_gradientn(colours = pal)+
             coord_map(xlim=c(-180,180),ylim=c(-55,90))+ 
@@ -56,13 +56,13 @@ shinyServer(function(input, output) {
             ggplot(mapping = aes(x = Date,
                                  y = !!sym(input$status)))+
                 geom_line()+
-                labs(x = ' ', 
-                     y = input$status,
+                labs(y = input$status,
                      title = country())+ 
             scale_x_date(date_breaks = "1 month", 
                          date_labels =  "%b %Y") +
             theme_minimal()+
-            theme(axis.text.x = element_text(angle=45, hjust = 1))
+            theme(axis.text.x = element_text(angle=45, hjust = 1),
+                  axis.title.x = element_blank())
             
         if(input$yLog){
             timeseries_plot <- timeseries_plot + 
