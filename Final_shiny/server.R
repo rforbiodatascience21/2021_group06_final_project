@@ -64,13 +64,15 @@ shinyServer(function(input, output) {
             theme(axis.text.x = element_text(angle=45, hjust = 1))
             
         if(input$yLog){
-            timeseries_plot <- timeseries_plot + scale_y_continuous(trans="log2",
-                                        labels=scales::comma,
-                                        name= input$fill_selection)
+            timeseries_plot <- timeseries_plot + 
+                scale_y_continuous(trans="log2",
+                                   labels=scales::comma,
+                                   name= input$fill_selection)
         } else {
-            timeseries_plot <- timeseries_plot + scale_y_continuous(trans="identity",
-                                        labels=scales::comma,
-                                        name= input$fill_selection)
+            timeseries_plot <- timeseries_plot + 
+                scale_y_continuous(trans="identity",
+                                   labels=scales::comma,
+                                   name= input$fill_selection)
         }
         
     timeseries_plot
