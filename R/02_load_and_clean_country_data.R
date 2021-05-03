@@ -3,9 +3,9 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
-library(tidyverse)
-library(maps)
-library(mapproj)
+library("tidyverse")
+library("maps")
+library("mapproj")
 source("R/99_functions.R")
 
 # Load Data ---------------------------------------------------------------
@@ -21,6 +21,7 @@ inequality <- read_csv("data/_raw/gini.csv")
 # Data from the world bank
 Income_grp <- read_csv("data/_raw/Income_grp.csv")
 Population_above65 <- read_csv("data/_raw/Population_65.csv")
+Urban_pop_per <- read_csv("data/_raw/urban_pop_perct.csv")
 
 world_map <- map_data("world") # data in R giving country Lat and Long. 
 
@@ -54,13 +55,31 @@ inequality <- inequality %>%
 
 Income_grp <- Income_grp %>%
   select(Region,IncomeGroup,TableName) %>%
-  rename(country = TableName)
+  rename(country = TableName) %>%
+  mutate(Region = str_replace(Region, 
+                               pattern = "South Asia", 
+                               replacement = "Asia & Pacific"))%>%
+  mutate(Region = str_replace(Region, 
+                              pattern = "North America", 
+                              replacement = "Americas & Caribbean")) %>%
+  mutate(Region = str_replace(Region, 
+                              pattern = "East Asia & Pacific", 
+                              replacement = "Asia & Pacific"))%>%
+  mutate(Region = str_replace(Region, 
+                              pattern = "Latin America & Caribbean", 
+                              replacement = "Americas & Caribbean"))
   
 Population_above65 <- 
   Population_above65 %>%
   select("Country Name","2019") %>% #no data for 2020, so most recent yr then
   rename(country = "Country Name",
          "Pop%_above65" = "2019")
+
+Urban_pop_per <-
+  Urban_pop_per %>%
+  select("Country Name","2019") %>% #no data for 2020, so most recent yr then
+  rename(country = "Country Name",
+         "Urban_pop_perct" = "2019")
 
 # Join the data
 combined_tibble <- population %>%
@@ -73,7 +92,8 @@ combined_tibble <- population %>%
   # since this is from a diff data source...
   # only want countries with all the data, so left join
   left_join(Population_above65, by = "country") %>% 
-  left_join(Income_grp, by = "country") # same as prev. line
+  left_join(Income_grp, by = "country")  %>% 
+  left_join(Urban_pop_per, by = "country")
 
 # Fix discrepancies between country name in this data and timeseries
 
@@ -153,7 +173,13 @@ world_map <-
                                replacement = "United Kingdom")) %>%
   mutate(country = str_replace(country, 
                                pattern = "Democratic Republic of the Congo", 
-                               replacement = "Congo (Kinshasa)")) 
+                               replacement = "Congo (Kinshasa)")) %>%
+  mutate(country = str_replace(country, 
+                               pattern = "Myanmar", 
+                               replacement = "Burma")) %>%
+  mutate(country = str_replace(country,
+                               pattern = "Cape Verde",
+                               replacement = "Cabo Verde"))
 
 
 # Write Data --------------------------------------------------------------
@@ -162,3 +188,4 @@ combined_tibble %>%
 
 world_map %>%
   write_csv("data/02_world_map_data.csv")
+

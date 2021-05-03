@@ -11,22 +11,23 @@ shinyUI(fluidPage(
     sidebarLayout(
         
         sidebarPanel(
-            selectInput(inputId = "fill_selection",
+            selectInput(inputId = "status",
                         label = "Choose status",
-                        choices = c("Cases" = "Cases", 
+                        choices = c("Cases" = "Confirmed", 
                                     "Deaths" = "Deaths",
-                                    "Recovered" = "Recovered"))
+                                    "Recovered" = "Recovered")),
+            checkboxInput("yLog", "Display Y-Axis on a Log Scale?")
         ),
     
     
         # Main panel for displaying outputs ----
         mainPanel(
-            
+            h4("World map colored by status per 100k citizens"),
             # Output: global map ----
             plotOutput(outputId = "Heatmap", click = "map_click"),
-            textOutput(outputId = "closest_match")   
+            plotOutput(outputId = "timeseries_plot")
+            
         ),
-        position = c("left", "right")
-)
+        position = c("left", "right"))
 ))
 
