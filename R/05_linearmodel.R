@@ -63,12 +63,6 @@ model_data %>%
   geom_point()+
   geom_errorbarh(aes(xmin=conf.low,xmax=conf.high))
   
-library(ggplot2)
-  td <- tidy(fit, conf.int = TRUE)
-  ggplot(td, aes(estimate, term, color = term)) +
-    geom_point() +
-    geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
-    geom_vline()
 
 ## second GLM model:
 
