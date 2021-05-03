@@ -48,7 +48,8 @@ Sig.DF <- data.frame(IncomeGroup = c("High income",
                                 "Upper middle income", 
                                 "Lower middle income", 
                                 "Low income"), 
-                     label = c('p<0.05','p<0.05','p<0.05', 'p>0.05'))
+                     label = c('p<0.05','p<0.05','p<0.05', 'p>0.05'),
+                     x = c(5,5,5,2.5))
 
 latest_date_data %>%
   mutate(IncomeGroup = fct_relevel(IncomeGroup, 
@@ -60,7 +61,7 @@ ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
-  geom_text(x = 4, y = 225, aes(label = label), data = Sig.DF)+
+  geom_text(y = 225, aes(x=x, label = label), data = Sig.DF)+
   theme_minimal()+
   labs(y="Deaths per 100k", x = "Population % > 65 yrs", color = "Income Group") 
 
