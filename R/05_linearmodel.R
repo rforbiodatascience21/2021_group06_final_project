@@ -23,14 +23,14 @@ latest_date_data <- get_latest_date_data(timeseries_data) %>%
 model_data <- latest_date_data %>% 
   select(IncomeGroup, 
          Deaths_per_100k_citizen, 
-         `Pop%_above65`) %>% 
+         `Pop%_above65`,
+         Urban_pop_perct) %>% 
   group_by(IncomeGroup) %>% 
   nest() %>% 
   ungroup() %>%  
   mutate(mdl = purrr::map(data,
-                   ~glm(Deaths_per_100k_citizen ~ `Pop%_above65`, 
-                       data = .x,
-                       family = gaussian()
+                   ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`+Urban_pop_perct, 
+                       data = .x
                        ))) 
 
 
@@ -39,21 +39,58 @@ model_data <-
   mutate(mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>% 
   unnest(mdl_tidy)
 
-model_data 
+model_data  %>%
+  filter(term != "(Intercept)",
+         p.value < 0.05)
 
-ggplot(latest_date_data, aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
-  geom_point(aes(color = factor(IncomeGroup))) +
-  geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
-  coord_cartesian()+
-  theme_minimal()+
-  labs(y="Deaths per 100k", x = "Median Age", color = "Income Group")
+# Make a label dataframe for the facets: 
+Sig.DF <- data.frame(IncomeGroup = c("High income", 
+                                "Upper middle income", 
+                                "Lower middle income", 
+                                "Low income"), 
+                     label = c('p<0.05','p<0.05','p<0.05', 'p>0.05'),
+                     x = c(5,5,5,2.5))
 
-ggplot(latest_date_data, aes(Age_median, Deaths_per_100k_citizen)) +
+latest_date_data %>%
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
+                                   c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"))) %>%
+ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
+  geom_text(y = 225, aes(x=x, label = label), data = Sig.DF)+
   theme_minimal()+
-  labs(y="Deaths per 100k", x = "Median Age", color = "Income Group")
+  labs(y="Deaths per 100k", x = "Population % > 65 yrs", color = "Income Group") 
+
+# Make a label dataframe for the facets: 
+Sig.DF2 <- data.frame(IncomeGroup = c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"), 
+                     label = c('p<0.05','p<0.05','p<0.05', 'p>0.05'))
+
+latest_date_data %>%
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
+                                   c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"))) %>%
+latest_date_data %>%
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
+                                   c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"))) %>%
+ggplot(aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
+  geom_point(aes(color = factor(IncomeGroup))) +
+  geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
+  facet_wrap(IncomeGroup ~ .,scale="free_x")+
+  geom_text(x = 4, y = 225, aes(label = label), data = Sig.DF)+
+  theme_minimal()+
+  labs(y="Deaths per 100k", x = "Population % living in Urban ", color = "Income Group")
 
 model_data %>%
   filter(term!="(Intercept)") %>%
@@ -63,12 +100,6 @@ model_data %>%
   geom_point()+
   geom_errorbarh(aes(xmin=conf.low,xmax=conf.high))
   
-library(ggplot2)
-  td <- tidy(fit, conf.int = TRUE)
-  ggplot(td, aes(estimate, term, color = term)) +
-    geom_point() +
-    geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
-    geom_vline()
 
 ## second GLM model:
 
