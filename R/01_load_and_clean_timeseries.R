@@ -3,7 +3,7 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
-library(tidyverse)
+library("tidyverse")
 source("R/99_functions.R")
 
 # Load data ---------------------------------------------------------------
@@ -56,7 +56,7 @@ combined_timeseries_province <- confirmed_global %>%
             by = c("Country/Region", "Date", "Province/State")) %>%
   left_join(recovered_global, 
             by = c("Country/Region", "Date", "Province/State")) %>%
-  select(-ends_with(c('.x', '.y')))
+  select(-ends_with(c(".x", ".y")))
 
 # Mutate date format
 combined_timeseries_country <- combined_timeseries_country %>%
