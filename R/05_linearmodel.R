@@ -43,14 +43,34 @@ model_data  %>%
   filter(term != "(Intercept)",
          p.value < 0.05)
 
-ggplot(latest_date_data, aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
+# Make a label dataframe for the facets: 
+Sig.DF <- data.frame(Type = c("High income", 
+                                "Upper middle income", 
+                                "Lower middle income", 
+                                "Low income"), 
+                     label = c('Sig','Sig','Sig', 'non-Sig'))
+
+latest_date_data %>%
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
+                                   c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"))) %>%
+ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
+  geom_text(x = 1, y = 225, aes(label = label), data = Sig.DF)+
   theme_minimal()+
-  labs(y="Deaths per 100k", x = "Population % > 65 yrs", color = "Income Group")
+  labs(y="Deaths per 100k", x = "Population % > 65 yrs", color = "Income Group") 
 
-ggplot(latest_date_data, aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
+latest_date_data %>%
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
+                                   c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"))) %>%
+ggplot(aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
