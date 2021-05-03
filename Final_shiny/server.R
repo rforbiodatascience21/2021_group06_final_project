@@ -1,39 +1,36 @@
 
 # Load Libraries ----------------------------------------------------------
 
-library("shiny")
-library("tidyverse")
-library("maps")
-library("rlang")
-library("wesanderson")
+library(shiny)
+library(tidyverse)
+library(maps)
+library(rlang)
+library(wesanderson)
 
 
 # Server Code -------------------------------------------------------------
 
+# colorpalette for plotting
+pal <- wes_palette("Zissou1", 100, type = "continuous")
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     
     country <- reactive({map.where(database = "world",
                                   x = input$map_click$x,
                                   y = input$map_click$y) %>%
-                            str_extract("[^:]+")})
+                        str_extract("[^:]+")})
     
     output$country <- renderText(country)
     output$Heatmap <- renderPlot({
         
-        pal <- wes_palette("Zissou1", 100, type = "continuous")
-        
-        country_plot <- ggplot(data=augmented_map_data, 
-                               aes(x=long,
-                                   y=lat,
-                                   group=group,
-                                   fill=!!sym(
-                                       str_c(input$status,
-                                             "_per_100k_citizen"))))+
+        augmented_map_data %>%
+        ggplot(aes(x=long,
+                   y=lat,
+                   group=group,
+                   fill=!!sym(str_c(input$status,
+                                    "_per_100k_citizen"))))+
             geom_polygon()+
             scale_fill_gradientn(colours = pal)+
-            #scale_fill_gradient(low = "grey",
-             #                   high = "red")+
             coord_map(xlim=c(-180,180),ylim=c(-55,90))+ 
             theme_classic()+
             theme(axis.ticks.x = element_blank(), 
@@ -45,9 +42,6 @@ shinyServer(function(input, output) {
                   axis.line.x = element_blank(),
                   axis.line.y = element_blank())+
             labs(fill = str_c(input$status, " per 100k citizen"))
-        
-        country_plot
-
     })
     
     output$timeseries_plot <- renderPlot({
@@ -64,7 +58,8 @@ shinyServer(function(input, output) {
                 labs(x = ' ', 
                      y = input$status,
                      title = country())+ 
-            scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y") +
+            scale_x_date(date_breaks = "1 month", 
+                         date_labels =  "%b %Y") +
             theme_minimal()+
             theme(axis.text.x = element_text(angle=45, hjust = 1))
             

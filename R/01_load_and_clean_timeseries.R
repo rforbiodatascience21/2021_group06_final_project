@@ -45,13 +45,17 @@ recovered_global_country <- recovered_global %>%
 
 # Join time series for countries
 combined_timeseries_country <- confirmed_global_country %>%
-  left_join(deaths_global_country, by = c("Country/Region", "Date")) %>%
-  left_join(recovered_global_country, by = c("Country/Region", "Date"))
+  left_join(deaths_global_country, 
+            by = c("Country/Region", "Date")) %>%
+  left_join(recovered_global_country, 
+            by = c("Country/Region", "Date"))
 
 # Join time series on province level
 combined_timeseries_province <- confirmed_global %>%
-  left_join(deaths_global, by = c("Country/Region", "Date", "Province/State")) %>%
-  left_join(recovered_global, by = c("Country/Region", "Date", "Province/State")) %>%
+  left_join(deaths_global,
+            by = c("Country/Region", "Date", "Province/State")) %>%
+  left_join(recovered_global, 
+            by = c("Country/Region", "Date", "Province/State")) %>%
   select(-ends_with(c('.x', '.y')))
 
 # Mutate date format

@@ -1,8 +1,8 @@
 
 # Load Libraries ----------------------------------------------------------
 
-library("shiny")
-library("shinythemes")
+library(shiny)
+library(shinythemes)
 
 
 # UI Code -----------------------------------------------------------------
@@ -11,7 +11,7 @@ library("shinythemes")
 shinyUI(fluidPage(
     
     # App title ----
-    titlePanel("Hello Shiny!"),
+    titlePanel("Covid-19 Pandemic Overview"),
     sidebarLayout(
         
         sidebarPanel(
