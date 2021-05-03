@@ -6,6 +6,7 @@ source("R/99_functions.R")
 library("stringr")
 library("purrr")
 library("broom")
+library("patchwork")
 
 # Load Data ---------------------------------------------------------------
 
@@ -16,9 +17,12 @@ timeseries_data <- read_csv("data/03_augmented_timeseries.csv")
 # Subset to latest date
 
 latest_date_data <- get_latest_date_data(timeseries_data) %>%
-  drop_na()
-
-# Select explanatory variable (pop over 65)
+  drop_na() %>%
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
+                                   c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"))) 
 
 model_data <- latest_date_data %>% 
   group_by(IncomeGroup) %>% 
@@ -37,38 +41,36 @@ model_data <-
 model_data  %>%
   filter(term != "(Intercept)",
          p.value < 0.05)
-
-
-latest_date_data %>%
-  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
-                                   c("High income", 
-                                     "Upper middle income", 
-                                     "Lower middle income", 
-                                     "Low income"))) %>%
-ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
+  
+lm1_p1 <- 
+  latest_date_data%>%
+  ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
   theme_minimal()+
   labs(y = "Deaths per 100k",
        x = "Population % > 65 yrs",
-       color = "Income Group",
-       title = "Linear regression relationship between deaths per 100k and Pop. % > 65yrs")
+       color = "Income Group") 
 
-
-latest_date_data %>%
-  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
-                                   c("High income", 
-                                     "Upper middle income", 
-                                     "Lower middle income", 
-                                     "Low income"))) %>%
-ggplot(aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
+lm1_p2 <- 
+  latest_date_data %>%
+  ggplot(aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
   theme_minimal()+
-  labs(y="Deaths per 100k", x = "Population % living in Urban ", color = "Income Group")+ 
-  ggtitle("Linear regression relationship between deaths per 100k and pop. % living in urban") 
+  labs(y="", x = "Population % living in urban ", color = "Income Group")
+
+lm1_Final_line_plot <- 
+      lm1_p1 + lm1_p2 + 
+      plot_annotation(title = 'Simple Linear regression model results for deaths per 100k',
+                      tag_levels = 'A',
+                      theme = theme(plot.title = element_text(hjust = 0.5)))+
+      plot_layout(guides = "collect") &
+      theme(legend.position = 'bottom')
+
+lm1_Final_line_plot
 
 model_data %>%
   filter(term!="(Intercept)") %>%
@@ -79,7 +81,12 @@ model_data %>%
   theme_minimal()+
   labs(y="", x = " Slope Estimate", color = "Indep. Variable")+
   scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Slope estimates for deaths per 100k grouped by income level")
+  ggtitle("Slope estimates for deaths per 100k grouped by income level") + 
+  annotate("text", 
+           x = c(6.3, 6.6, 1, 5), 
+           y = c(3.2, 2.2, 2.2, 1.2), 
+           label = "*"
+           )
 
 model_data %>%
   filter(term != "(Intercept)",
@@ -96,7 +103,7 @@ model_data %>%
   ggtitle("Significant slope estimates for deaths per 100k grouped by income level")
 
   
-## second GLM model:
+## second GLM model -----------------------------------------------------------
 
 model_data2 <- 
   latest_date_data %>% 
@@ -123,7 +130,12 @@ model_data2 %>%
   geom_vline(xintercept = 0, linetype="dashed")+
   labs(y="", x = "Slope Estimate", color = "Indep. Variable")+
   scale_color_manual(labels = c("Gdp", "Pop Density"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Slope estimates for cases per 100k grouped by region")
+  ggtitle("Slope estimates for cases per 100k grouped by region")+
+  annotate("text", 
+           x = c(1, 2.95, -7, 1), 
+           y = c(5, 4.2, 1.2, 1), 
+           label = "*"
+  )
 
 
 # Only the sig ones. 
@@ -141,22 +153,36 @@ model_data2 %>%
   scale_color_manual(labels = c("Gdp", "Pop Density"), values = c("deepskyblue1", "tomato2"))+ 
   ggtitle("Significant slope estimates for cases per 100k grouped by region")
 
-latest_date_data %>%
-ggplot( aes(Gdp, Confirmed_per_100k_citizen)) +
+lm2_p1 <- 
+  latest_date_data %>%
+  ggplot( aes(Gdp, Confirmed_per_100k_citizen)) +
   geom_point(aes(color = factor(Region))) +
   geom_smooth(method ="lm",aes(color = Region),se=F) +
   facet_wrap(Region ~ .,scale="free_x")+
-  theme_minimal()
+  theme_minimal()+
+  labs(y = "Cases per 100k",
+       x = "GDP",
+       color = "Region") 
 
+lm2_p2 <- 
 latest_date_data %>%
   ggplot( aes(Pop_density, Confirmed_per_100k_citizen)) +
   geom_point(aes(color = factor(Region))) +
   geom_smooth(method ="lm",aes(color = Region),se=F) +
   facet_wrap(Region ~ .,scale="free_x")+
-  theme_minimal()
+  theme_minimal()+
+  labs(y = "Cases per 100k",
+       x = "Population Density",
+       color = "Region") 
 
+lm2_Final_line_plot <- 
+  lm2_p1 / lm2_p2 + 
+  plot_annotation(title = 'Simple Linear regression model results for cases per 100k',
+                  tag_levels = 'A',
+                  theme = theme(plot.title = element_text(hjust = 0.5)))+
+  plot_layout(guides = "collect") &
+  theme(legend.position = 'bottom')
 
-
-  
+lm2_Final_line_plot
 
 

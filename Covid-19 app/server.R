@@ -4,6 +4,7 @@
 library(shiny)
 library(tidyverse)
 library(maps)
+library(mapproj)
 library(rlang)
 library(wesanderson)
 
