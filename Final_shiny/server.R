@@ -1,10 +1,15 @@
+
+# Load Libraries ----------------------------------------------------------
+
 library("shiny")
 library("tidyverse")
 library("maps")
 library("rlang")
 library("wesanderson")
 
-#test
+
+# Server Code -------------------------------------------------------------
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     
@@ -55,7 +60,7 @@ shinyServer(function(input, output) {
             
             ggplot(mapping = aes(x = Date,
                                  y = !!sym(input$status)))+
-                geom_point()+
+                geom_line()+
                 labs(x = ' ', 
                      y = input$status,
                      title = country())+ 
