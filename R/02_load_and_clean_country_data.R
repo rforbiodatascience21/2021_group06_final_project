@@ -3,14 +3,14 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
-library("tidyverse")
-library("maps")
-library("mapproj")
+library(tidyverse)
+library(maps)
+library(mapproj)
 source("R/99_functions.R")
 
 # Load Data ---------------------------------------------------------------
 
-# data from gapminder?
+# data from gapminder
 population <- read_csv("data/_raw/population_total.csv")
 pop_density <- read_csv("data/_raw/population_density_per_square_km.csv")
 age <- read_csv("data/_raw/median_age_years.csv")
