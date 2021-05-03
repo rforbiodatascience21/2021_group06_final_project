@@ -209,4 +209,18 @@ model_data2 %>%
 
 Est_plot_lm2_sig
 
+# Write plots -------------------------------------------------------------
+
+ggsave("results/05_lm1_line_plot.png",
+       plot = lm1_Final_line_plot)
+ggsave("results/05_lm1_Est_plot1.png",
+       plot = Est_plot_lm1)
+ggsave("results/05_lm1_Est_plot_sig.png",
+       plot = Est_plot_lm1_sig)
+ggsave("results/05_lm2_line_plot.png",
+       plot = lm2_Final_line_plot)
+ggsave("results/05_lm2_Est_plot1.png",
+       plot = Est_plot_lm2)
+ggsave("results/05_lm2_Est_plot_sig.png",
+       plot = Est_plot_lm2_sig)
 
