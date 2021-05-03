@@ -23,14 +23,14 @@ latest_date_data <- get_latest_date_data(timeseries_data) %>%
 model_data <- latest_date_data %>% 
   select(IncomeGroup, 
          Deaths_per_100k_citizen, 
-         `Pop%_above65`) %>% 
+         `Pop%_above65`,
+         Urban_pop_perct) %>% 
   group_by(IncomeGroup) %>% 
   nest() %>% 
   ungroup() %>%  
   mutate(mdl = purrr::map(data,
-                   ~glm(Deaths_per_100k_citizen ~ `Pop%_above65`, 
-                       data = .x,
-                       family = gaussian()
+                   ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`+Urban_pop_perct, 
+                       data = .x
                        ))) 
 
 
@@ -39,21 +39,23 @@ model_data <-
   mutate(mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>% 
   unnest(mdl_tidy)
 
-model_data 
+model_data  %>%
+  filter(term != "(Intercept)",
+         p.value < 0.05)
 
 ggplot(latest_date_data, aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
-  coord_cartesian()+
+  facet_wrap(IncomeGroup ~ .,scale="free_x")+
   theme_minimal()+
-  labs(y="Deaths per 100k", x = "Median Age", color = "Income Group")
+  labs(y="Deaths per 100k", x = "Population % > 65 yrs", color = "Income Group")
 
-ggplot(latest_date_data, aes(Age_median, Deaths_per_100k_citizen)) +
+ggplot(latest_date_data, aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
   theme_minimal()+
-  labs(y="Deaths per 100k", x = "Median Age", color = "Income Group")
+  labs(y="Deaths per 100k", x = "Population % living in Urban ", color = "Income Group")
 
 model_data %>%
   filter(term!="(Intercept)") %>%
