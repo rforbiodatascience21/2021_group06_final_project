@@ -21,10 +21,6 @@ latest_date_data <- get_latest_date_data(timeseries_data) %>%
 # Select explanatory variable (pop over 65)
 
 model_data <- latest_date_data %>% 
-  select(IncomeGroup, 
-         Deaths_per_100k_citizen, 
-         `Pop%_above65`,
-         Urban_pop_perct) %>% 
   group_by(IncomeGroup) %>% 
   nest() %>% 
   ungroup() %>%  
@@ -32,7 +28,6 @@ model_data <- latest_date_data %>%
                    ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`+Urban_pop_perct, 
                        data = .x
                        ))) 
-
 
 model_data <-
   model_data %>% 
@@ -55,8 +50,10 @@ ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
   theme_minimal()+
-  labs(y="Deaths per 100k", x = "Population % > 65 yrs", color = "Income Group")+ 
-  ggtitle("Linear regression relationship between deaths per 100k and Pop. % > 65yrs") 
+  labs(y = "Deaths per 100k",
+       x = "Population % > 65 yrs",
+       color = "Income Group",
+       title = "Linear regression relationship between deaths per 100k and Pop. % > 65yrs")
 
 
 latest_date_data %>%
@@ -103,10 +100,6 @@ model_data %>%
 
 model_data2 <- 
   latest_date_data %>% 
-  select(Region, 
-         Confirmed_per_100k_citizen, 
-         Gdp,
-         Pop_density) %>% 
   group_by(Region) %>% 
   nest() %>% 
   ungroup() %>%  
