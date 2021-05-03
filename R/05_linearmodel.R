@@ -23,8 +23,7 @@ latest_date_data <- get_latest_date_data(timeseries_data) %>%
 model_data <- latest_date_data %>% 
   select(IncomeGroup, 
          Deaths_per_100k_citizen, 
-         `Pop%_above65`
-         ) %>% 
+         `Pop%_above65`) %>% 
   group_by(IncomeGroup) %>% 
   nest() %>% 
   ungroup() %>%  
@@ -98,19 +97,22 @@ model_data2 <-
 # all the data 
 model_data2 %>%
   filter(term!="(Intercept)") %>%
-  ggplot(aes(estimate, Region, color = term)) +
+  ggplot(aes(x = estimate,y = Region, color = term)) +
   geom_point() +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
+  geom_errorbarh(aes(xmin = conf.low,
+                     xmax = conf.high)) +
   geom_vline(xintercept = 0, linetype="dashed")
 
 # Only the sig ones. 
 model_data2 %>%
-  filter(term!="(Intercept)",
-         p.value<0.05) %>%
-  ggplot(aes(estimate, Region, color = term)) +
+  filter(term != "(Intercept)",
+         p.value < 0.05) %>%
+  ggplot(aes(x = estimate, y = Region, color = term)) +
   geom_point() +
-  geom_errorbarh(aes(xmin = conf.low, xmax = conf.high)) +
-  geom_vline(xintercept = 0, linetype="dashed")+
+  geom_errorbarh(aes(xmin = conf.low,
+                     xmax = conf.high)) +
+  geom_vline(xintercept = 0, 
+             linetype="dashed")+
   theme_minimal()
 
 

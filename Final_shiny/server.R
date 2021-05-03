@@ -23,7 +23,7 @@ shinyServer(function(input, output) {
                                    y=lat,
                                    group=group,
                                    fill=!!sym(
-                                       str_c(input$fill_selection,
+                                       str_c(input$status,
                                              "_per_100k_citizen"))))+
             geom_polygon()+
             scale_fill_gradientn(colours = pal)+
@@ -39,7 +39,7 @@ shinyServer(function(input, output) {
                   axis.title.x= element_blank(),
                   axis.line.x = element_blank(),
                   axis.line.y = element_blank())+
-            labs(fill = str_c(input$fill_selection, " per 100k citizen"))
+            labs(fill = str_c(input$status, " per 100k citizen"))
         
         country_plot
 
@@ -54,10 +54,10 @@ shinyServer(function(input, output) {
         filter(`Country/Region` == country()) %>%
             
             ggplot(mapping = aes(x = Date,
-                                 y = !!sym(input$fill_selection)))+
+                                 y = !!sym(input$status)))+
                 geom_point()+
                 labs(x = ' ', 
-                     y = input$fill_selection,
+                     y = input$status,
                      title = country())+ 
             scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y") +
             theme_minimal()+
@@ -67,12 +67,12 @@ shinyServer(function(input, output) {
             timeseries_plot <- timeseries_plot + 
                 scale_y_continuous(trans="log2",
                                    labels=scales::comma,
-                                   name= input$fill_selection)
+                                   name= input$status)
         } else {
             timeseries_plot <- timeseries_plot + 
                 scale_y_continuous(trans="identity",
                                    labels=scales::comma,
-                                   name= input$fill_selection)
+                                   name= input$status)
         }
         
     timeseries_plot

@@ -11,7 +11,7 @@ shinyUI(fluidPage(
     sidebarLayout(
         
         sidebarPanel(
-            selectInput(inputId = "fill_selection",
+            selectInput(inputId = "status",
                         label = "Choose status",
                         choices = c("Cases" = "Confirmed", 
                                     "Deaths" = "Deaths",

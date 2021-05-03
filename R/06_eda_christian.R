@@ -39,7 +39,7 @@ deaths_income <- latest_date_data %>%
   drop_na(IncomeGroup) %>%
   mutate(IncomeGroup = as_factor(IncomeGroup)) %>%
   mutate(IncomeGroup = fct_reorder(IncomeGroup,
-                                    desc(Deaths_per_100k_citizen))) %>%
+                                   desc(Deaths_per_100k_citizen))) %>%
   ggplot(mapping = aes(x = IncomeGroup,
                        y = Deaths_per_100k_citizen,
                        fill = IncomeGroup))+
@@ -73,5 +73,6 @@ ggsave("results/06_highest_cases_per_region.png",
        plot = strat_region_plot)
 ggsave("results/06_deaths_by_income.png",
        plot = deaths_income)
-ggsave("results/06_cases_by_income_and_region.png")
+ggsave("results/06_cases_by_income_and_region.png",
+       plot = cases_by_income_region_plot)
 
