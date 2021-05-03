@@ -31,7 +31,8 @@ strat_region_plot <- latest_date_data %>%
   facet_wrap(~ Region, scales = "free")+
   geom_bar(stat="identity")+
   labs(x = 'Cases per 100k citizens',
-       y = 'Country')
+       title = 'Countries with Highest Amount of Cases for Each Region')+
+  theme(axis.title.y = element_blank())
 
 
 deaths_income <- latest_date_data %>%
@@ -44,27 +45,28 @@ deaths_income <- latest_date_data %>%
                        fill = IncomeGroup))+
   geom_boxplot()+
   labs(x = "Income Group",
-       y = "Deaths per 100k citizens")+
+       y = "Deaths per 100k citizens",
+       title = "Investigating Relationship Between Income Group and Deaths")+
   theme_minimal()+
   theme(legend.position = "none")
 
-# another way to possibly visualize this data...? --> note from Anna
-
 cases_by_income_region_plot<- latest_date_data  %>%
   drop_na(IncomeGroup) %>%
-  mutate(IncomeGroup = fct_relevel(IncomeGroup, c("High income", "Upper middle income", "Lower middle income", "Low income"))) %>%
-  ggplot(aes(x = IncomeGroup,
-             y = Confirmed_per_100k_citizen,
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, c("Low income",
+                                                  "Lower middle income",
+                                                  "Upper middle income", 
+                                                  "High income"))) %>%
+  ggplot(aes(x = Confirmed_per_100k_citizen,
+             y = IncomeGroup,
              size = `Population`,
              color = Region)) +
   geom_point(alpha = 0.5,
              position = position_jitter(w = 0.2, h = .2)) +
-  coord_flip()+
-  scale_x_discrete(limits = rev)+
-  labs(x = " ",
-       y = "Cases per 100k citizens")+
+  labs(x = "Cases per 100k citizens",
+       y = "Income Group")+
   theme_minimal()+
   guides(size=FALSE)
+
 
 # Write plots -------------------------------------------------------------
 
