@@ -18,8 +18,7 @@ shinyUI(fluidPage(
             selectInput(inputId = "status",
                         label = "Choose status",
                         choices = c("Cases" = "Confirmed", 
-                                    "Deaths" = "Deaths",
-                                    "Recovered" = "Recovered")),
+                                    "Deaths" = "Deaths")),
             checkboxInput("yLog", "Display Y-Axis on a Log Scale?")
         ),
     
