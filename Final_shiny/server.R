@@ -60,7 +60,7 @@ shinyServer(function(input, output) {
             
             ggplot(mapping = aes(x = Date,
                                  y = !!sym(input$status)))+
-                geom_point()+
+                geom_line()+
                 labs(x = ' ', 
                      y = input$status,
                      title = country())+ 
