@@ -1,0 +1,11 @@
+name: covid-19_app
+title:
+username:
+account: christianjohansen
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4069168
+bundleId: 4549704
+url: https://christianjohansen.shinyapps.io/covid-19_app/
+when: 1620033942.84258
+lastSyncTime: 1620033942.84259
