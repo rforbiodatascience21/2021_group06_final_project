@@ -44,11 +44,11 @@ model_data  %>%
          p.value < 0.05)
 
 # Make a label dataframe for the facets: 
-Sig.DF <- data.frame(Type = c("High income", 
+Sig.DF <- data.frame(IncomeGroup = c("High income", 
                                 "Upper middle income", 
                                 "Lower middle income", 
                                 "Low income"), 
-                     label = c('Sig','Sig','Sig', 'non-Sig'))
+                     label = c('p<0.05','p<0.05','p<0.05', 'p>0.05'))
 
 latest_date_data %>%
   mutate(IncomeGroup = fct_relevel(IncomeGroup, 
@@ -60,10 +60,23 @@ ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
-  geom_text(x = 1, y = 225, aes(label = label), data = Sig.DF)+
+  geom_text(x = 4, y = 225, aes(label = label), data = Sig.DF)+
   theme_minimal()+
   labs(y="Deaths per 100k", x = "Population % > 65 yrs", color = "Income Group") 
 
+# Make a label dataframe for the facets: 
+Sig.DF2 <- data.frame(IncomeGroup = c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"), 
+                     label = c('p<0.05','p<0.05','p<0.05', 'p>0.05'))
+
+latest_date_data %>%
+  mutate(IncomeGroup = fct_relevel(IncomeGroup, 
+                                   c("High income", 
+                                     "Upper middle income", 
+                                     "Lower middle income", 
+                                     "Low income"))) %>%
 latest_date_data %>%
   mutate(IncomeGroup = fct_relevel(IncomeGroup, 
                                    c("High income", 
@@ -74,6 +87,7 @@ ggplot(aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
   geom_point(aes(color = factor(IncomeGroup))) +
   geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
   facet_wrap(IncomeGroup ~ .,scale="free_x")+
+  geom_text(x = 4, y = 225, aes(label = label), data = Sig.DF)+
   theme_minimal()+
   labs(y="Deaths per 100k", x = "Population % living in Urban ", color = "Income Group")
 
