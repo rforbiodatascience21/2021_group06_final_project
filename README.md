@@ -25,4 +25,21 @@ our timeseries data for various plots and models.
 This entire project and its analysis can be run to generate all results, by running
 00_doit.R.
 
+### Dependencies
+For making this project, the following packages and versions were used:
+
+* R version 4.0.3
+* tidyverse 1.3.1
+* maps 3.3.0
+* mapproj 1.2.7
+* broom 0.7.6
+* cowplot 1.1.1
+* patchwork 1.1.1
+* ggrepel 0.9.1
+* wesanderson 0.3.6
+* shinythemes 1.2.0
+* shiny 1.6.0
+* knitr 1.32
+* rmarkdown 2.7
+* rlang 0.4.10
 
