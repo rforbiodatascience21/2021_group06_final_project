@@ -18,13 +18,13 @@ timeseries <-
 
 # Clean up country names to be compatible with map.where()
 timeseries <- timeseries %>%
-  mutate("Country/Region" = str_replace(`Country/Region`,
+  mutate(`Country/Region` = str_replace(`Country/Region`,
                                         pattern = "United Kingdom",
                                         replacement = "UK")) %>%
-  mutate("Country/Region" = str_replace(`Country/Region`,
+  mutate(`Country/Region` = str_replace(`Country/Region`,
                                         pattern = "US",
                                         replacement = "USA")) %>%
-  mutate("Country/Region" = str_replace(`Country/Region`,
+  mutate(`Country/Region` = str_replace(`Country/Region`,
                                         pattern = "Burma",
                                         replacement = "Myanmar"))
   

@@ -26,13 +26,14 @@ shinyServer(function(input, output) {
     output$Heatmap <- renderPlot({
         
         augmented_map_data %>%
-        ggplot(aes(x=long,
-                   y=lat,
-                   group=group,
-                   fill=!!sym(str_c(input$status, "_per_100k_citizen"))))+
+        ggplot(aes(x = long,
+                   y = lat,
+                   group = group,
+                   fill = !!sym(str_c(input$status, "_per_100k_citizen"))))+
             geom_polygon()+
             scale_fill_gradientn(colours = pal)+
-            coord_map(xlim=c(-180,180),ylim=c(-55,90))+ 
+            coord_map(xlim=c(-180, 180), 
+                      ylim=c(-55, 90))+ 
             theme_classic()+
             theme(axis.ticks.x = element_blank(), 
                   axis.ticks.y = element_blank(),
@@ -46,34 +47,38 @@ shinyServer(function(input, output) {
     })
     
     output$timeseries_plot <- renderPlot({
-        validate(
-            need(input$map_click$x, "Click map for Timeseries data"))
+        validate(need(expr = country() != c("NA", ""),
+                      message = "Please click valid country"))
         
     timeseries_plot <- 
         timeseries %>%
         filter(`Country/Region` == country()) %>%
             
             ggplot(mapping = aes(x = Date,
-                                 y = !!sym(input$status)))+
-                geom_line()+
+                                 y = !!sym(input$status),
+                                 color = "red"))+
+                geom_point()+
                 labs(y = input$status,
-                     title = country())+ 
+                     title = str_c("Timeseries of ",
+                                   input$status,
+                                   " in ",
+                                   country()))+ 
             scale_x_date(date_breaks = "1 month", 
                          date_labels =  "%b %Y") +
             theme_minimal()+
-            theme(axis.text.x = element_text(angle=45, hjust = 1),
-                  axis.title.x = element_blank())
+            theme(axis.text.x = element_text(angle = 45, hjust = 1),
+                  legend.position = "none")
             
         if(input$yLog){
             timeseries_plot <- timeseries_plot + 
-                scale_y_continuous(trans="log2",
-                                   labels=scales::comma,
-                                   name= input$status)
+                scale_y_continuous(trans = "log2",
+                                   labels = scales::comma,
+                                   name = input$status)
         } else {
             timeseries_plot <- timeseries_plot + 
-                scale_y_continuous(trans="identity",
-                                   labels=scales::comma,
-                                   name= input$status)
+                scale_y_continuous(trans = "identity",
+                                   labels = scales::comma,
+                                   name = input$status)
         }
         
     timeseries_plot
