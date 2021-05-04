@@ -45,7 +45,7 @@ confirmed_plot <- pca_fit %>%
   labs(x = "PC 1",
        y = "PC 2",
        color = "Cases per 100k citizens",
-       subtitle = "Confirmed cases per 100k citizens")+
+       subtitle = "Countries projected down on the first two principal components")+
   theme_minimal()+
   theme(legend.position = "bottom")+
   scale_color_gradient(low = "#00BFC4",
@@ -85,14 +85,14 @@ PC_directions_plot <- pca_fit %>%
   pivot_wider(names_from = "PC",
               names_prefix = "PC", 
               values_from = "value") %>%
-  ggplot(aes(x = PC1,
-             y = PC2,
-             label = column,
-             color = "darkgrey")) +
+  
+  ggplot(mapping = aes(x = PC1,
+                       y = PC2,
+                       label = column,)) +
   geom_segment(xend = 0,
                yend = 0, 
                arrow = arrow_style)+
-  geom_text_repel()+
+  geom_text_repel(color = "#708090")+
   labs(title = "Principal component directions in feature space")+
   theme_minimal()
 
@@ -116,3 +116,4 @@ variance_explained_plot <- pca_fit %>%
 ggsave("results/04_pca_projections.png", cases_death_pca_plot)
 ggsave("results/04_pca_variance_explained.png", variance_explained_plot)
 ggsave("results/04_pca_directions.png", PC_directions_plot)
+ggsave("results/04_pca_projections_cases.png", confirmed_plot)
