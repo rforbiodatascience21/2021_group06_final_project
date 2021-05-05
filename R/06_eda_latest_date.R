@@ -30,8 +30,10 @@ strat_region_plot <- latest_date_data %>%
   facet_wrap(~ Region, scales = "free")+
   geom_bar(stat="identity")+
   labs(x = 'Cases per 100k citizens',
-       title = 'Countries with Highest Amount of Cases for Each Region')+
-  theme(axis.title.y = element_blank())
+       y = '',
+       title = 'Top 10 Countries with Highest Amount of Cases for Each Region')+
+  theme(axis.title.y = element_blank())+
+  theme_minimal()
 
 
 deaths_income <- latest_date_data %>%
