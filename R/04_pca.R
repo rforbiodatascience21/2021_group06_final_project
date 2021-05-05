@@ -113,7 +113,19 @@ variance_explained_plot <- pca_fit %>%
 
 # Save results ------------------------------------------------------------
 
-ggsave("results/04_pca_projections.png", cases_death_pca_plot)
-ggsave("results/04_pca_variance_explained.png", variance_explained_plot)
-ggsave("results/04_pca_directions.png", PC_directions_plot)
-ggsave("results/04_pca_projections_cases.png", confirmed_plot)
+ggsave("results/04_pca_projections.png", 
+       plot = cases_death_pca_plot,
+       height = 6,
+       width = 10)
+ggsave("results/04_pca_variance_explained.png", 
+       plot = variance_explained_plot,
+       height = 6,
+       width = 8.5)
+ggsave("results/04_pca_directions.png", 
+       plot = PC_directions_plot,
+       height = 6,
+       width = 8.5)
+ggsave("results/04_pca_projections_cases.png", 
+       plot = confirmed_plot,
+       height = 6,
+       width = 8.5)

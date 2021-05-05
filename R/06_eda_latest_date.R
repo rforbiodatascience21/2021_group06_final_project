@@ -70,9 +70,15 @@ cases_by_income_region_plot<- latest_date_data  %>%
 # Write plots -------------------------------------------------------------
 
 ggsave("results/06_highest_cases_per_region.png",
-       plot = strat_region_plot)
+       plot = strat_region_plot,
+       height = 6,
+       width = 8.5)
 ggsave("results/06_deaths_by_income.png",
-       plot = deaths_income)
+       plot = deaths_income,
+       height = 6,
+       width = 8.5)
 ggsave("results/06_cases_by_income_and_region.png",
-       plot = cases_by_income_region_plot)
+       plot = cases_by_income_region_plot,
+       height = 6,
+       width = 8.5)
 
