@@ -126,6 +126,7 @@ augmented_timeseries_single_country %>%
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45, hjust = 1),legend.position = "bottom")+
   labs(title = "Case fatality ratio spike right after a drop of confirmed cases",
-       subtitle = "Case fatility rates differ over time",
+       subtitle = str_c("Number of new confirmed cases and Case fatility rates over time in ",
+                        selected_country),
        x = "Date")
 
