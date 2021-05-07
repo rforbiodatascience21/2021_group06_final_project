@@ -29,6 +29,7 @@ world_map <- map_data("world") # data in R giving country Lat and Long.
 # Wrangle Data ------------------------------------------------------------
 
 # Extract the features that we are interested in
+  
 population <- population %>%
   select(country, "2020") %>%
   rename(Population = "2020")
@@ -56,19 +57,12 @@ inequality <- inequality %>%
 Income_grp <- Income_grp %>%
   select(Region, IncomeGroup, TableName) %>%
   rename(country = TableName) %>%
-  mutate(Region = str_replace(Region, 
-                               pattern = "South Asia", 
-                               replacement = "Asia & Pacific"))%>%
-  mutate(Region = str_replace(Region, 
-                              pattern = "North America", 
-                              replacement = "Americas & Caribbean")) %>%
-  mutate(Region = str_replace(Region, 
-                              pattern = "East Asia & Pacific", 
-                              replacement = "Asia & Pacific"))%>%
-  mutate(Region = str_replace(Region, 
-                              pattern = "Latin America & Caribbean", 
-                              replacement = "Americas & Caribbean"))
-  
+  mutate(Region = recode(Region,
+      "South Asia" = "Asia & Pacific",
+      "North America" = "Americas & Caribbean",
+      "East Asia & Pacific" = "Asia & Pacific",
+      "Latin America & Caribbean" = "Americas & Caribbean"))
+    
 Population_above65 <- 
   Population_above65 %>%
   select(`Country Name`, "2019") %>% #no data fr 2020, so most recent yr then
@@ -97,67 +91,26 @@ combined_tibble <- population %>%
 
 # Fix discrepancies between country name in this data and timeseries
 
+## Replacement
 combined_tibble <- combined_tibble %>%
-  mutate(country = str_replace(country, 
-                               pattern = "Myanmar", 
-                               replacement = "Burma")) %>%
-  
-  mutate(country = str_replace(country,
-                               pattern = "Cape Verde",
-                               replacement = "Cabo Verde")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "Congo, Rep.", 
-                               replacement = "Congo (Brazzaville)")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "Congo, Dem. Rep.",
-                               replacement = "Congo (Kinshasa)")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "Czech Republic",
-                               replacement = "Czechia")) %>%
-  
-  mutate(country = str_replace(country,
-                               pattern = "South Korea",
-                               replacement = "Korea, South")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "Kyrgyz Republic",
-                               replacement = "Kyrgyzstan")) %>%
-  
-  mutate(country = str_replace(country,
-                               pattern = "Lao", 
-                               replacement = "Laos")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "Micronesia, Fed. Sts.",
-                               replacement = "Micronesia")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "St. Kitts and Nevis",
-                               replacement = "Saint Kitts and Nevis")) %>%
-  
-  mutate(country = str_replace(country,
-                               pattern = "St. Lucia",
-                               replacement = "Saint Lucia")) %>%
-  
-  mutate(country = str_replace(country,
-                               pattern = "St. Vincent and the Grenadines",
-                               replacement = "Saint Vincent and the Grenadines")) %>%
-  
-  mutate(country = str_replace(country,
-                               pattern = "Slovak Republic", 
-                               replacement = "Slovakia")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "United States",
-                               replacement = "US")) %>%
-  
-  mutate(country = str_replace(country, 
-                               pattern = "Palestine", 
-                               replacement = "West Bank and Gaza"))
-  
+  mutate(country = recode(country,
+      "Myanmar" = "Burma",
+      "Cape Verde" = "Cabo Verde",
+      "Congo, Rep."= "Congo (Brazzaville)",
+      "Congo, Dem. Rep." = "Congo (Kinshasa)",
+      "Czech Republic" = "Czechia",
+      "South Korea" = "Korea, South",
+      "Kyrgyz Republic" = "Kyrgyzstan",
+      "Lao" = "Laos",
+      "Micronesia, Fed. Sts." = "Micronesia",
+      "St. Kitts and Nevis" = "Saint Kitts and Nevis",
+      "St. Lucia" = "Saint Lucia",
+      "St. Vincent and the Grenadines" = "Saint Vincent and the Grenadines",
+      "Slovak Republic" = "Slovakia",
+      "United States" = "US",
+      "Palestine" = "West Bank and Gaza"))
+
+
 
 # World map data ----------------------------------------------------------
 
@@ -165,21 +118,12 @@ world_map <-
   world_map %>% 
   rename(country = region) %>%
   select(-subregion) %>% 
-  mutate(country = str_replace(country, 
-                               pattern = "USA", 
-                               replacement = "US")) %>%
-  mutate(country = str_replace(country, 
-                               pattern = "UK", 
-                               replacement = "United Kingdom")) %>%
-  mutate(country = str_replace(country, 
-                               pattern = "Democratic Republic of the Congo", 
-                               replacement = "Congo (Kinshasa)")) %>%
-  mutate(country = str_replace(country, 
-                               pattern = "Myanmar", 
-                               replacement = "Burma")) %>%
-  mutate(country = str_replace(country,
-                               pattern = "Cape Verde",
-                               replacement = "Cabo Verde"))
+  mutate(country = recode(country, 
+     "USA" = "US",
+     "UK" = "United Kingdom",
+     "Democratic Republic of the Congo" = "Congo (Kinshasa)",
+     "Myanmar" = "Burma",
+     "Cape Verde" = "Cabo Verde"))
 
 
 # Write Data --------------------------------------------------------------
