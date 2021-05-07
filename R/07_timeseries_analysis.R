@@ -1,4 +1,3 @@
-# This script is for Joen to do EDA
 
 rm(list=ls(all=TRUE))
 # Load Libraries ----------------------------------------------------------
@@ -101,7 +100,7 @@ augmented_timeseries %>%
        y="Number of countries")
 
 ### select a country
-selected_country <-  "Germany"
+selected_country <-  "US"
 
 augmented_timeseries_single_country <- augmented_timeseries %>% 
   filter(`Country/Region` == selected_country)
