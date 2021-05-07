@@ -2,12 +2,10 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 library("tidyverse")
-source("R/99_functions.R")
-library("stringr")
-library("purrr")
 library("broom")
 library("patchwork")
-
+library("ggrepel")
+source("R/99_functions.R")
 # Load Data ---------------------------------------------------------------
 
 timeseries_data <- read_csv("data/03_augmented_timeseries.csv")
@@ -29,7 +27,7 @@ model_data <- latest_date_data %>%
   nest() %>% 
   ungroup() %>%  
   mutate(mdl = purrr::map(data,
-                   ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`+Urban_pop_perct, 
+                   ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`+ Urban_pop_perct, 
                        data = .x
                        ))) 
 
@@ -38,16 +36,23 @@ model_data <-
   mutate(mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>% 
   unnest(mdl_tidy)
 
+# Is this used for anything or just a remnant?
 model_data  %>%
   filter(term != "(Intercept)",
          p.value < 0.05)
+
+## Plot results ------------------------------------------------------------
   
+# scatter plots
 lm1_p1 <- 
   latest_date_data%>%
-  ggplot( aes(`Pop%_above65`, Deaths_per_100k_citizen)) +
-  geom_point(aes(color = factor(IncomeGroup))) +
-  geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
-  facet_wrap(IncomeGroup ~ .,scale="free_x")+
+  ggplot(mapping = aes(x = `Pop%_above65`,
+                       y = Deaths_per_100k_citizen,
+                       color = IncomeGroup)) +
+  geom_point() +
+  geom_smooth(method ="lm", se=F) +
+  facet_wrap(IncomeGroup ~ .,
+             scale="free_x")+
   theme_minimal()+
   labs(y = "Deaths per 100k",
        x = "Population % > 65 yrs",
@@ -55,53 +60,86 @@ lm1_p1 <-
 
 lm1_p2 <- 
   latest_date_data %>%
-  ggplot(aes(`Urban_pop_perct`, Deaths_per_100k_citizen)) +
-  geom_point(aes(color = factor(IncomeGroup))) +
-  geom_smooth(method ="lm",aes(color = IncomeGroup),se=F) +
-  facet_wrap(IncomeGroup ~ .,scale="free_x")+
+  ggplot(mapping = aes(x = `Urban_pop_perct`,
+                       y = Deaths_per_100k_citizen,
+                       color = IncomeGroup)) +
+  geom_point() +
+  geom_smooth(method ="lm", se=F) +
+  facet_wrap(IncomeGroup ~ ., 
+             scale="free_x")+
   theme_minimal()+
-  labs(y="", x = "Population % living in urban ", color = "Income Group")
+  labs(x = "Population % living in urban ", 
+       color = "Income Group")+
+  theme(axis.title.y = element_blank())
 
 lm1_Final_line_plot <- 
       lm1_p1 + lm1_p2 + 
-      plot_annotation(title = 'Simple Linear regression model results for deaths per 100k',
-                      tag_levels = 'A',
+      plot_annotation(title = "Simple Linear regression model results for deaths per 100k",
+                      tag_levels = "A",
                       theme = theme(plot.title = element_text(hjust = 0.5)))+
       plot_layout(guides = "collect") &
-      theme(legend.position = 'bottom')
+      theme(legend.position = "bottom")
 
 lm1_Final_line_plot
 
+# Slope Estimate plots
+
+Est_plot_lm1 <- 
 model_data %>%
   filter(term!="(Intercept)") %>%
-  ggplot(aes(x = estimate, y = IncomeGroup, color = term)) +
-  geom_vline(xintercept = 0, linetype="dashed")+
+  mutate(significant = if_else(condition = p.value < 0.05,
+                               true = "*",
+                               false = "")) %>%
+  
+  ggplot(mapping = aes(x = estimate,
+             y = IncomeGroup,
+             color = term, 
+             xmin = conf.low, 
+             xmax = conf.high,
+             label = significant)) +
+  geom_vline(xintercept = 0,
+             linetype = "dashed")+
   geom_point()+
-  geom_errorbarh(aes(xmin=conf.low,xmax=conf.high))+
+  geom_errorbarh(aes())+
   theme_minimal()+
-  labs(y="", x = " Slope Estimate", color = "Indep. Variable")+
-  scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Slope estimates for deaths per 100k grouped by income level") + 
-  annotate("text", 
-           x = c(6.3, 6.6, 1, 5), 
-           y = c(3.2, 2.2, 2.2, 1.2), 
-           label = "*"
-           )
+  theme(plot.title = element_text(hjust = 0.5), 
+        axis.title.y = element_blank())+
+  labs(x = " Slope Estimate",
+       color = "Indep. Variable",
+       caption = "* indicates significant p-value < 0.05",
+       title = "Slope estimates for deaths per 100k with conf. intervals")+
+  scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"), 
+                     values = c("deepskyblue1", "tomato2"))+ 
+  geom_text(nudge_x = 0.5, 
+            nudge_y = 0.1)
 
+Est_plot_lm1
+
+Est_plot_lm1_sig <-
 model_data %>%
   filter(term != "(Intercept)",
          p.value < 0.05) %>%
-  ggplot(aes(x = estimate, y = IncomeGroup, color = term)) +
+  
+  ggplot(mapping = aes(x = estimate, 
+                       y = IncomeGroup,
+                       color = term,
+                       xmin = conf.low,
+                       xmax = conf.high)) +
   geom_point() +
-  geom_errorbarh(aes(xmin = conf.low,
-                     xmax = conf.high)) +
+  geom_errorbarh() +
   geom_vline(xintercept = 0, 
              linetype="dashed")+
   theme_minimal()+
-  labs(y="", x = "Slope Estimate", color = "Indep. Variable")+
-  scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Significant slope estimates for deaths per 100k grouped by income level")
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.y = element_blank())+
+  labs(x = "Slope Estimate",
+       color = "Indep. Variable",
+       title = "Significant slope estimates for deaths per 100k")+
+  scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"),
+                     values = c("deepskyblue1", "tomato2"))
+ 
 
+Est_plot_lm1_sig
   
 ## second GLM model -----------------------------------------------------------
 
@@ -111,7 +149,7 @@ model_data2 <-
   nest() %>% 
   ungroup() %>%  
   mutate(mdl = purrr::map(data,
-                          ~lm(Confirmed_per_100k_citizen ~ Gdp+Pop_density, 
+                          ~lm(Confirmed_per_100k_citizen ~ Gdp + Pop_density, 
                                data = .x
                               ))) 
 
@@ -120,56 +158,32 @@ model_data2 <-
   mutate(mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>% 
   unnest(mdl_tidy)
 
-# all the data 
-model_data2 %>%
-  filter(term!="(Intercept)") %>%
-  ggplot(aes(x = estimate,y = Region, color = term)) +
-  geom_point() +
-  geom_errorbarh(aes(xmin = conf.low,
-                     xmax = conf.high)) +
-  geom_vline(xintercept = 0, linetype="dashed")+
-  labs(y="", x = "Slope Estimate", color = "Indep. Variable")+
-  scale_color_manual(labels = c("Gdp", "Pop Density"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Slope estimates for cases per 100k grouped by region")+
-  annotate("text", 
-           x = c(1, 2.95, -7, 1), 
-           y = c(5, 4.2, 1.2, 1), 
-           label = "*"
-  )
+## Plot results ------------------------------------------------------------
 
-
-# Only the sig ones. 
-model_data2 %>%
-  filter(term != "(Intercept)",
-         p.value < 0.05) %>%
-  ggplot(aes(x = estimate, y = Region, color = term)) +
-  geom_point() +
-  geom_errorbarh(aes(xmin = conf.low,
-                     xmax = conf.high)) +
-  geom_vline(xintercept = 0, 
-             linetype="dashed")+
-  theme_minimal()+
-  labs(y="", x = "Slope Estimate", color = "Indep. Variable")+
-  scale_color_manual(labels = c("Gdp", "Pop Density"), values = c("deepskyblue1", "tomato2"))+ 
-  ggtitle("Significant slope estimates for cases per 100k grouped by region")
-
+# scatter plots
 lm2_p1 <- 
   latest_date_data %>%
-  ggplot( aes(Gdp, Confirmed_per_100k_citizen)) +
-  geom_point(aes(color = factor(Region))) +
-  geom_smooth(method ="lm",aes(color = Region),se=F) +
-  facet_wrap(Region ~ .,scale="free_x")+
+  ggplot(mapping = aes(x = Gdp, 
+                       y = Confirmed_per_100k_citizen,
+                       color = Region)) +
+  geom_point() +
+  geom_smooth(method ="lm", se = F) +
+  facet_wrap(Region ~ .,
+             scale = "free_x")+
   theme_minimal()+
   labs(y = "Cases per 100k",
        x = "GDP",
        color = "Region") 
 
 lm2_p2 <- 
-latest_date_data %>%
-  ggplot( aes(Pop_density, Confirmed_per_100k_citizen)) +
-  geom_point(aes(color = factor(Region))) +
-  geom_smooth(method ="lm",aes(color = Region),se=F) +
-  facet_wrap(Region ~ .,scale="free_x")+
+  latest_date_data %>%
+  ggplot( aes(x = Pop_density, 
+              y = Confirmed_per_100k_citizen,
+              color = Region)) +
+  geom_point() +
+  geom_smooth(method ="lm", se=F) +
+  facet_wrap(Region ~ ., 
+             scale="free_x")+
   theme_minimal()+
   labs(y = "Cases per 100k",
        x = "Population Density",
@@ -177,12 +191,82 @@ latest_date_data %>%
 
 lm2_Final_line_plot <- 
   lm2_p1 / lm2_p2 + 
-  plot_annotation(title = 'Simple Linear regression model results for cases per 100k',
+  plot_annotation(title = "Simple Linear regression model results for cases per 100k",
                   tag_levels = 'A',
                   theme = theme(plot.title = element_text(hjust = 0.5)))+
   plot_layout(guides = "collect") &
-  theme(legend.position = 'bottom')
+  theme(legend.position = "bottom")
 
 lm2_Final_line_plot
 
+# Slope Estimate plots
+
+# all the data 
+Est_plot_lm2 <- 
+  model_data2 %>%
+  filter(term!="(Intercept)") %>%
+  mutate(significant = if_else(condition = p.value < 0.05,
+                              true = "*",
+                              false = "")) %>%
+  ggplot(aes(x = estimate,
+             y = Region,
+             color = term,
+             xmin = conf.low,
+             xmax = conf.high,
+             label = significant)) +
+  geom_point() +
+  geom_errorbarh() +
+  geom_vline(xintercept = 0, 
+             linetype="dashed")+
+  theme_minimal()+
+  theme(axis.title.y = element_blank())+
+  labs(x = "Slope Estimate", 
+       color = "Indep. Variable",
+       title = "Slope estimates for cases per 100k with conf. intervals",
+       caption = "* indicates significance with p < 0.05")+
+  scale_color_manual(labels = c("Gdp", "Pop Density"),
+                     values = c("deepskyblue1", "tomato2"))+ 
+  geom_text(nudge_x = 0.5, 
+            nudge_y = 0.1)
+  
+Est_plot_lm2
+
+# Only the sig ones. 
+Est_plot_lm2_sig <- 
+model_data2 %>%
+  filter(term != "(Intercept)",
+         p.value < 0.05) %>%
+  ggplot(aes(x = estimate,
+             y = Region,
+             color = term,
+             xmin = conf.low,
+             xmax = conf.high)) +
+  geom_point() +
+  geom_errorbarh() +
+  geom_vline(xintercept = 0, 
+             linetype="dashed")+
+  theme_minimal()+
+  theme(axis.title.y = element_blank()) +
+  labs(x = "Slope Estimate", 
+       color = "Indep. Variable",
+       title = "Significant slope estimates for cases per 100k")+
+  scale_color_manual(labels = c("Gdp", "Pop Density"), 
+                     values = c("deepskyblue1", "tomato2"))
+
+Est_plot_lm2_sig
+
+# Write plots -------------------------------------------------------------
+
+ggsave("results/05_lm1_line_plot.png",
+       plot = lm1_Final_line_plot)
+ggsave("results/05_lm1_Est_plot1.png",
+       plot = Est_plot_lm1)
+ggsave("results/05_lm1_Est_plot_sig.png",
+       plot = Est_plot_lm1_sig)
+ggsave("results/05_lm2_line_plot.png",
+       plot = lm2_Final_line_plot)
+ggsave("results/05_lm2_Est_plot1.png",
+       plot = Est_plot_lm2)
+ggsave("results/05_lm2_Est_plot_sig.png",
+       plot = Est_plot_lm2_sig)
 

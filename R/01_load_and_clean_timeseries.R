@@ -3,7 +3,7 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
-library(tidyverse)
+library("tidyverse")
 source("R/99_functions.R")
 
 # Load data ---------------------------------------------------------------
@@ -50,26 +50,14 @@ combined_timeseries_country <- confirmed_global_country %>%
   left_join(recovered_global_country, 
             by = c("Country/Region", "Date"))
 
-# Join time series on province level
-combined_timeseries_province <- confirmed_global %>%
-  left_join(deaths_global,
-            by = c("Country/Region", "Date", "Province/State")) %>%
-  left_join(recovered_global, 
-            by = c("Country/Region", "Date", "Province/State")) %>%
-  select(-ends_with(c('.x', '.y')))
 
 # Mutate date format
 combined_timeseries_country <- combined_timeseries_country %>%
   mutate(Date = lubridate::mdy(Date))
 
-combined_timeseries_province <- combined_timeseries_province %>%
-  mutate(Date = lubridate::mdy(Date))
 
 
 
 # Write data --------------------------------------------------------------
 combined_timeseries_country %>%
   write_csv("data/01_timeseries_country.csv")
-
-combined_timeseries_province %>%
-  write_csv("data/01_timeseries_province.csv")

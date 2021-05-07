@@ -1,8 +1,8 @@
 
 # Load Libraries ----------------------------------------------------------
 
-library(shiny)
-library(shinythemes)
+library("shiny")
+library("shinythemes")
 
 
 # UI Code -----------------------------------------------------------------
@@ -19,7 +19,8 @@ shinyUI(fluidPage(
                         label = "Choose status",
                         choices = c("Cases" = "Confirmed", 
                                     "Deaths" = "Deaths")),
-            checkboxInput("yLog", "Display Y-Axis on a Log Scale?")
+            checkboxInput(inputId = "yLog", 
+                          label = "Display Y-Axis on a Log Scale?")
         ),
     
     
@@ -27,7 +28,8 @@ shinyUI(fluidPage(
         mainPanel(
             h4("World map colored by status per 100k citizens"),
             # Output: global map ----
-            plotOutput(outputId = "Heatmap", click = "map_click"),
+            plotOutput(outputId = "Heatmap",
+                       click = "map_click"),
             plotOutput(outputId = "timeseries_plot")
             
         ),

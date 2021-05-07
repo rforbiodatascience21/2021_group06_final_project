@@ -3,9 +3,9 @@ rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
-library(tidyverse)
-library(maps)
-library(mapproj)
+library("tidyverse")
+library("maps")
+library("mapproj")
 source("R/99_functions.R")
 
 # Load Data ---------------------------------------------------------------
@@ -31,30 +31,30 @@ world_map <- map_data("world") # data in R giving country Lat and Long.
 # Extract the features that we are interested in
 population <- population %>%
   select(country, "2020") %>%
-  rename("Population" = "2020")
+  rename(Population = "2020")
 
 pop_density <- pop_density %>%
   select(country, "2020") %>%
-  rename("Pop_density" = "2020")
+  rename(Pop_density = "2020")
 
 age <- age %>%
   select(country, "2020") %>%
-  rename("Age_median" = "2020") 
+  rename(Age_median = "2020") 
 
 gdp <- gdp %>%
   select(country, "2020") %>%
-  rename("Gdp" = "2020")
+  rename(Gdp = "2020")
 
 sex_ratio <- sex_ratio %>%
   select(country, "2020") %>%
-  rename("Sex_ratio" = "2020")
+  rename(Sex_ratio = "2020")
 
 inequality <- inequality %>%
   select(country, "2020") %>%
-  rename("Inequality" = "2020")
+  rename(Inequality = "2020")
 
 Income_grp <- Income_grp %>%
-  select(Region,IncomeGroup,TableName) %>%
+  select(Region, IncomeGroup, TableName) %>%
   rename(country = TableName) %>%
   mutate(Region = str_replace(Region, 
                                pattern = "South Asia", 
@@ -71,15 +71,15 @@ Income_grp <- Income_grp %>%
   
 Population_above65 <- 
   Population_above65 %>%
-  select("Country Name","2019") %>% #no data for 2020, so most recent yr then
-  rename(country = "Country Name",
-         "Pop%_above65" = "2019")
+  select(`Country Name`, "2019") %>% #no data fr 2020, so most recent yr then
+  rename(country = `Country Name`,
+         `Pop%_above65` = "2019")
 
 Urban_pop_per <-
   Urban_pop_per %>%
-  select("Country Name","2019") %>% #no data for 2020, so most recent yr then
+  select(`Country Name`,"2019") %>% #no data for 2020, so most recent yr then
   rename(country = "Country Name",
-         "Urban_pop_perct" = "2019")
+         Urban_pop_perct = "2019")
 
 # Join the data
 combined_tibble <- population %>%
@@ -163,8 +163,8 @@ combined_tibble <- combined_tibble %>%
 
 world_map <- 
   world_map %>% 
-  rename("country" = "region") %>%
-  select(-"subregion") %>% 
+  rename(country = region) %>%
+  select(-subregion) %>% 
   mutate(country = str_replace(country, 
                                pattern = "USA", 
                                replacement = "US")) %>%

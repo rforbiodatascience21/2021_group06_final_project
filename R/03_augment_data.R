@@ -2,7 +2,7 @@
 rm(list=ls(all=TRUE))
 # Load Libraries ----------------------------------------------------------
 
-library(tidyverse)
+library("tidyverse")
 source("R/99_functions.R")
 
 # Load Data ---------------------------------------------------------------
@@ -15,9 +15,9 @@ world_map <- read_csv("data/02_world_map_data.csv")
 
 timeseries_augment <- timeseries_country %>%
   left_join(country_data, by = c("Country/Region" = "country")) %>%
-  mutate("Confirmed_per_100k_citizen" = Confirmed / Population * 100000,
-         "Deaths_per_100k_citizen" = Deaths / Population * 100000,
-         "Recovered_per_100k_citizen" = Recovered / Population * 100000)
+  mutate(Confirmed_per_100k_citizen = Confirmed / Population * 100000,
+         Deaths_per_100k_citizen = Deaths / Population * 100000,
+         Recovered_per_100k_citizen = Recovered / Population * 100000)
 
 
 # Add Lat and Long to country level data ----------------------------------
@@ -39,11 +39,11 @@ timeseries_augment %>%
   write_csv("data/03_augmented_timeseries.csv")
 
 timeseries_augment %>%
-  write_csv("Final_shiny/shiny_data/03_augmented_timeseries.csv")
+  write_csv("Covid-19 app/shiny_data/03_augmented_timeseries.csv")
 
 map_data_augment %>%
   write_csv("data/03_augmented_map_data.csv")
 
 map_data_augment %>%
-  write_csv("Final_shiny/shiny_data/03_augmented_map_data.csv")
+  write_csv("Covid-19 app/shiny_data/03_augmented_map_data.csv")
 
