@@ -99,8 +99,8 @@ world_map <- map_data("world") # data in R giving country Lat and Long.
 gapminder_data <- tribble(
   ~Variable_name, ~File_path,
   "Population",  "data/_raw/population_total.csv",
-  "Pop_densit",  "data/_raw/population_density_per_square_km.csv",
-  "Age",         "data/_raw/median_age_years.csv",
+  "Pop_density", "data/_raw/population_density_per_square_km.csv",
+  "Age_median",  "data/_raw/median_age_years.csv",
   "Gdp",         "data/_raw/gdp_per_capita.csv",
   "Sex_ratio",   "data/_raw/sex_ratio_all_age_groups.csv",
   "Inequality",  "data/_raw/gini.csv",
@@ -139,15 +139,17 @@ urban_pop_per <-
 #Wraggling the gapminder data
 
 #defining a function to extract data from year 2020
-get_year_2020_data <- function(df, var_name) {
-  df %>% 
-    select(country,"2020") %>% 
+get_year_2020_data <- function(tbl, var_name) {
+  tbl %>% 
+    select(country, "2020") %>% 
     rename(!!rlang::sym(var_name) := "2020")
 }
 
 #using the get_year_2020_data function to extraxt year 2020 data from all datasets
 gapminder_data <- gapminder_data %>% 
-  mutate(`2020_data` = purrr::map2(Raw_data, Variable_name, get_year_2020_data))
+  mutate(`2020_data` = purrr::map2(.x = Raw_data, 
+                                   .y = Variable_name, 
+                                   ~get_year_2020_data(.x, .y)))
 
 #Joining the gapminder data with the non-gapminder data
 all_data <- gapminder_data %>% 
@@ -181,7 +183,9 @@ combined_tibble <- combined_tibble %>%
 
 
 
-# World map data ----------------------------------------------------------
+
+# Rename world data -------------------------------------------------------
+
 
 world_map <- 
   world_map %>% 
