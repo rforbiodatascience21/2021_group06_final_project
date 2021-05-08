@@ -6,7 +6,12 @@ source("R/99_functions.R")
 
 
 # Load Data ---------------------------------------------------------------
-timeseries_data <- read_csv("data/03_augmented_timeseries.csv")
+timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
+                            col_types = cols(
+                              "Rolling_mean_confirmed" = col_double(),
+                              "Rolling_mean_deaths" = col_double(),
+                              "Rolling_case_fatality" = col_double(),
+                              "Wave_status" = col_character()))
 
 # Subset to latest date
 

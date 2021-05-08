@@ -9,45 +9,16 @@ library("tidyverse")
 
 # Load Data ---------------------------------------------------------------
 
-augmented_timeseries <- read_csv("data/03_augmented_timeseries.csv")
+augmented_timeseries <- read_csv("data/03_augmented_timeseries.csv",
+                                 col_types = cols(
+                                   "Rolling_mean_confirmed" = col_double(),
+                                   "Rolling_mean_deaths" = col_double(),
+                                   "Rolling_case_fatality" = col_double(),
+                                   "Wave_status" = col_character()))
 
 
 # Wrangle Data ------------------------------------------------------------
 
-#Calculating daily cases & deaths from cumsums. further calculation of 14 day means.
-augmented_timeseries <- augmented_timeseries %>% 
-  group_by(`Country/Region`) %>% 
-  arrange(Date) %>% 
-  mutate(New_confirmed = Confirmed - lag(Confirmed, n = 1),
-         New_deaths = Deaths - lag(Deaths, n = 1),
-         New_recovered = Recovered - lag(Recovered, n = 1),
-         Case_fatality = Deaths/Confirmed,
-         
-         Rolling_mean_confirmed = (lead(Confirmed, n = 7) 
-                                   - lag(Confirmed, n = 7))/14,
-         Rolling_mean_deaths = (lead(Deaths, n = 7) 
-                                - lag(Deaths, n = 7))/14,
-         Rolling_case_fatality = Rolling_mean_deaths
-                                 /Rolling_mean_confirmed)
-#finding waves
-#Criteria for wave
-#Deaths is at least 10 % higher than 1 weeks previously
-increase_factor = 1.1 
-no_of_days = 7
-  
-#adding a "wave" factor to the data
-augmented_timeseries <- augmented_timeseries %>% 
-  mutate(Wave_status = case_when(
-      Rolling_mean_deaths < 1 ~ "Non_Wave",
-      
-      lead(x = Rolling_mean_deaths, n = no_of_days) / Rolling_mean_deaths 
-      >= increase_factor ~ "Wave",
-      
-      lead(x = Rolling_mean_deaths, n = no_of_days) / Rolling_mean_deaths 
-      < increase_factor ~ "Non_Wave"),
-    
-    Wave_status = fct_recode(Wave_status)
-    )
 
 #Creating a single country dataset, for illustrative purposes.
 selected_country <-  "Denmark"

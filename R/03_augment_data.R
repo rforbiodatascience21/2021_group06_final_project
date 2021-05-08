@@ -1,4 +1,3 @@
-
 rm(list=ls(all=TRUE))
 # Load Libraries ----------------------------------------------------------
 
@@ -31,8 +30,44 @@ map_data_augment <- timeseries_augment %>%
   get_latest_date_data() %>%
   full_join(world_map, by = c("Country/Region" = "country"))
   
-  
 
+# Calculate new cases and rolling cases -----------------------------------
+
+#Calculating daily cases & deaths from cumsums. further calculation of 14 day means.
+timeseries_augment <- timeseries_augment %>% 
+  group_by(`Country/Region`) %>% 
+  arrange(Date) %>% 
+  mutate(New_confirmed = Confirmed - lag(Confirmed, n = 1),
+         New_deaths = Deaths - lag(Deaths, n = 1),
+         New_recovered = Recovered - lag(Recovered, n = 1),
+         Case_fatality = Deaths/Confirmed,
+         
+         Rolling_mean_confirmed = (lead(Confirmed, n = 7) 
+                                   - lag(Confirmed, n = 7))/14,
+         Rolling_mean_deaths = (lead(Deaths, n = 7) 
+                                - lag(Deaths, n = 7))/14,
+         Rolling_case_fatality = Rolling_mean_deaths
+         /Rolling_mean_confirmed)
+
+# Finding waves
+# Criteria for wave
+# Deaths is at least 10 % higher than 1 weeks previously
+increase_factor = 1.1 
+no_of_days = 7
+
+# Adding a "wave" factor to the data
+timeseries_augment <- timeseries_augment %>% 
+  mutate(Wave_status = case_when(
+    Rolling_mean_deaths < 1 ~ "Non_Wave",
+    
+    lead(x = Rolling_mean_deaths, n = no_of_days) / Rolling_mean_deaths 
+    >= increase_factor ~ "Wave",
+    
+    lead(x = Rolling_mean_deaths, n = no_of_days) / Rolling_mean_deaths 
+    < increase_factor ~ "Non_Wave"),
+    
+    Wave_status = fct_recode(Wave_status)
+  )
 
 # Write Data --------------------------------------------------------------
 timeseries_augment %>%
