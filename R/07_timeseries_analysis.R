@@ -149,16 +149,21 @@ country_case_fatality_plot <- augmented_timeseries_single_country %>%
 ### ISSUE, want to have dual axis, one for case fatality and one for new_case
 country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>% 
   ggplot(aes(x = Date))+
-  geom_point(aes(y = Case_fatality*100, color = "Cummulative Case Fatility")) +
-  geom_point(aes(y = Rolling_case_fatality*100, color = "Rolling Case Fatility")) +
-  geom_point(aes(y = log10(New_confirmed),color = "Log10 of daily cases"))+
-  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y") +
+  geom_point(aes(y = Case_fatality*100,
+                 color = "Cummulative Case Fatility")) +
+  geom_point(aes(y = Rolling_case_fatality*100,
+                 color = "Rolling Case Fatility")) +
+  geom_point(aes(y = log10(New_confirmed),
+                 color = "Log10 of daily cases"))+
+  scale_x_date(date_breaks = "1 month", 
+               date_labels =  "%b %Y") +
   scale_y_continuous(
     name = "Case Fatality (%)",
     sec.axis = sec_axis(~.*1, name="Log10 of daily confirmed cases")
   )+ 
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust = 1),
+  theme(axis.text.x = element_text(angle=45, 
+                                   hjust = 1),
         legend.position = "bottom")+
   labs(title = "Case fatality ratio spike right after a drop of confirmed cases",
        subtitle = str_c("Number of new confirmed cases and Case fatility rates over time in ",
@@ -166,10 +171,15 @@ country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>%
        x = "Date")
 
 country_shifted_case_fatility_plot <- augmented_timeseries_single_country %>% 
-  mutate(lead7_case_fatality = lead(Rolling_mean_deaths, n= 7)/Rolling_mean_confirmed,
-         lead14_case_fatality = lead(Rolling_mean_deaths, n= 14)/Rolling_mean_confirmed,
-         lead21_case_fatality = lead(Rolling_mean_deaths, n= 21)/Rolling_mean_confirmed,
-         lead28_case_fatality = lead(Rolling_mean_deaths, n= 28)/Rolling_mean_confirmed) %>% 
+  mutate(lead7_case_fatality =
+           lead(Rolling_mean_deaths, n= 7)/Rolling_mean_confirmed,
+         lead14_case_fatality = 
+           lead(Rolling_mean_deaths, n= 14)/Rolling_mean_confirmed,
+         lead21_case_fatality = 
+           lead(Rolling_mean_deaths, n= 21)/Rolling_mean_confirmed,
+         lead28_case_fatality = 
+           lead(Rolling_mean_deaths, n= 28)/Rolling_mean_confirmed
+         ) %>% 
   ggplot(aes(x = Date))+
   geom_line(aes(y = Rolling_case_fatality*100,
                 color = "Rolling Case Fatility"), alpha = 0.5) +
