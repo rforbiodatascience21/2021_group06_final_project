@@ -8,13 +8,27 @@ knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 ```
 
-## Data format
-- The timeseries data is not tidy
-----
-```{r, message=FALSE}
-deaths_data <- read_csv(file = "../data/_raw/time_series_covid19_deaths_global.csv")
-head(deaths_data,10)
+## Results - Covid waves | What is covid wave?
+- How does one define a covid wave?
+```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+knitr::include_graphics("../results/07_country_wave_timeline.png")
 ```
 
-## Slide with Plot
+## Results - Covid waves | Are covid waves happening synchronized?
+```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+knitr::include_graphics("../results/07_global_wave_trend.png")
+```
+
+## Results - Covid waves | What about for regions?
+```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+knitr::include_graphics("../results/07_region_wave_trend.png")
+```
+
+## Results - Covid waves | Understanding Case-fatality
+```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+knitr::include_graphics("../results/07_country_rolling_case_fatality.png")
+```
+
+
+
 
