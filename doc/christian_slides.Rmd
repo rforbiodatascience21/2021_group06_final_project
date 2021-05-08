@@ -53,8 +53,9 @@ knitr::include_graphics("presentation_images/workflow.png")
 - modelling:
   * PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?
   * 2 simple linear regressions: 
-    (1) $y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$ grouped by Income catagory of country. 
-    (2) y~x+x grouped by region
+    + $y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$ grouped by Income category of country. 
+    + $y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$ grouped by region
+    
 - Exploring Covid "waves" and case fatality
 
 ## Results - Exploratory Data Analysis
@@ -95,6 +96,8 @@ knitr::include_graphics("../results/04_pca_directions.png")
 
 https://christianjohansen.shinyapps.io/covid-19_app/
 
-## Discussion
-
-## Conclusion ??
+## Discussion and Conclusion
+- Looking at correlations and not causation
+- linear model is not dealing with collinearity of features
+- In general more developed countries has been hit harder
+ 
