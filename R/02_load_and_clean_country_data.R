@@ -89,6 +89,75 @@ combined_tibble <- population %>%
   left_join(income_grp, by = "country")  %>% 
   left_join(urban_pop_per, by = "country")
 
+
+
+# Alternate DRY version of data load and join -----------------------------
+
+world_map <- map_data("world") # data in R giving country Lat and Long. 
+
+#Loading the gapminder data
+gapminder_data <- tribble(
+  ~Variable_name, ~File_path,
+  "Population",  "data/_raw/population_total.csv",
+  "Pop_densit",  "data/_raw/population_density_per_square_km.csv",
+  "Age",         "data/_raw/median_age_years.csv",
+  "Gdp",         "data/_raw/gdp_per_capita.csv",
+  "Sex_ratio",   "data/_raw/sex_ratio_all_age_groups.csv",
+  "Inequality",  "data/_raw/gini.csv",
+)
+
+gapminder_data <- gapminder_data %>% 
+  mutate(Raw_data = purrr::map(File_path,~read_csv(.)))
+
+#Loading the non-gapminder data
+income_grp <- read_csv("data/_raw/Income_grp.csv")
+population_above65 <- read_csv("data/_raw/Population_65.csv")
+urban_pop_per <- read_csv("data/_raw/urban_pop_perct.csv")
+
+#Wraggling the non-gapminder data
+income_grp <- income_grp %>%
+  select(Region, IncomeGroup, TableName) %>%
+  rename(country = TableName) %>%
+  mutate(Region = recode(Region,
+                         "South Asia" = "Asia & Pacific",
+                         "North America" = "Americas & Caribbean",
+                         "East Asia & Pacific" = "Asia & Pacific",
+                         "Latin America & Caribbean" = "Americas & Caribbean"))
+
+population_above65 <- 
+  population_above65 %>%
+  select(`Country Name`, "2019") %>% #no data fr 2020, so most recent yr then
+  rename(country = `Country Name`,
+         `Pop%_above65` = "2019")
+
+urban_pop_per <-
+  urban_pop_per %>%
+  select(`Country Name`,"2019") %>% #no data for 2020, so most recent yr then
+  rename(country = `Country Name`,
+         Urban_pop_perct = "2019")
+
+#Wraggling the gapminder data
+
+#defining a function to extract data from year 2020
+get_year_2020_data <- function(df, var_name) {
+  df %>% 
+    select(country,"2020") %>% 
+    rename(!!rlang::sym(var_name) := "2020")
+}
+
+#using the get_year_2020_data function to extraxt year 2020 data from all datasets
+gapminder_data <- gapminder_data %>% 
+  mutate(`2020_data` = purrr::map2(Raw_data, Variable_name, get_year_2020_data))
+
+#Joining the gapminder data with the non-gapminder data
+all_data <- gapminder_data %>% 
+  pluck("2020_data") %>% 
+  append(list(income_grp, population_above65, urban_pop_per))
+all_data <- all_data %>%
+  reduce(left_join, by = "country")
+
+
+# Replacing inconsistent country names -------------------------------------
 # Fix discrepancies between country name in this data and timeseries
 
 ## Replacement
