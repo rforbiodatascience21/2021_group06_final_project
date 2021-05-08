@@ -14,6 +14,36 @@ recovered_global <- read_csv("data/_raw/time_series_covid19_recovered_global.csv
 
 # Wrangle data ------------------------------------------------------------
 
+covid_data <- tribble(
+  ~variable_name, ~file_path,
+  "Confirmed",    "data/_raw/time_series_covid19_confirmed_global.csv",
+  "Deaths",       "data/_raw/time_series_covid19_deaths_global.csv",
+  "Recovered",    "data/_raw/time_series_covid19_recovered_global.csv"
+)
+
+covid_data <- covid_data %>% 
+  mutate(raw_data = purrr::map(file_path, ~read_csv(.)))
+
+pivot_data <- function(df, var_name){
+  df %>%
+    pivot_longer(cols = matches("\\d+/\\d+/\\d+"),
+                 names_to = "Date",
+                 values_to = var_name)
+}
+
+covid_data <- covid_data %>% 
+  mutate(pivoted_data = purrr::map2(raw_data, variable_name, pivot_data))
+%>% 
+  pluck("pivoted_data") %>% 
+  purrr::reduce(left_join, by = c("Province/State","Country/Region","Lat","Long","Date"))
+
+covid_data <- covid_data %>% 
+  group_by(`Country/Region`, Date) %>%
+  summarise(Confirmed = sum(Confirmed),
+            Deaths = sum(Deaths),
+            Recovered = sum(Recovered)) %>% 
+  mutate(Date = lubridate::mdy(Date))
+
 # Pivot data
 confirmed_global <- confirmed_global %>%
   pivot_longer(cols = matches("\\d+/\\d+/\\d+"),
