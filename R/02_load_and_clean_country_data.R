@@ -72,7 +72,7 @@ Population_above65 <-
 Urban_pop_per <-
   Urban_pop_per %>%
   select(`Country Name`,"2019") %>% #no data for 2020, so most recent yr then
-  rename(country = "Country Name",
+  rename(country = `Country Name`,
          Urban_pop_perct = "2019")
 
 # Join the data

@@ -36,15 +36,17 @@ knitr::include_graphics("presentation_images/workflow.png")
 
 **Cleaning: Issues with dataset:**
 
-- Timeseries data in very wide format
-- Country names were not consistent over data sources
-- Multiple files had to be combined
-- Recovered are reported inconsistently
+- <font size="4">Timeseries data in very wide format</font>
+- <font size="4">Country names were not consistent over data sources</font>
+- <font size="4">Multiple files had to be combined</font>
+- <font size="4">Recovered are reported inconsistently</font>
 
 **Augmentation:**
 
-- Calculate cases, deaths, and recoveries per 100K citizens
-- For shiny app: Join latitude and longitude data to the country level Covid data.
+- <font size="4">Calculate cases, deaths, and recoveries per 100K citizens</font>
+- <font size="4">Additional augmentations with rolling means and new cases per day</font>
+- <font size="4">For shiny app: Join latitude and longitude data to the country level Covid data.</font>
+
 
 
 ## Materials and method | Data exploration and models
