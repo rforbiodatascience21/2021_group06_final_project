@@ -76,19 +76,20 @@ covid_data <- tribble(
 covid_data <- covid_data %>% 
   mutate(Raw_data = purrr::map(File_path, ~read_csv(.)))
 
-#define a function for pivoting the data to a long format
-pivot_data <- function(df, var_name){
-  df %>%
-    pivot_longer(cols = matches("\\d+/\\d+/\\d+"),
-                 names_to = "Date",
-                 values_to = var_name)
-}
-
 #pivot the data and join the pivoted dataframes
 covid_data <- covid_data %>% 
-  mutate(Pivoted_data = purrr::map2(Raw_data, Variable_name, pivot_data)) %>% 
+  mutate(Pivoted_data = purrr::map2(.x = Raw_data,
+                                    .y = Variable_name, 
+                                    ~pivot_longer(data = .x, 
+                                                  cols = matches("\\d+/\\d+/\\d+"),
+                                                  names_to = "Date",
+                                                  values_to = .y,))) %>% 
   pluck("Pivoted_data") %>% 
-  purrr::reduce(left_join, by = c("Province/State","Country/Region","Lat","Long","Date"))
+  purrr::reduce(left_join, by = c("Province/State",
+                                  "Country/Region",
+                                  "Lat",
+                                  "Long",
+                                  "Date"))
 
 #Sum up variable on country level and reformat date.
 covid_data <- covid_data %>% 
