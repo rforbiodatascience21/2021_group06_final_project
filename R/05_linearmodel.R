@@ -263,15 +263,27 @@ Est_plot_lm2_sig
 # Write plots -------------------------------------------------------------
 
 ggsave("results/05_lm1_line_plot.png",
-       plot = lm1_Final_line_plot)
+       plot = lm1_Final_line_plot,
+       height = 6,
+       width = 10)
 ggsave("results/05_lm1_Est_plot1.png",
-       plot = Est_plot_lm1)
+       plot = Est_plot_lm1,
+       height = 6,
+       width = 8.5)
 ggsave("results/05_lm1_Est_plot_sig.png",
-       plot = Est_plot_lm1_sig)
+       plot = Est_plot_lm1_sig,
+       height = 6,
+       width = 8.5)
 ggsave("results/05_lm2_line_plot.png",
-       plot = lm2_Final_line_plot)
+       plot = lm2_Final_line_plot,
+       height = 6,
+       width = 10)
 ggsave("results/05_lm2_Est_plot1.png",
-       plot = Est_plot_lm2)
+       plot = Est_plot_lm2,
+       height = 6,
+       width = 8.5)
 ggsave("results/05_lm2_Est_plot_sig.png",
-       plot = Est_plot_lm2_sig)
+       plot = Est_plot_lm2_sig,
+       height = 6,
+       width = 8.5)
 

@@ -88,24 +88,18 @@ knitr::include_graphics("../results/04_pca_projections_cases.png")
 knitr::include_graphics("../results/04_pca_directions.png")
 ```
 
-## Results - Models | Linear regression (1)
+## Results - Linear regression model
 - <font size="4"> Deaths vs. (A) Pop % above 65 years and (B) Pop % living in urban areas. Grouped by income level. </font>
-- <font size="4"> Significant slope estiamtes for pop % > 65 with high income, pop % > 65 and pop % in urban with upper middle income, and pop % > 65 with lower middle income. </font>
 
-
-```{r, echo = FALSE, out.height = "300px"}
+```{r, echo = FALSE, out.height = "400px", fig.align = 'center'}
 knitr::include_graphics("../results/05_lm1_line_plot.png")
-knitr::include_graphics("../results/05_lm1_Est_plot1.png")
 ```
 
-## Results - Models | Linear regression (2)
-- <font size="4"> Cases vs. (A) GDP and (B) Pop density. Grouped by region. </font>
-- <font size="4"> Significant slope estiamtes for GDP in Sub-Saharan Africa, pop density in Middle East & North Africa, and both GDP and pop density in the Americas & Carribean. </font>
+## Results - Linear regression model
+- <font size="4"> Significant slope estiamtes for pop % > 65 with high income, pop % > 65 and pop % in urban with upper middle income, and pop % > 65 with lower middle income. </font>
 
-
-```{r, echo = FALSE, out.height = "300px"}
-knitr::include_graphics("../results/05_lm2_line_plot.png")
-#knitr::include_graphics("../results/05_lm2_Est_plot1.png")
+```{r, echo = FALSE, out.height = "400px", fig.align = 'center'}
+knitr::include_graphics("../results/05_lm1_Est_plot1.png")
 ```
 
 ## Results - Covid waves | 
