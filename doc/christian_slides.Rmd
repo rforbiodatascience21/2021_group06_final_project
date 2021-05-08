@@ -53,19 +53,19 @@ knitr::include_graphics("presentation_images/workflow.png")
 - modelling:
   * PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?
   * 2 simple linear regressions: 
-    (1) y~x+x grouped by Income catagory of country. 
+    (1) $y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$ grouped by Income catagory of country. 
     (2) y~x+x grouped by region
 - Exploring Covid "waves" and case fatality
 
-## Results - eda | 
+## Results - Exploratory Data Analysis
 
 ```{r, echo = FALSE, out.width="600px", out.height= "400px" , fig.align = 'center'}
 knitr::include_graphics("../results/06_highest_cases_per_region.png")
 ```
 
-## Results - eda | Visualise correlation between income groups
+## Results - Exploratory Data Analysis | Visualise correlation between income groups
 
-```{r, echo = FALSE, out.width = "500px", out.height = "500px", fig.align = 'center'}
+```{r, echo = FALSE, out.width = "475px", out.height = "475px", fig.align = 'center'}
 knitr::include_graphics("../results/06_eda_slide_plot.png")
 ```
 
