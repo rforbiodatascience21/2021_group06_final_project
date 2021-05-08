@@ -78,14 +78,7 @@ knitr::include_graphics("../results/06_eda_slide_plot.png")
 - <font size="4"> Some countries are outliers in this projection</font>
 
 ```{r, echo = FALSE, out.width = "600px", out.height = "350px" , fig.align = 'center'}
-knitr::include_graphics("../results/04_pca_projections_cases.png")
-```
-
-## Results - Models | Investigate directions of PC1 and PC2
-- <font size="4"> high projections on PC1 are developed countries</font>
-- <font size="4"> PC2 is harder to interpret</font>
-```{r, echo = FALSE, out.width = "400px", out.height = "300"  , fig.align = 'right'}
-knitr::include_graphics("../results/04_pca_directions.png")
+knitr::include_graphics("../results/04_pca_projections_&_directions.png")
 ```
 
 ## Results - Linear regression model

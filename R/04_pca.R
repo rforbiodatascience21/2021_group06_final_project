@@ -34,7 +34,7 @@ pca_fit <- latest_date_data %>%
   select(Population, Pop_density, Age_median, Gdp, Sex_ratio, Inequality) %>%
   prcomp(scale = TRUE)
 
-# Investigate what the outer data points are?
+
 confirmed_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
@@ -50,11 +50,12 @@ confirmed_plot <- pca_fit %>%
   labs(x = "PC 1",
        y = "PC 2",
        color = "Cases per 100k citizens",
-       subtitle = "Countries projected down on the first two principal components")+
+       title = "Countries projected down on the first two principal components")+
   theme_minimal()+
   theme(legend.position = "bottom")+
   scale_color_gradient(low = "#00BFC4",
                        high = "#F8766D")
+
 
 deaths_plot <- pca_fit %>%
   augment(latest_date_data) %>%
@@ -71,7 +72,7 @@ deaths_plot <- pca_fit %>%
   labs(x = "PC 1",
        y = "PC 2",
        color = "Deaths per 100k citizens",
-       subtitle = "Deaths per 100k citizens")+
+       title = "Deaths per 100k citizens")+
   theme_minimal()+
   theme(legend.position = "bottom")+
   scale_color_gradient(low = "#00BFC4",
@@ -101,6 +102,8 @@ PC_directions_plot <- pca_fit %>%
   labs(title = "Principal component directions in feature space")+
   theme_minimal()
 
+loadings_and_score_plot <- confirmed_plot + PC_directions_plot
+
 variance_explained_plot <- pca_fit %>%
   tidy(matrix = "eigenvalues") %>%
   ggplot(aes(x = PC,
@@ -114,6 +117,7 @@ variance_explained_plot <- pca_fit %>%
        y = "Percent", 
        title = "Variance explained by each principal component")+
   theme_minimal()
+
 
 
 # Save results ------------------------------------------------------------
@@ -134,3 +138,7 @@ ggsave("results/04_pca_projections_cases.png",
        plot = confirmed_plot,
        height = 6,
        width = 8.5)
+ggsave("results/04_pca_projections_&_directions.png",
+       plot = loadings_and_score_plot,
+       height = 7.5,
+       width = 11)
