@@ -62,11 +62,11 @@ combined_timeseries_country <- combined_timeseries_country %>%
 combined_timeseries_country %>%
   write_csv("data/01_timeseries_country.csv")
 
-# Alternate  way ------------------------------------------------------------
+# Alternate DRY way -------------------------------------------------------
 
 
 covid_data <- tribble(
-  ~variable_name, ~file_path,
+  ~Variable_name, ~File_path,
   "Confirmed",    "data/_raw/time_series_covid19_confirmed_global.csv",
   "Deaths",       "data/_raw/time_series_covid19_deaths_global.csv",
   "Recovered",    "data/_raw/time_series_covid19_recovered_global.csv"
@@ -74,7 +74,7 @@ covid_data <- tribble(
 
 #load data
 covid_data <- covid_data %>% 
-  mutate(raw_data = purrr::map(file_path, ~read_csv(.)))
+  mutate(Raw_data = purrr::map(File_path, ~read_csv(.)))
 
 #define a function for pivoting the data to a long format
 pivot_data <- function(df, var_name){
@@ -86,8 +86,8 @@ pivot_data <- function(df, var_name){
 
 #pivot the data and join the pivoted dataframes
 covid_data <- covid_data %>% 
-  mutate(pivoted_data = purrr::map2(raw_data, variable_name, pivot_data)) %>% 
-  pluck("pivoted_data") %>% 
+  mutate(Pivoted_data = purrr::map2(Raw_data, Variable_name, pivot_data)) %>% 
+  pluck("Pivoted_data") %>% 
   purrr::reduce(left_join, by = c("Province/State","Country/Region","Lat","Long","Date"))
 
 #Sum up variable on country level and reformat date.
