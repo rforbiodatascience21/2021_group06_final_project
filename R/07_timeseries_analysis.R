@@ -165,7 +165,7 @@ country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>%
                         selected_country),
        x = "Date")
 
-augmented_timeseries_single_country %>% 
+country_shifted_case_fatility_plot <- augmented_timeseries_single_country %>% 
   mutate(lead7_case_fatality = lead(Rolling_mean_deaths, n= 7)/Rolling_mean_confirmed,
          lead14_case_fatality = lead(Rolling_mean_deaths, n= 14)/Rolling_mean_confirmed,
          lead21_case_fatality = lead(Rolling_mean_deaths, n= 21)/Rolling_mean_confirmed,
@@ -185,7 +185,7 @@ augmented_timeseries_single_country %>%
                 color = "28 day lag Rolling Case Fatility")) +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y", 
-               limits = c(as.Date("2020-04-01"),as.Date("2021-04-01"))) +
+               limits = c(as_date("2020-04-01"),as_date("2021-04-01"))) +
   scale_y_continuous(
     limits = c(0,10),
     name = "Case Fatality (%)")+ 
@@ -221,3 +221,9 @@ ggsave("results/07_country_rolling_case_fatality.png",
        plot = country_rolling_case_fatility_plot,
        height = 6,
        width = 12)
+ggsave("results/07_country_shifted_case_fatality.png",
+       plot = country_shifted_case_fatility_plot,
+       height = 6,
+       width = 12)
+
+
