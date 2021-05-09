@@ -46,8 +46,10 @@ timeseries_augment <- timeseries_augment %>%
          
          Rolling_mean_confirmed = (lead(Confirmed, n = 7) 
                                    - lag(Confirmed, n = 7))/14,
+         
          Rolling_mean_deaths = (lead(Deaths, n = 7) 
                                 - lag(Deaths, n = 7))/14,
+         
          Rolling_case_fatality = Rolling_mean_deaths
          /Rolling_mean_confirmed)
 

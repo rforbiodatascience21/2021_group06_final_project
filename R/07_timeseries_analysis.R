@@ -21,7 +21,7 @@ augmented_timeseries <- read_csv("data/03_augmented_timeseries.csv",
 
 
 #Creating a single country dataset, for illustrative purposes.
-selected_country <-  "Denmark"
+selected_country <- "Denmark"
 
 augmented_timeseries_single_country <- augmented_timeseries %>% 
   filter(`Country/Region` == selected_country)
@@ -104,10 +104,11 @@ region_wave_trend_plot <- augmented_timeseries %>%
 
 country_case_fatality_plot <- augmented_timeseries_single_country %>% 
   ggplot(mapping = aes(x = Date,
-                       y = Case_fatality * 100))+
+                       y = Case_fatality))+
   geom_point()+
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
+  scale_y_continuous(labels = scales::percent_format())+
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45, hjust = 1))+
   labs(title = "Does the case-fatality change over time?",
@@ -115,25 +116,25 @@ country_case_fatality_plot <- augmented_timeseries_single_country %>%
                         selected_country,
                         " over time"),
        x = "Date",
-       y = "Case fatality (%)")
+       y = "Case fatality")
 
 ### ISSUE, want to have dual axis, one for case fatality and one for new_case
 country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>% 
   ggplot(aes(x = Date))+
-  geom_point(aes(y = Case_fatality*100,
+  geom_point(aes(y = Case_fatality * 100,
                  color = "Cummulative Case Fatility")) +
-  geom_point(aes(y = Rolling_case_fatality*100,
+  geom_point(aes(y = Rolling_case_fatality * 100,
                  color = "Rolling Case Fatility")) +
   geom_point(aes(y = log10(New_confirmed),
                  color = "Log10 of daily cases"))+
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
   scale_y_continuous(
-    name = "Case Fatality (%)",
-    sec.axis = sec_axis(~.*1, name="Log10 of daily confirmed cases")
+    name = "Case Fatality", labels = scales::percent_format(scale = 1),
+    sec.axis = sec_axis(~.*1, name = "Log10 of daily confirmed cases")
   )+ 
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, 
+  theme(axis.text.x = element_text(angle = 45, 
                                    hjust = 1),
         legend.position = "bottom")+
   labs(title = "Case fatality ratio spike right after a drop of confirmed cases",
@@ -143,35 +144,35 @@ country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>%
 
 country_shifted_case_fatility_plot <- augmented_timeseries_single_country %>% 
   mutate(lead7_case_fatality =
-           lead(Rolling_mean_deaths, n= 7)/Rolling_mean_confirmed,
+           lead(Rolling_mean_deaths, n = 7)/Rolling_mean_confirmed,
          lead14_case_fatality = 
-           lead(Rolling_mean_deaths, n= 14)/Rolling_mean_confirmed,
+           lead(Rolling_mean_deaths, n = 14)/Rolling_mean_confirmed,
          lead21_case_fatality = 
-           lead(Rolling_mean_deaths, n= 21)/Rolling_mean_confirmed,
+           lead(Rolling_mean_deaths, n = 21)/Rolling_mean_confirmed,
          lead28_case_fatality = 
-           lead(Rolling_mean_deaths, n= 28)/Rolling_mean_confirmed
+           lead(Rolling_mean_deaths, n = 28)/Rolling_mean_confirmed
          ) %>% 
   ggplot(aes(x = Date))+
-  geom_line(aes(y = Rolling_case_fatality*100,
+  geom_line(aes(y = Rolling_case_fatality * 100,
                 color = "Rolling Case Fatility"), alpha = 0.5) +
-  geom_line(aes(y = lead7_case_fatality*100,
+  geom_line(aes(y = lead7_case_fatality * 100,
                 color = "7 day lag Rolling Case Fatility")) +
-  geom_line(aes(y = lead14_case_fatality*100,
+  geom_line(aes(y = lead14_case_fatality * 100,
                 color = "14 day lag Rolling Case Fatility"),
             size = 1) +
-  geom_line(aes(y = lead21_case_fatality*100,
+  geom_line(aes(y = lead21_case_fatality * 100,
                 color = "21 day lag Rolling Case Fatility"),
             size = 1) +
-  geom_line(aes(y = lead28_case_fatality*100,
+  geom_line(aes(y = lead28_case_fatality * 100,
                 color = "28 day lag Rolling Case Fatility")) +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y", 
-               limits = c(as_date("2020-04-01"),as_date("2021-04-01"))) +
+               limits = c(as_date("2020-04-01"), as_date("2021-04-01"))) +
   scale_y_continuous(
-    limits = c(0,10),
+    limits = c(0, 10),
     name = "Case Fatality (%)")+ 
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust = 1),
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "bottom")+
   labs(title = "Case fatality ratio should be calculated with a 14-21 day delay",
        subtitle = str_c("Case fatality ratio in ",

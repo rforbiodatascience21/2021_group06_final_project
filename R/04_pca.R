@@ -63,7 +63,8 @@ deaths_plot <- pca_fit %>%
                          true = `Country/Region`,
                          false = '')) %>%
   
-  ggplot(aes(x = .fittedPC1, y = .fittedPC2, 
+  ggplot(aes(x = .fittedPC1, 
+             y = .fittedPC2, 
              color = Deaths_per_100k_citizen,
              label = label)) + 
   geom_point(size = 1.5,
@@ -72,7 +73,7 @@ deaths_plot <- pca_fit %>%
   labs(x = "PC 1",
        y = "PC 2",
        color = "Deaths per 100k citizens",
-       title = "Deaths per 100k citizens")+
+       title = "Countries projected down on the first two principal components")+
   theme_minimal()+
   theme(legend.position = "bottom")+
   scale_color_gradient(low = "#00BFC4",
@@ -94,7 +95,7 @@ PC_directions_plot <- pca_fit %>%
   
   ggplot(mapping = aes(x = PC1,
                        y = PC2,
-                       label = column,)) +
+                       label = column)) +
   geom_segment(xend = 0,
                yend = 0, 
                arrow = arrow_style)+
@@ -105,14 +106,13 @@ PC_directions_plot <- pca_fit %>%
 loadings_and_score_plot <- confirmed_plot + PC_directions_plot
 
 variance_explained_plot <- pca_fit %>%
-  tidy(matrix = "eigenvalues") %>%
+  tidy(matrix = "eigenvalues") 
   ggplot(aes(x = PC,
              y = percent)) +
   geom_col(fill = "#56B4E9",
            alpha = 0.8, ) +
   scale_x_continuous(breaks = 1:6) +
-  scale_y_continuous(labels = scales::percent_format(),
-                     expand = expansion(mult = c(0, 0.01)))+
+  scale_y_continuous(labels = scales::percent_format())+
   labs(x = "Principal Component", 
        y = "Percent", 
        title = "Variance explained by each principal component")+
