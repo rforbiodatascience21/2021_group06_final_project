@@ -55,12 +55,10 @@ country_wave_plot <- augmented_timeseries_single_country %>%
        y = "Daily number of confirmed deaths")
 
 # plotting the mean (14-day mean) number of countries that actively have a wave
+
 global_wave_trend_plot <- augmented_timeseries %>% 
   group_by(Date) %>%
-  summarise(no_waves = sum(Wave_status == "Wave", na.rm = T),
-            no_countries = n()) %>% 
-  mutate(global_wave_percentage = no_waves/no_countries*100) %>% 
-  ungroup() %>% 
+  summarise(global_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()) %>% 
   ggplot(mapping = aes(x = Date)) +
   geom_point(aes(y = global_wave_percentage,
                  color = "Percentage of contries in wave (%)"),
@@ -79,9 +77,7 @@ global_wave_trend_plot <- augmented_timeseries %>%
 region_wave_trend_plot <- augmented_timeseries %>% 
   drop_na(Region) %>% 
   group_by(Date, Region) %>%
-  summarise(no_waves = sum(Wave_status == "Wave", na.rm = T),
-            no_countries = n()) %>% 
-  mutate(region_wave_percentage = no_waves/no_countries*100) %>% 
+  summarise(region_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()) %>% 
   ggplot(mapping = aes(x = Date,
                        y = region_wave_percentage)) +
   geom_line(size = 1)+
