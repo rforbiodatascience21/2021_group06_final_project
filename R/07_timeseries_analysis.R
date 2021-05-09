@@ -58,7 +58,7 @@ country_wave_plot <- augmented_timeseries_single_country %>%
 
 global_wave_trend_plot <- augmented_timeseries %>% 
   group_by(Date) %>%
-  summarise(global_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()) %>% 
+  summarise(global_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()*100) %>% 
   ggplot(mapping = aes(x = Date)) +
   geom_point(aes(y = global_wave_percentage,
                  color = "Percentage of contries in wave (%)"),
@@ -77,7 +77,7 @@ global_wave_trend_plot <- augmented_timeseries %>%
 region_wave_trend_plot <- augmented_timeseries %>% 
   drop_na(Region) %>% 
   group_by(Date, Region) %>%
-  summarise(region_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()) %>% 
+  summarise(region_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()*100) %>% 
   ggplot(mapping = aes(x = Date,
                        y = region_wave_percentage)) +
   geom_line(size = 1)+
