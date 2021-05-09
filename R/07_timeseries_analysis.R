@@ -134,27 +134,27 @@ country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>%
        x = "Date")
 
 country_shifted_case_fatility_plot <- augmented_timeseries_single_country %>% 
-  mutate(lead7_case_fatality =
-           lead(Rolling_mean_deaths, n = 7)/Rolling_mean_confirmed,
-         lead14_case_fatality = 
-           lead(Rolling_mean_deaths, n = 14)/Rolling_mean_confirmed,
-         lead21_case_fatality = 
-           lead(Rolling_mean_deaths, n = 21)/Rolling_mean_confirmed,
-         lead28_case_fatality = 
-           lead(Rolling_mean_deaths, n = 28)/Rolling_mean_confirmed
+  mutate(lag7_case_fatality =
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 7),
+         lag14_case_fatality = 
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 14),
+         lag21_case_fatality = 
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 21),
+         lag28_case_fatality = 
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 28)
          ) %>% 
   ggplot(aes(x = Date))+
   geom_line(aes(y = Rolling_case_fatality * 100,
                 color = "Rolling Case Fatility"), alpha = 0.5) +
-  geom_line(aes(y = lead7_case_fatality * 100,
+  geom_line(aes(y = lag7_case_fatality * 100,
                 color = "7 day lag Rolling Case Fatility")) +
-  geom_line(aes(y = lead14_case_fatality * 100,
+  geom_line(aes(y = lag14_case_fatality * 100,
                 color = "14 day lag Rolling Case Fatility"),
             size = 1) +
-  geom_line(aes(y = lead21_case_fatality * 100,
+  geom_line(aes(y = lag21_case_fatality * 100,
                 color = "21 day lag Rolling Case Fatility"),
             size = 1) +
-  geom_line(aes(y = lead28_case_fatality * 100,
+  geom_line(aes(y = lag28_case_fatality * 100,
                 color = "28 day lag Rolling Case Fatility")) +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y", 
