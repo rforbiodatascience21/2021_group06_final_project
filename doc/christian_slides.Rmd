@@ -68,7 +68,7 @@ knitr::include_graphics("../results/06_highest_cases_per_region.png")
 
 ## Results - Exploratory Data Analysis | Visualise correlation between income groups
 
-```{r, echo = FALSE, out.width = "700px", out.height="400px", fig.align = 'center'}
+```{r, echo = FALSE, out.width = "750px", out.height="400px", fig.align = 'center'}
 knitr::include_graphics("../results/06_eda_slide_plot.png")
 ```
 

@@ -26,6 +26,7 @@ map_data_augment <-
   country_data %>%
   full_join(world_map, by = "country") 
 
+# Add the latest date data (cases, and deaths)
 map_data_augment <- timeseries_augment %>%
   get_latest_date_data() %>%
   full_join(world_map, by = c("Country/Region" = "country"))
@@ -33,7 +34,8 @@ map_data_augment <- timeseries_augment %>%
 
 # Calculate new cases and rolling cases -----------------------------------
 
-#Calculating daily cases & deaths from cumsums. further calculation of 14 day means.
+# Calculating daily cases & deaths from cumsums. 
+# Further calculation of 14 day means.
 timeseries_augment <- timeseries_augment %>% 
   group_by(`Country/Region`) %>% 
   arrange(Date) %>% 
@@ -44,8 +46,10 @@ timeseries_augment <- timeseries_augment %>%
          
          Rolling_mean_confirmed = (lead(Confirmed, n = 7) 
                                    - lag(Confirmed, n = 7))/14,
+         
          Rolling_mean_deaths = (lead(Deaths, n = 7) 
                                 - lag(Deaths, n = 7))/14,
+         
          Rolling_case_fatality = Rolling_mean_deaths
          /Rolling_mean_confirmed)
 

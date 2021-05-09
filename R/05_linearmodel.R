@@ -33,12 +33,8 @@ model_data <- latest_date_data %>%
   ungroup() %>%  
   mutate(mdl = purrr::map(data,
                    ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`+ Urban_pop_perct, 
-                       data = .x
-                       ))) 
-
-model_data <-
-  model_data %>% 
-  mutate(mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>% 
+                       data = .x)),
+         mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>%
   unnest(mdl_tidy)
 
 # Is this used for anything or just a remnant?
@@ -55,7 +51,7 @@ lm1_p1 <-
                        y = Deaths_per_100k_citizen,
                        color = IncomeGroup)) +
   geom_point() +
-  geom_smooth(method ="lm", se=F) +
+  geom_smooth(method = "lm", se=F) +
   facet_wrap(IncomeGroup ~ .,
              scale="free_x")+
   theme_minimal()+
@@ -97,15 +93,15 @@ model_data %>%
                                false = "")) %>%
   
   ggplot(mapping = aes(x = estimate,
-             y = IncomeGroup,
-             color = term, 
-             xmin = conf.low, 
-             xmax = conf.high,
-             label = significant)) +
+                       y = IncomeGroup,
+                       color = term, 
+                       xmin = conf.low, 
+                       xmax = conf.high,
+                       label = significant)) +
   geom_vline(xintercept = 0,
              linetype = "dashed")+
   geom_point()+
-  geom_errorbarh(aes())+
+  geom_errorbarh()+
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5), 
         axis.title.y = element_blank())+
@@ -155,12 +151,8 @@ model_data2 <-
   ungroup() %>%  
   mutate(mdl = purrr::map(data,
                           ~lm(Confirmed_per_100k_citizen ~ Gdp + Pop_density, 
-                               data = .x
-                              ))) 
-
-model_data2 <-
-  model_data2 %>% 
-  mutate(mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>% 
+                               data = .x)),
+         mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>%
   unnest(mdl_tidy)
 
 ## Plot results ------------------------------------------------------------
@@ -182,9 +174,9 @@ lm2_p1 <-
 
 lm2_p2 <- 
   latest_date_data %>%
-  ggplot( aes(x = Pop_density, 
-              y = Confirmed_per_100k_citizen,
-              color = Region)) +
+  ggplot(mapping = aes(x = Pop_density, 
+                       y = Confirmed_per_100k_citizen,
+                       color = Region)) +
   geom_point() +
   geom_smooth(method ="lm", se=F) +
   facet_wrap(Region ~ ., 
@@ -213,12 +205,12 @@ Est_plot_lm2 <-
   mutate(significant = if_else(condition = p.value < 0.05,
                               true = "*",
                               false = "")) %>%
-  ggplot(aes(x = estimate,
-             y = Region,
-             color = term,
-             xmin = conf.low,
-             xmax = conf.high,
-             label = significant)) +
+  ggplot(maping = aes(x = estimate,
+                      y = Region,
+                      color = term,
+                      xmin = conf.low,
+                      xmax = conf.high,
+                      label = significant)) +
   geom_point() +
   geom_errorbarh() +
   geom_vline(xintercept = 0, 
@@ -241,11 +233,11 @@ Est_plot_lm2_sig <-
 model_data2 %>%
   filter(term != "(Intercept)",
          p.value < 0.05) %>%
-  ggplot(aes(x = estimate,
-             y = Region,
-             color = term,
-             xmin = conf.low,
-             xmax = conf.high)) +
+  ggplot(mapping = aes(x = estimate,
+                       y = Region,
+                       color = term,
+                       xmin = conf.low,
+                       xmax = conf.high)) +
   geom_point() +
   geom_errorbarh() +
   geom_vline(xintercept = 0, 
