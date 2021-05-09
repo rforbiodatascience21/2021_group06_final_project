@@ -6,6 +6,8 @@ rm(list=ls(all=TRUE))
 # Load Libraries ----------------------------------------------------------
 
 library("tidyverse")
+library("lubridate")
+source("R/03_augment_data.R")
 
 # Load Data ---------------------------------------------------------------
 
@@ -33,7 +35,7 @@ augmented_timeseries_single_country <- augmented_timeseries %>%
 # criteria
 
 country_wave_plot <- augmented_timeseries_single_country %>% 
-  drop_na() %>% 
+  drop_na(Wave_status) %>% 
   ggplot(mapping = aes(x = Date,
                        y = Rolling_mean_deaths,
                        color = Wave_status))+
@@ -53,24 +55,21 @@ country_wave_plot <- augmented_timeseries_single_country %>%
        y = "Daily number of confirmed deaths")
 
 # plotting the mean (14-day mean) number of countries that actively have a wave
+
 global_wave_trend_plot <- augmented_timeseries %>% 
   group_by(Date) %>%
-  filter(Wave_status == "Wave") %>% 
-  count(name = "no_waves")%>%
-  ungroup() %>% 
-  mutate(cumsum_no_waves = cumsum(no_waves),
-         mean_waves = (lead(cumsum_no_waves, n = 7)
-                       - lag(cumsum_no_waves, n = 7)) / 14) %>%
-  
+  summarise(global_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()*100) %>% 
   ggplot(mapping = aes(x = Date)) +
-  geom_line(aes(y = mean_waves, color = "14 day mean"), size = 1)+
-  geom_point(aes(y = no_waves, color = "no. of waves"), alpha = 0.5)+
+  geom_point(aes(y = global_wave_percentage,
+                 color = "Percentage of contries in wave (%)"),
+             alpha = 0.5)+
   scale_x_date(date_breaks = "1 month",
                date_labels =  "%b %Y") +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust = 1))+
-  labs(title = "How many countries were in a wave at any given date",
-       subtitle = "Number of countries with an increase of 10% in confirmed cases over a 7 day period",
+  theme(axis.text.x = element_text(angle=45, 
+                                   hjust = 1))+
+  labs(title = "How many large a faction was in a wave at any given date",
+       subtitle = "Percent of countries with an increase of 10% in confirmed cases over a 7 day period",
        x = "Date",
        y = "Number of countries with in a wave")
 
@@ -78,27 +77,19 @@ global_wave_trend_plot <- augmented_timeseries %>%
 region_wave_trend_plot <- augmented_timeseries %>% 
   drop_na(Region) %>% 
   group_by(Date, Region) %>%
-  filter(Wave_status == "Wave") %>% 
-  count(name = "no_waves")%>% 
-  group_by(Region) %>% 
-  arrange(Date) %>% 
-  mutate(cumsum_no_waves = cumsum(no_waves),
-         mean_waves = (lead(cumsum_no_waves, n = 7)
-                       - lag(cumsum_no_waves, n = 7)) / 14)%>%
-  
+  summarise(region_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()*100) %>% 
   ggplot(mapping = aes(x = Date,
-                       y = mean_waves)) +
-  geom_line(aes(color = "14 day mean"),
-            size = 1)+
+                       y = region_wave_percentage)) +
+  geom_line(size = 1)+
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45, hjust = 1))+
   facet_wrap(~Region)+
   labs(title = "How many countries in a region were in a wave at any given date",
-       subtitle = "Number of countries with an increase of 10% in confirmed cases over a 7 day period",
+       subtitle = "Percentage of countries in a reion with an increase of 10% in confirmed cases over a 7 day period",
        x="Date",
-       y="Number of countries")
+       y="Percentage of countries in region (%)")
 
 
 
@@ -143,27 +134,27 @@ country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>%
        x = "Date")
 
 country_shifted_case_fatility_plot <- augmented_timeseries_single_country %>% 
-  mutate(lead7_case_fatality =
-           lead(Rolling_mean_deaths, n = 7)/Rolling_mean_confirmed,
-         lead14_case_fatality = 
-           lead(Rolling_mean_deaths, n = 14)/Rolling_mean_confirmed,
-         lead21_case_fatality = 
-           lead(Rolling_mean_deaths, n = 21)/Rolling_mean_confirmed,
-         lead28_case_fatality = 
-           lead(Rolling_mean_deaths, n = 28)/Rolling_mean_confirmed
+  mutate(lag7_case_fatality =
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 7),
+         lag14_case_fatality = 
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 14),
+         lag21_case_fatality = 
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 21),
+         lag28_case_fatality = 
+           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 28)
          ) %>% 
   ggplot(aes(x = Date))+
   geom_line(aes(y = Rolling_case_fatality * 100,
                 color = "Rolling Case Fatility"), alpha = 0.5) +
-  geom_line(aes(y = lead7_case_fatality * 100,
+  geom_line(aes(y = lag7_case_fatality * 100,
                 color = "7 day lag Rolling Case Fatility")) +
-  geom_line(aes(y = lead14_case_fatality * 100,
+  geom_line(aes(y = lag14_case_fatality * 100,
                 color = "14 day lag Rolling Case Fatility"),
             size = 1) +
-  geom_line(aes(y = lead21_case_fatality * 100,
+  geom_line(aes(y = lag21_case_fatality * 100,
                 color = "21 day lag Rolling Case Fatility"),
             size = 1) +
-  geom_line(aes(y = lead28_case_fatality * 100,
+  geom_line(aes(y = lag28_case_fatality * 100,
                 color = "28 day lag Rolling Case Fatility")) +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y", 
