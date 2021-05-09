@@ -57,39 +57,47 @@ country_wave_plot <- augmented_timeseries_single_country %>%
 # plotting the mean (14-day mean) number of countries that actively have a wave
 
 global_wave_trend_plot <- augmented_timeseries %>% 
-  group_by(Date) %>%
-  summarise(global_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()*100) %>% 
-  ggplot(mapping = aes(x = Date)) +
-  geom_point(aes(y = global_wave_percentage,
-                 color = "Percentage of contries in wave (%)"),
-             alpha = 0.5)+
+  drop_na(Wave_status) %>%
+  count(Wave_status, Date) %>%
+  pivot_wider(id_cols = Date,
+              names_from = Wave_status,
+              values_from = n) %>%
+  mutate(global_wave_percentage = Wave / (Non_Wave + Wave)) %>%
+  ggplot(mapping = aes(x = Date,
+                       y = global_wave_percentage)) +
+  geom_point(alpha = 0.5)+
   scale_x_date(date_breaks = "1 month",
                date_labels =  "%b %Y") +
+  scale_y_continuous(labels = scales::percent_format())+
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45, 
                                    hjust = 1))+
   labs(title = "How many large a faction was in a wave at any given date",
        subtitle = "Percent of countries with an increase of 10% in confirmed cases over a 7 day period",
        x = "Date",
-       y = "Number of countries with in a wave")
+       y = "Percentage of countries with in a wave")
 
 # plotting the mean (14-day mean) number of countries that actively have a wave by region
 region_wave_trend_plot <- augmented_timeseries %>% 
-  drop_na(Region) %>% 
-  group_by(Date, Region) %>%
-  summarise(region_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()*100) %>% 
+  drop_na(Region, Wave_status) %>% 
+  count(Wave_status, Date, Region) %>%
+  pivot_wider(id_cols = c(Date, Region),
+              names_from = Wave_status,
+              values_from = n) %>%
+  mutate(region_wave_percentage = Wave / (Non_Wave + Wave)) %>%
   ggplot(mapping = aes(x = Date,
                        y = region_wave_percentage)) +
   geom_line(size = 1)+
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
+  scale_y_continuous(labels = scales::percent_format()) +
   theme_minimal()+
   theme(axis.text.x = element_text(angle=45, hjust = 1))+
   facet_wrap(~Region)+
   labs(title = "How many countries in a region were in a wave at any given date",
        subtitle = "Percentage of countries in a reion with an increase of 10% in confirmed cases over a 7 day period",
        x="Date",
-       y="Percentage of countries in region (%)")
+       y="Percentage of countries in region")
 
 
 
