@@ -43,11 +43,11 @@ country_wave_plot <- augmented_timeseries_single_country %>%
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   labs(title = str_c("Identifying waves in ", 
                      selected_country),
        subtitle = str_c("Waves are identified as ",
-                        (increase_factor-1)*100,
+                        (increase_factor-1) * 100,
                         "% growth over a period of ",
                         no_of_days,
                         " days"),
@@ -70,7 +70,7 @@ global_wave_trend_plot <- augmented_timeseries %>%
                date_labels =  "%b %Y") +
   scale_y_continuous(labels = scales::percent_format())+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, 
+  theme(axis.text.x = element_text(angle = 45, 
                                    hjust = 1))+
   labs(title = "How many large a faction was in a wave at any given date",
        subtitle = "Percent of countries with an increase of 10% in confirmed cases over a 7 day period",
@@ -92,7 +92,7 @@ region_wave_trend_plot <- augmented_timeseries %>%
                date_labels =  "%b %Y") +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   facet_wrap(~Region)+
   labs(title = "How many countries in a region were in a wave at any given date",
        subtitle = "Percentage of countries in a reion with an increase of 10% in confirmed cases over a 7 day period",
@@ -109,7 +109,7 @@ country_case_fatality_plot <- augmented_timeseries_single_country %>%
                date_labels =  "%b %Y") +
   scale_y_continuous(labels = scales::percent_format())+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle=45, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   labs(title = "Does the case-fatality change over time?",
        subtitle = str_c("Cummulative case fatility in ",
                         selected_country,
