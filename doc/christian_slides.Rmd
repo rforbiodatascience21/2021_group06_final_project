@@ -95,7 +95,26 @@ knitr::include_graphics("../results/05_lm1_line_plot.png")
 knitr::include_graphics("../results/05_lm1_Est_plot1.png")
 ```
 
-## Results - Covid waves | 
+## Results - Covid waves | What is covid wave?
+
+How does one define a Covid-19 wave?
+
+- Our approach:
+  * X% increase over Y number of days
+
+## Results - Covid waves | What is covid wave?
+
+- A good Criteria
+  * 10% increase over 7 number of days
+  
+```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+knitr::include_graphics("../results/07_country_wave_timeline.png")
+```
+
+## Results - Covid waves | Are Covid waves synchronized??
+```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+knitr::include_graphics("../results/07_region_wave_trend.png")
+```
 
 ## Covid-19 overview Shiny App
 
