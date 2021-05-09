@@ -146,7 +146,7 @@ get_year_2020_data <- function(tbl, var_name) {
 }
 
 #using the get_year_2020_data function to extraxt year 2020 data from all datasets
-test <- gapminder_data %>% 
+gapminder_data <- gapminder_data %>% 
   mutate(`2020_data` = purrr::map2(.x = Raw_data, 
                                    .y = Variable_name, 
                                    ~get_year_2020_data(.x, .y)))
