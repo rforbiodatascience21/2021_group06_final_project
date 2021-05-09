@@ -35,7 +35,7 @@ augmented_timeseries_single_country <- augmented_timeseries %>%
 # criteria
 
 country_wave_plot <- augmented_timeseries_single_country %>% 
-  drop_na() %>% 
+  drop_na(Wave_status) %>% 
   ggplot(mapping = aes(x = Date,
                        y = Rolling_mean_deaths,
                        color = Wave_status))+
