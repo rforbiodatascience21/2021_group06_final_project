@@ -71,15 +71,19 @@ deaths_by_income_region_plot<- latest_date_data  %>%
   geom_point(alpha = 0.5,
              position = position_jitter(w = 0.2, h = 0.2)) +
   labs(x = "Deaths per 100k citizens",
-       title = "Detailed View of Income Groups and Number of Deaths",
-       y = " ")+
+       title = "Detailed View of Income Groups and Number of Deaths")+
   theme_minimal()+
+  theme(axis.title.y = element_blank())+
   guides(size=FALSE)
 
 # figure for the slides ---------------------------------------------------
 
-eda_slide_plot <- (deaths_income + theme(title = element_blank())  +
-                   deaths_by_income_region_plot + theme(title = element_blank())) +
+eda_slide_plot <- (deaths_income + 
+                     theme(title = element_blank(),
+                           axis.title.x = element_text())  +
+                   deaths_by_income_region_plot + 
+                     theme(title = element_blank(),
+                           axis.title.x = element_text())) +
   plot_annotation(tag_levels = "A",
                   title = "Relationship between Income Group and Deaths",
                   theme = theme(plot.title = element_text(hjust = 0.5)))
