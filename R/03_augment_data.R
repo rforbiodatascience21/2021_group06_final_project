@@ -48,10 +48,6 @@ timeseries_augment <- timeseries_augment %>%
 
 # Add Lat and Long to country level data ----------------------------------
 
-map_data_augment <- 
-  country_data %>%
-  full_join(world_map, by = "Country") 
-
 # Add the latest date data (cases, and deaths)
 map_data_augment <- timeseries_augment %>%
   get_latest_date_data() %>%
