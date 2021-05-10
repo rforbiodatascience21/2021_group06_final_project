@@ -1,8 +1,5 @@
-# In this script we are investigating the criteria for a Covid-19 wave.
-# Further we take a look into case fatality ratios and investigate the best
-# ways to calculate them
-
 rm(list = ls(all = TRUE))
+
 # Load Libraries ----------------------------------------------------------
 
 library("tidyverse")
@@ -30,7 +27,6 @@ timeseries_data_single_country <- timeseries_data %>%
 # Plot data ---------------------------------------------------------------
 
 # plotting the number of death colored by whether a country fulfill the wave
-# criteria
 
 country_wave_plot <- timeseries_data_single_country %>% 
   drop_na(Wave_status) %>% 
