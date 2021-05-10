@@ -82,14 +82,17 @@ knitr::include_graphics("../results/04_pca_projections_&_directions.png")
 ```
 
 ## Results - Linear regression model
-- <font size="4"> Deaths vs. (A) Pop % above 65 years and (B) Pop % living in urban areas. Grouped by income level. </font>
+- <font size="4"> Deaths vs. (A) Population % above 65 years and (B) Population % living in urban areas. Grouped by income level. </font>
 
 ```{r, echo = FALSE,out.width = "600px", out.height = "400px" , fig.align = 'center'}
 knitr::include_graphics("../results/05_lm1_line_plot.png")
 ```
 
 ## Results - Linear regression model
-- <font size="4"> Significant slope estiamtes for pop % > 65 with high income, pop % > 65 and pop % in urban with upper middle income, and pop % > 65 with lower middle income. </font>
+<font size="4"> **Significant slopes** </font>
+
+- <font size="4">population % above 65 years with high, upper middle and lower middle income</font>
+- <font size="4">population % in urban areas with upper middle income.</font>
 
 ```{r, echo = FALSE,out.width = "600px", out.height = "400px" , fig.align = 'center'}
 knitr::include_graphics("../results/05_lm1_Est_plot1.png")
