@@ -1,4 +1,4 @@
-rm(list=ls(all=TRUE))
+rm(list = ls(all = TRUE))
 
 
 # Load Libraries ----------------------------------------------------------
@@ -12,7 +12,7 @@ source("R/99_functions.R")
 
 world_map <- map_data("world") # data in R giving country Lat and Long. 
 
-#Loading the gapminder data
+# Loading the gapminder data
 gapminder_data <- tribble(
   ~Variable_name, ~File_path,
   "Population",  "data/_raw/population_total.csv",
@@ -24,17 +24,17 @@ gapminder_data <- tribble(
 )
 
 gapminder_data <- gapminder_data %>% 
-  mutate(Raw_data = purrr::map(File_path,~read_csv(.)))
+  mutate(Raw_data = purrr::map(File_path, ~read_csv(.)))
 
-#Loading the non-gapminder data
-income_grp <- read_csv("data/_raw/Income_grp.csv")
+# Loading the non-gapminder data
+income_grp         <- read_csv("data/_raw/Income_grp.csv")
 population_above65 <- read_csv("data/_raw/Population_65.csv")
-urban_pop_per <- read_csv("data/_raw/urban_pop_perct.csv")
+urban_pop_per      <- read_csv("data/_raw/urban_pop_perct.csv")
 
 
 # Wrangle Data ------------------------------------------------------------
 
-#Wraggling the non-gapminder data
+# Wrangling the non-gapminders data
 income_grp <- income_grp %>%
   select(Region, IncomeGroup, TableName) %>%
   rename(Country = TableName) %>%
@@ -56,8 +56,9 @@ urban_pop_per <-
   rename(Country = `Country Name`,
          Urban_pop_perct = "2019")
 
-#Wraggling the gapminder data
-#defining a function to extract data from year 2020
+
+# Wrangling the gapminder data
+# Defining a function to extract data from year 2020
 get_year_2020_data <- function(tbl, var_name) {
   tbl %>% 
     select(country, "2020") %>% 
@@ -65,13 +66,13 @@ get_year_2020_data <- function(tbl, var_name) {
            Country = country)
 }
 
-#using the get_year_2020_data function to extraxt year 2020 data from all datasets
+# Using the get_year_2020_data function to extraxt year 2020 data from all datasets
 gapminder_data <- gapminder_data %>% 
   mutate(`2020_data` = purrr::map2(.x = Raw_data, 
                                    .y = Variable_name, 
                                    ~get_year_2020_data(.x, .y)))
 
-#Joining the gapminder data with the non-gapminder data
+# Joining the gapminder data with the non-gapminder data
 combined_tibble <- gapminder_data %>% 
   pluck("2020_data") %>%
   append(list(income_grp, population_above65, urban_pop_per)) %>%

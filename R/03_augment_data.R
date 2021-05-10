@@ -1,4 +1,5 @@
-rm(list=ls(all=TRUE))
+rm(list = ls(all = TRUE))
+
 # Load Libraries ----------------------------------------------------------
 
 library("tidyverse")
@@ -7,8 +8,8 @@ source("R/99_functions.R")
 # Load Data ---------------------------------------------------------------
 
 timeseries_country <- read_csv("data/01_timeseries_country.csv")
-country_data <- read_csv("data/02_country_data.csv")
-world_map <- read_csv("data/02_world_map_data.csv")
+country_data       <- read_csv("data/02_country_data.csv")
+world_map          <- read_csv("data/02_world_map_data.csv")
 
 # Augment timeseries ------------------------------------------------------
 
@@ -24,16 +25,12 @@ timeseries_augment <- timeseries_augment %>%
   arrange(Date) %>% 
   mutate(New_confirmed = Confirmed - lag(Confirmed, n = 1),
          New_deaths = Deaths - lag(Deaths, n = 1),
-         Case_fatality = Deaths/Confirmed,
-         
+         Case_fatality = Deaths / Confirmed,
          Rolling_mean_confirmed = (lead(Confirmed, n = 7) 
-                                   - lag(Confirmed, n = 7))/14,
-         
+                                   - lag(Confirmed, n = 7)) / 14,
          Rolling_mean_deaths = (lead(Deaths, n = 7) 
-                                - lag(Deaths, n = 7))/14,
-         
-         Rolling_case_fatality = Rolling_mean_deaths
-         /Rolling_mean_confirmed)
+                                - lag(Deaths, n = 7)) / 14,
+         Rolling_case_fatality = Rolling_mean_deaths / Rolling_mean_confirmed)
 
 # Defining a 'Covid wave' criteria and adding it to timeseries_augment
 # Criteria: Average daily deaths increase >= 10% over the next 7 days, and
@@ -42,10 +39,8 @@ timeseries_augment <- timeseries_augment %>%
 timeseries_augment <- timeseries_augment %>% 
   mutate(Wave_status = case_when(
     Rolling_mean_deaths < 1 ~ "Non_Wave",
-    lead(x = Rolling_mean_deaths, 
-         n = 7) / Rolling_mean_deaths >= 1.1 ~ "Wave",
-    lead(x = Rolling_mean_deaths, 
-         n = 7) / Rolling_mean_deaths < 1.1 ~ "Non_Wave")
+    lead(x = Rolling_mean_deaths, n = 7) / Rolling_mean_deaths >= 1.1 ~ "Wave",
+    lead(x = Rolling_mean_deaths, n = 7) / Rolling_mean_deaths < 1.1 ~ "Non_Wave")
   )
 
 # Add Lat and Long to country level data ----------------------------------

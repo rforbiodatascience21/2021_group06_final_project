@@ -2,7 +2,7 @@
 # Further we take a look into case fatality ratios and investigate the best
 # ways to calculate them
 
-rm(list=ls(all=TRUE))
+rm(list = ls(all = TRUE))
 # Load Libraries ----------------------------------------------------------
 
 library("tidyverse")
@@ -21,7 +21,7 @@ augmented_timeseries <- read_csv("data/03_augmented_timeseries.csv",
 # Wrangle Data ------------------------------------------------------------
 
 
-#Creating a single country dataset, for illustrative purposes.
+# Creating a single country dataset, for illustrative purposes.
 selected_country <- "Denmark"
 
 augmented_timeseries_single_country <- augmented_timeseries %>% 
@@ -49,7 +49,7 @@ country_wave_plot <- augmented_timeseries_single_country %>%
        x = "Date",
        y = "Daily number of confirmed deaths")
 
-# plotting the mean (14-day mean) number of countries that actively have a wave
+# Plotting the mean (14-day mean) number of countries that actively have a wave
 
 global_wave_trend_plot <- augmented_timeseries %>% 
   drop_na(Wave_status) %>%

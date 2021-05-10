@@ -1,8 +1,10 @@
-rm(list=ls(all=TRUE))
+rm(list = ls(all = TRUE))
+
 
 # Load Libraries ----------------------------------------------------------
 
 library("tidyverse")
+library("lubridate")
 source("R/99_functions.R")
 
 # Load data ---------------------------------------------------------------
@@ -23,14 +25,14 @@ covid_data <- covid_data %>%
 # Wrangle Data ------------------------------------------------------------
 
 
-#pivot the data and join the pivoted dataframes
+# Pivot the data and join the pivoted dataframes
 covid_data <- covid_data %>% 
   mutate(Pivoted_data = purrr::map2(.x = Raw_data,
                                     .y = Variable_name, 
                                     ~pivot_longer(data = .x, 
                                                   cols = matches("\\d+/\\d+/\\d+"),
                                                   names_to = "Date",
-                                                  values_to = .y,))) %>% 
+                                                  values_to = .y))) %>% 
   pluck("Pivoted_data") %>% 
   purrr::reduce(left_join, by = c("Province/State",
                                   "Country/Region",
@@ -38,14 +40,14 @@ covid_data <- covid_data %>%
                                   "Long",
                                   "Date"))
 
-#Sum up variable on country level and reformat date.
+# Sum up variable on country level and reformat date.
 covid_data <- covid_data %>% 
   rename(Country = `Country/Region`) %>%
   group_by(Country, Date) %>%
   summarise(Confirmed = sum(Confirmed),
             Deaths = sum(Deaths),
             Recovered = sum(Recovered)) %>% 
-  mutate(Date = lubridate::mdy(Date))
+  mutate(Date = mdy(Date))
 
 # Write data --------------------------------------------------------------
 covid_data %>%
