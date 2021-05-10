@@ -65,7 +65,8 @@ get_year_2020_data <- function(tbl, var_name) {
            Country = country)
 }
 
-# Using the get_year_2020_data function to extraxt year 2020 data from all datasets
+# Using the get_year_2020_data function to extraxt year 2020 data
+# from all datasets
 gapminder_data <- gapminder_data %>% 
   mutate(`2020_data` = map2(.x = Raw_data, 
                             .y = Variable_name, 
