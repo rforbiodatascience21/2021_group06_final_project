@@ -107,7 +107,8 @@ model_data %>%
                      values = c("deepskyblue1", "tomato2"))+ 
   geom_text(size = 6,
             nudge_x = 0.5, 
-            nudge_y = 0.1)
+            nudge_y = 0.1,
+            show.legend = FALSE)
 
 Est_plot_lm1
 
@@ -218,7 +219,8 @@ Est_plot_lm2 <-
                      values = c("deepskyblue1", "tomato2"))+ 
   geom_text(size = 6,
             nudge_x = 0.5, 
-            nudge_y = 0.1)
+            nudge_y = 0.1,
+            show.legend = FALSE)
   
 Est_plot_lm2
 
