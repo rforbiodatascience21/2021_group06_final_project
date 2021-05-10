@@ -97,23 +97,19 @@ knitr::include_graphics("../results/05_lm1_line_plot.png")
 knitr::include_graphics("../results/05_lm1_Est_plot1.png")
 ```
 
-## Results - Covid waves | What is covid wave?
+## Results - Identifying covid waves
 
-How does one define a Covid-19 wave?
-
-- Our approach:
-  * X% increase over Y number of days
-
-## Results - Covid waves | What is covid wave?
-
-- A good Criteria
-  * 10% increase over 7 number of days
+- What is a good criteria for a wave?
+  * We found that a weekly increase 10% in deaths is a good identifier
   
 ```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
 knitr::include_graphics("../results/07_country_wave_timeline.png")
 ```
 
-## Results - Covid waves | Are Covid waves synchronized??
+## Results - Identifying covid waves
+
+- Do Covid-19 waves appear to be synchronized in different countries?
+
 ```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
 knitr::include_graphics("../results/07_region_wave_trend.png")
 ```
