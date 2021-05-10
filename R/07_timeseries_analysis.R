@@ -23,7 +23,7 @@ timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
 # Creating a single country dataset, for illustrative purposes.
 selected_country <- "Denmark"
 
-augmented_timeseries_single_country <- augmented_timeseries %>% 
+timeseries_data_single_country <- timeseries_data %>% 
   filter(Country == selected_country)
 
 
@@ -32,25 +32,25 @@ augmented_timeseries_single_country <- augmented_timeseries %>%
 # plotting the number of death colored by whether a country fulfill the wave
 # criteria
 
-country_wave_plot <- augmented_timeseries_single_country %>% 
+country_wave_plot <- timeseries_data_single_country %>% 
   drop_na(Wave_status) %>% 
   ggplot(mapping = aes(x = Date,
                        y = Rolling_mean_deaths,
-                       color = Wave_status))+
-  geom_point()+
+                       color = Wave_status)) +
+  geom_point() +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  labs(title = str_c("Identifying waves in ", 
-                     selected_country),
-       subtitle = str_c("Waves are identified as 10 % growth over a period of 7 days"),
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1)) +
+  labs(title = str_c("Identifying waves in ", selected_country),
+       subtitle = "Waves are identified as 10 % growth over a period of 7 days",
        x = "Date",
        y = "Daily number of confirmed deaths")
 
 # Plotting the mean (14-day mean) number of countries that actively have a wave
 
-global_wave_trend_plot <- augmented_timeseries %>% 
+global_wave_trend_plot <- timeseries_data %>% 
   drop_na(Wave_status) %>%
   count(Wave_status, Date, 
         name = "Counts") %>%
@@ -60,20 +60,20 @@ global_wave_trend_plot <- augmented_timeseries %>%
   mutate(global_wave_percentage = Wave / (Non_Wave + Wave)) %>%
   ggplot(mapping = aes(x = Date,
                        y = global_wave_percentage)) +
-  geom_point(alpha = 0.5)+
+  geom_point(alpha = 0.5) +
   scale_x_date(date_breaks = "1 month",
                date_labels =  "%b %Y") +
-  scale_y_continuous(labels = scales::percent_format())+
-  theme_minimal()+
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, 
-                                   hjust = 1))+
+                                   hjust = 1)) +
   labs(title = "How many large a faction was in a wave at any given date",
        subtitle = "Percent of countries with an increase of 10% in confirmed cases over a 7 day period",
        x = "Date",
-       y = "Percentage of countries with in a wave")
+       y = "Percentage of countries in a wave")
 
 # plotting the mean (14-day mean) number of countries that actively have a wave by region
-region_wave_trend_plot <- augmented_timeseries %>% 
+region_wave_trend_plot <- timeseries_data %>% 
   drop_na(Region, Wave_status) %>% 
   count(Wave_status, Date, Region) %>%
   pivot_wider(id_cols = c(Date, Region),
@@ -82,30 +82,32 @@ region_wave_trend_plot <- augmented_timeseries %>%
   mutate(region_wave_percentage = Wave / (Non_Wave + Wave)) %>%
   ggplot(mapping = aes(x = Date,
                        y = region_wave_percentage)) +
-  geom_line(size = 1)+
+  geom_line(size = 1) +
   scale_x_date(date_breaks = "2 month", 
                date_labels =  "%b %Y") +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        axis.title.x = element_blank())+
-  facet_wrap(~Region)+
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1),
+        axis.title.x = element_blank()) +
+  facet_wrap(~Region) +
   labs(title = "How many countries in a region were in a wave at any given date",
        subtitle = "Percentage of countries in a reion with an increase of 10% in confirmed cases over a 7 day period",
        y="Percentage of countries in region")
 
 
 
-country_case_fatality_plot <- augmented_timeseries_single_country %>% 
+country_case_fatality_plot <- timeseries_data_single_country %>% 
   ggplot(mapping = aes(x = Date,
-                       y = Case_fatality))+
-  geom_point()+
+                       y = Case_fatality)) +
+  geom_point() +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
-  scale_y_continuous(labels = scales::percent_format())+
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        axis.title.x = element_blank())+
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1),
+        axis.title.x = element_blank()) +
   labs(title = "Does the case-fatality change over time?",
        subtitle = str_c("Cummulative case fatility in ",
                         selected_country,
@@ -113,23 +115,22 @@ country_case_fatality_plot <- augmented_timeseries_single_country %>%
        y = "Case fatality")
 
 
-country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>% 
-  ggplot(mapping = aes(x = Date))+
+country_rolling_case_fatility_plot <- timeseries_data_single_country %>% 
+  ggplot(mapping = aes(x = Date)) +
   geom_point(mapping = aes(y = Case_fatality * 100,
                            color = "Cummulative Case Fatility")) +
   geom_point(mapping = aes(y = Rolling_case_fatality * 100,
                            color = "Rolling Case Fatility")) +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
-  scale_y_continuous(
-    name = "Case Fatality", labels = scales::percent_format(scale = 1)
-  )+ 
-  theme_minimal()+
+  scale_y_continuous(name = "Case Fatality", 
+                     labels = scales::percent_format(scale = 1)) + 
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, 
                                    hjust = 1),
         legend.position = "bottom",
         axis.title.x = element_blank(),
-        legend.title = element_blank())+
+        legend.title = element_blank()) +
   labs(title = "Case fatality ratio spike right after a drop of confirmed cases",
        subtitle = str_c("Number of new confirmed cases and Case fatility rates over time in ",
                         selected_country))
