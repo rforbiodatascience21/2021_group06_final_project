@@ -1,5 +1,5 @@
 ---
-title: "COVID-19 Data Project"
+title: "Investigating the spread of COVID-19"
 author: "Christian Johansen, Anna Jorgensen, Hanna Lund, Joen Jensen"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -72,11 +72,11 @@ knitr::include_graphics("../results/06_eda_slide_plot.png")
 ```
 
 
-## Results - Models | PCA on continous demographic and social variables 
+## Results - PCA 
 - <font size="4"> PC 1 explains differences in cases fairly well</font>
 - <font size="4"> Some countries are outliers in this projection</font>
 
-```{r, echo = FALSE, out.width = "600px", out.height = "350px" , fig.align = 'center'}
+```{r, echo = FALSE, out.width = "700px", out.height = "375px" , fig.align = 'center'}
 knitr::include_graphics("../results/04_pca_projections_&_directions.png")
 ```
 
