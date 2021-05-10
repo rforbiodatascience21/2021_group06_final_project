@@ -43,7 +43,8 @@ country_wave_plot <- timeseries_data_single_country %>%
   labs(title = str_c("Identifying waves in ", selected_country),
        subtitle = "Waves are identified as 10 % increase in deaths over a period of 7 days",
        x = "Date",
-       y = "Daily number of confirmed deaths")
+       y = "Daily number of confirmed deaths",
+       color = "Wave Status")
 
 # Plotting the mean (14-day mean) number of countries that actively have a wave
 
