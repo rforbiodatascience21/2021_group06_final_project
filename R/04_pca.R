@@ -14,9 +14,9 @@ source("R/99_functions.R")
 timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
                             col_types = cols(
                               "Rolling_mean_confirmed" = col_double(),
-                              "Rolling_mean_deaths" = col_double(),
-                              "Rolling_case_fatality" = col_double(),
-                              "Wave_status" = col_character()))
+                              "Rolling_mean_deaths"    = col_double(),
+                              "Rolling_case_fatality"  = col_double(),
+                              "Wave_status"            = col_character()))
 
 
 
@@ -29,7 +29,6 @@ latest_date_data <- get_latest_date_data(timeseries_data) %>%
 
 # PCA ---------------------------------------------------------------------
 
-
 pca_fit <- latest_date_data %>%
   select(Population, Pop_density, Age_median, Gdp, Sex_ratio, Inequality) %>%
   prcomp(scale = TRUE)
@@ -40,7 +39,7 @@ confirmed_plot <- pca_fit %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
                          true = Country,
                          false = "")) %>%
-  ggplot(aes(x = .fittedPC1,
+  ggplot(mapping = aes(x = .fittedPC1,
              y = .fittedPC2, 
              color = Confirmed_per_100k_citizen,
              label = label)) + 
@@ -62,11 +61,10 @@ deaths_plot <- pca_fit %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
                          true = Country,
                          false = '')) %>%
-  
-  ggplot(aes(x = .fittedPC1, 
-             y = .fittedPC2, 
-             color = Deaths_per_100k_citizen,
-             label = label)) + 
+  ggplot(mapping = aes(x = .fittedPC1, 
+                       y = .fittedPC2, 
+                       color = Deaths_per_100k_citizen,
+                       label = label)) + 
   geom_point(size = 1.5,
              alpha = 0.5) +
   geom_text_repel() +
@@ -74,8 +72,8 @@ deaths_plot <- pca_fit %>%
        y = "PC 2",
        color = "Deaths per 100k citizens",
        title = "Countries projected down on the first two principal components")+
-  theme_minimal()+
-  theme(legend.position = "bottom")+
+  theme_minimal() +
+  theme(legend.position = "bottom") +
   scale_color_gradient(low = "#00BFC4",
                        high = "#F8766D")
 
