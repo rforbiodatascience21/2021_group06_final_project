@@ -1,5 +1,5 @@
 ---
-title: "Investigating the spread of COVID-19"
+title: "Investigating the spread of <br> COVID-19"
 author: "Christian Johansen, Anna Jorgensen, Hanna Lund, Joen Jensen"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
