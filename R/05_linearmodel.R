@@ -1,4 +1,4 @@
-rm(list=ls(all=TRUE)) 
+rm(list = ls(all = TRUE)) 
 
 # Load Libraries ----------------------------------------------------------
 library("tidyverse")
@@ -6,14 +6,15 @@ library("broom")
 library("patchwork")
 library("ggrepel")
 source("R/99_functions.R")
+
 # Load Data ---------------------------------------------------------------
 
 timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
                             col_types = cols(
                               "Rolling_mean_confirmed" = col_double(),
-                              "Rolling_mean_deaths" = col_double(),
-                              "Rolling_case_fatality" = col_double(),
-                              "Wave_status" = col_character()))
+                              "Rolling_mean_deaths"    = col_double(),
+                              "Rolling_case_fatality"  = col_double(),
+                              "Wave_status"            = col_character()))
 
 # Wrangle data ------------------------------------------------------------
 
@@ -31,7 +32,7 @@ model_data <- latest_date_data %>%
   group_by(IncomeGroup) %>% 
   nest() %>% 
   ungroup() %>%  
-  mutate(mdl = purrr::map(data,
+  mutate(mdl = purrr::map(.x = data,
                    ~lm(Deaths_per_100k_citizen ~ `Pop%_above65`+ Urban_pop_perct, 
                        data = .x)),
          mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>%
@@ -47,8 +48,9 @@ lm1_p1 <-
                        y = Deaths_per_100k_citizen,
                        color = IncomeGroup)) +
   geom_point() +
-  geom_smooth(method = "lm", se=F) +
-  facet_wrap(IncomeGroup ~ .)+
+  geom_smooth(method = "lm", 
+              se = F) +
+  facet_wrap(IncomeGroup ~ .) +
   theme_minimal()+
   labs(y = "Deaths per 100k",
        x = "Population % > 65 yrs",
@@ -60,18 +62,19 @@ lm1_p2 <-
                        y = Deaths_per_100k_citizen,
                        color = IncomeGroup)) +
   geom_point() +
-  geom_smooth(method ="lm", se=F) +
-  facet_wrap(IncomeGroup ~ .)+
-  theme_minimal()+
+  geom_smooth(method = "lm", 
+              se = F) +
+  facet_wrap(IncomeGroup ~ .) +
+  theme_minimal() +
   labs(x = "Population % living in urban ", 
-       color = "Income Group")+
+       color = "Income Group") +
   theme(axis.title.y = element_blank())
 
 lm1_Final_line_plot <- 
       lm1_p1 + lm1_p2 + 
       plot_annotation(title = "Simple Linear regression model results for deaths per 100k",
                       tag_levels = "A",
-                      theme = theme(plot.title = element_text(hjust = 0.5)))+
+                      theme = theme(plot.title = element_text(hjust = 0.5))) +
       plot_layout(guides = "collect") &
       theme(legend.position = "bottom")
 
@@ -79,9 +82,9 @@ lm1_Final_line_plot
 
 # Slope Estimate plots
 
-Est_plot_lm1 <- 
-model_data %>%
-  filter(term!="(Intercept)") %>%
+Est_plot_lm1 <-
+  model_data %>%
+  filter(term != "(Intercept)") %>%
   mutate(significant = if_else(condition = p.value < 0.05,
                                true = "*",
                                false = "")) %>%
@@ -94,17 +97,17 @@ model_data %>%
                        label = significant)) +
   geom_vline(xintercept = 0,
              linetype = "dashed")+
-  geom_point()+
-  geom_errorbarh()+
-  theme_minimal()+
+  geom_point() +
+  geom_errorbarh() +
+  theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5), 
-        axis.title.y = element_blank())+
+        axis.title.y = element_blank()) +
   labs(x = " Slope Estimate",
        color = "Indep. Variable",
        caption = "* indicates significant p-value < 0.05",
-       title = "Slope estimates for deaths per 100k with conf. intervals")+
+       title = "Slope estimates for deaths per 100k with conf. intervals") +
   scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"), 
-                     values = c("deepskyblue1", "tomato2"))+ 
+                     values = c("deepskyblue1", "tomato2")) + 
   geom_text(size = 6,
             nudge_x = 0.5, 
             nudge_y = 0.1,
@@ -112,8 +115,8 @@ model_data %>%
 
 Est_plot_lm1
 
-Est_plot_lm1_sig <-
-model_data %>%
+Est_plot_lm1_sig <- 
+  model_data %>%
   filter(term != "(Intercept)",
          p.value < 0.05) %>%
   
@@ -125,13 +128,13 @@ model_data %>%
   geom_point() +
   geom_errorbarh() +
   geom_vline(xintercept = 0, 
-             linetype="dashed")+
+             linetype ="dashed")+
   theme_minimal()+
   theme(plot.title = element_text(hjust = 0.5),
-        axis.title.y = element_blank())+
+        axis.title.y = element_blank()) +
   labs(x = "Slope Estimate",
        color = "Indep. Variable",
-       title = "Significant slope estimates for deaths per 100k")+
+       title = "Significant slope estimates for deaths per 100k") +
   scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"),
                      values = c("deepskyblue1", "tomato2"))
  
@@ -161,8 +164,8 @@ lm2_p1 <-
                        color = Region)) +
   geom_point() +
   geom_smooth(method ="lm", se = F) +
-  facet_wrap(Region ~ .)+
-  theme_minimal()+
+  facet_wrap(Region ~ .) +
+  theme_minimal() +
   labs(y = "Cases per 100k",
        x = "GDP",
        color = "Region") 
@@ -173,9 +176,9 @@ lm2_p2 <-
                        y = Confirmed_per_100k_citizen,
                        color = Region)) +
   geom_point() +
-  geom_smooth(method ="lm", se=F) +
-  facet_wrap(Region ~ .)+
-  theme_minimal()+
+  geom_smooth(method = "lm", se = F) +
+  facet_wrap(Region ~ .) +
+  theme_minimal() +
   labs(y = "Cases per 100k",
        x = "Population Density",
        color = "Region") 
@@ -184,7 +187,7 @@ lm2_Final_line_plot <-
   lm2_p1 / lm2_p2 + 
   plot_annotation(title = "Simple Linear regression model results for cases per 100k",
                   tag_levels = 'A',
-                  theme = theme(plot.title = element_text(hjust = 0.5)))+
+                  theme = theme(plot.title = element_text(hjust = 0.5))) +
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 
@@ -195,7 +198,7 @@ lm2_Final_line_plot
 # all the data 
 Est_plot_lm2 <- 
   model_data2 %>%
-  filter(term!="(Intercept)") %>%
+  filter(term != "(Intercept)") %>%
   mutate(significant = if_else(condition = p.value < 0.05,
                               true = "*",
                               false = "")) %>%
@@ -208,15 +211,15 @@ Est_plot_lm2 <-
   geom_point() +
   geom_errorbarh() +
   geom_vline(xintercept = 0, 
-             linetype="dashed")+
+             linetype = "dashed") +
   theme_minimal()+
-  theme(axis.title.y = element_blank())+
+  theme(axis.title.y = element_blank()) +
   labs(x = "Slope Estimate", 
        color = "Indep. Variable",
        title = "Slope estimates for cases per 100k with conf. intervals",
-       caption = "* indicates significance with p < 0.05")+
+       caption = "* indicates significance with p < 0.05") +
   scale_color_manual(labels = c("Gdp", "Pop Density"),
-                     values = c("deepskyblue1", "tomato2"))+ 
+                     values = c("deepskyblue1", "tomato2")) + 
   geom_text(size = 6,
             nudge_x = 0.5, 
             nudge_y = 0.1,
@@ -237,8 +240,8 @@ model_data2 %>%
   geom_point() +
   geom_errorbarh() +
   geom_vline(xintercept = 0, 
-             linetype="dashed")+
-  theme_minimal()+
+             linetype = "dashed")+
+  theme_minimal() +
   theme(axis.title.y = element_blank()) +
   labs(x = "Slope Estimate", 
        color = "Indep. Variable",
