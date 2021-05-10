@@ -1,9 +1,10 @@
 
-rm(list=ls(all=TRUE))
+rm(list = ls(all = TRUE))
 
 # Load Libraries ----------------------------------------------------------
 
 library("tidyverse")
+library("lubridate")
 source("R/99_functions.R")
 
 # Load data ---------------------------------------------------------------
@@ -31,7 +32,7 @@ covid_data <- covid_data %>%
                                     ~pivot_longer(data = .x, 
                                                   cols = matches("\\d+/\\d+/\\d+"),
                                                   names_to = "Date",
-                                                  values_to = .y,))) %>% 
+                                                  values_to = .y))) %>% 
   pluck("Pivoted_data") %>% 
   purrr::reduce(left_join, by = c("Province/State",
                                   "Country/Region",
@@ -45,7 +46,7 @@ covid_data <- covid_data %>%
   summarise(Confirmed = sum(Confirmed),
             Deaths = sum(Deaths),
             Recovered = sum(Recovered)) %>% 
-  mutate(Date = lubridate::mdy(Date))
+  mutate(Date = mdy(Date))
 
 # Write data --------------------------------------------------------------
 covid_data %>%
