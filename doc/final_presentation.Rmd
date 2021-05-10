@@ -50,14 +50,14 @@ knitr::include_graphics("presentation_images/workflow.png")
 
 ## Materials and methods | Data exploration and models
 
-- Initial exploratory data analysis (eda)
-- modelling:
-  * PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?
-  * 2 linear regression models ($y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$):
-    +  $x_1$ = Pop % above 65, $x_2$ = Urban pop %. Grouped by income level
-    +  $x_1$ = GDP, $x_2$ = Pop density. Grouped by region
+- **Initial exploratory data analysis (eda)**
+- **Modelling**:
+  * <font size="4"> PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?</font>
+  * <font size="4"> 2 linear regression models ($y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$): </font>
+    +  <font size="4"> $x_1$ = Pop % above 65, $x_2$ = Urban pop %. Grouped by income level </font>
+    + <font size="4"> $x_1$ = GDP, $x_2$ = Pop density. Grouped by region </font>
     
-- Exploring Covid "waves" and case fatality
+- **Exploring Covid "waves" and case fatality**
 
 ## Results - Exploratory Data Analysis
 
@@ -73,6 +73,8 @@ knitr::include_graphics("../results/06_eda_slide_plot.png")
 
 
 ## Results - PCA 
+<font size="4">**PCA done on continous socio-economic features** </font>
+
 - <font size="4"> PC 1 explains differences in cases fairly well</font>
 - <font size="4"> Some countries are outliers in this projection</font>
 
@@ -81,7 +83,7 @@ knitr::include_graphics("../results/04_pca_projections_&_directions.png")
 ```
 
 ## Results - Linear regression model
-<font size="4"> Deaths vs. (A) Population % above 65 years and (B) Population % living in urban areas. Grouped by income level. </font>
+<font size="4"> **Deaths as Function of Population % above 65 years and  Population % living in urban areas.** </font>
 
 ```{r, echo = FALSE, out.width = "600px", out.height = "400px" , fig.align = 'center'}
 knitr::include_graphics("../results/05_lm1_line_plot.png")
@@ -99,8 +101,9 @@ knitr::include_graphics("../results/05_lm1_Est_plot1.png")
 
 ## Results - Identifying covid waves
 
-- What is a good criteria for a wave?
-  * We found that a weekly increase 10% in deaths is a good identifier
+<font size="4"> **What is a good criteria for a wave?** </font>
+
+- <font size="4"> We found that a weekly increase 10% in deaths is a good identifier </font>
   
 ```{r, echo = FALSE, out.width = "700px", fig.align = 'center'}
 knitr::include_graphics("../results/07_country_wave_timeline.png")
@@ -108,7 +111,7 @@ knitr::include_graphics("../results/07_country_wave_timeline.png")
 
 ## Results - Identifying covid waves
 
-Do Covid-19 waves appear to be synchronized in different countries?
+<font size="4"> **Do Covid-19 waves appear to be synchronized in different countries?** </font>
 
 ```{r, echo = FALSE, out.width = "700px", out.height = "400px", fig.align = 'center'}
 knitr::include_graphics("../results/07_region_wave_trend.png")
