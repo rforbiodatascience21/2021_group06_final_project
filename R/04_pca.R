@@ -57,7 +57,7 @@ deaths_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
                          true = Country,
-                         false = '')) %>%
+                         false = "")) %>%
   ggplot(mapping = aes(x = .fittedPC1, 
                        y = .fittedPC2, 
                        color = Deaths_per_100k_citizen,

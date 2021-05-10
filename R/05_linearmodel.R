@@ -50,7 +50,7 @@ lm1_p1 <-
   geom_point() +
   geom_smooth(method = "lm", 
               se = F) +
-  facet_wrap(IncomeGroup ~ .) +
+  facet_wrap(~IncomeGroup) +
   theme_minimal()+
   labs(y = "Deaths per 100k",
        x = "Population % > 65 yrs",
@@ -64,7 +64,7 @@ lm1_p2 <-
   geom_point() +
   geom_smooth(method = "lm", 
               se = F) +
-  facet_wrap(IncomeGroup ~ .) +
+  facet_wrap(~IncomeGroup) +
   theme_minimal() +
   labs(x = "Population % living in urban ", 
        color = "Income Group") +
@@ -157,7 +157,7 @@ lm2_p1 <-
                        color = Region)) +
   geom_point() +
   geom_smooth(method ="lm", se = F) +
-  facet_wrap(Region ~ .) +
+  facet_wrap(~Region) +
   theme_minimal() +
   labs(y = "Cases per 100k",
        x = "GDP",
@@ -170,7 +170,7 @@ lm2_p2 <-
                        color = Region)) +
   geom_point() +
   geom_smooth(method = "lm", se = F) +
-  facet_wrap(Region ~ .) +
+  facet_wrap(~Region) +
   theme_minimal() +
   labs(y = "Cases per 100k",
        x = "Population Density",
