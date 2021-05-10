@@ -38,7 +38,8 @@ country_wave_plot <- timeseries_data_single_country %>%
                date_labels =  "%b %Y") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, 
-                                   hjust = 1)) +
+                                   hjust = 1),
+        axis.title.x = element_blank()) +
   labs(title = str_c("Identifying waves in ", selected_country),
        subtitle = "Waves are identified as 10 % increase in deaths over a period of 7 days",
        x = "Date",
@@ -60,7 +61,8 @@ global_wave_trend_plot <- timeseries_data %>%
   scale_y_continuous(labels = scales::percent_format()) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, 
-                                   hjust = 1)) +
+                                   hjust = 1),
+        axis.title.x = element_blank()) +
   labs(title = "Do Covid-waves occur at the same time accross the world?",
        subtitle = "Percentage of world countries with a 10% increase in deaths over a 7 day period",
        x = "Date",
@@ -151,3 +153,4 @@ ggsave("results/07_country_rolling_case_fatality.png",
        plot = country_rolling_case_fatility_plot,
        height = 6,
        width = 12)
+
