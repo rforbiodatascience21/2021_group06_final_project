@@ -26,12 +26,13 @@ strat_region_plot <- latest_date_data %>%
   slice_head(n = 10) %>%
   ungroup()  %>%
   mutate(Country = fct_reorder(Country,
-                                        Confirmed_per_100k_citizen)) %>%
+                               Confirmed_per_100k_citizen)) %>%
   
   ggplot(mapping = aes(x = Confirmed_per_100k_citizen,
-                       y = Country))+
-  facet_wrap(~ Region, scales = "free_y")+
-  geom_col()+
+                       y = Country)) +
+  facet_wrap(~ Region, 
+             scales = "free_y") +
+  geom_col() +
   labs(x = "Cases per 100k citizens",
        title = "Top 10 Countries with Highest Amount of Cases for Each Region")+
   theme_minimal() +
@@ -45,12 +46,12 @@ deaths_income <- latest_date_data %>%
                                                   "Upper middle income", 
                                                   "High income"))) %>%
   ggplot(mapping = aes(x = Deaths_per_100k_citizen,
-                       y = IncomeGroup))+
+                       y = IncomeGroup)) +
   geom_boxplot(fill = "#708090",
-               alpha = 0.5)+
+               alpha = 0.5) +
   labs(x = "Deaths per 100k citizens",
-       title = "Relationship Between Income Group and Deaths")+
-  theme_minimal()+
+       title = "Relationship Between Income Group and Deaths") +
+  theme_minimal() +
   theme(legend.position = "none", 
         axis.title.y = element_blank())
 
@@ -69,8 +70,8 @@ deaths_by_income_region_plot<- latest_date_data  %>%
              position = position_jitter(w = 0.2, h = 0.2)) +
   labs(x = "Deaths per 100k citizens",
        title = "Detailed View of Income Groups and Number of Deaths",
-       size = "Population (millions)")+
-  theme_minimal()+
+       size = "Population (millions)") +
+  theme_minimal() +
   scale_size(range = c(0.1, 10),
                             breaks = 1000000 * c(250, 500, 750, 1000, 1250),
                             labels = c("250", "500", "750", "1000", "1250")) +
