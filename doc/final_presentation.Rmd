@@ -130,7 +130,10 @@ knitr::include_graphics("presentation_images/Shiny_pic.jpg")
   * This could be due to less developed countries having a younger avg. age (higher general mortality rates), thus younger populations are less severely influenced by infection. Slide 9 figure we see that low income countries have smallest range in the percent of pop. above 65 yrs. 
   * However, here we have not considered for example:
     - Data quality/under reporting between countries. i.e. higher income countries will have better ability and excess to testing, thus more cases and deaths will be reported.
-- Say something about what we see from between regions (maybe from Joen's results) </font>
+    
+- We see that Covid "waves" are not synchronous between global regions. 
+  * Some regions had very visually distinct peaks of waves over time (Europe & Central Asia), while other were less distinct (Asia & Pacific)
+  * Regionally Europe & Central Asia had the highest percentage of countries in waves at a certen time. At the highest peak almost 70% of the countries in the region were in a wave.  </font>
 
  
 ## Conclusion: 
