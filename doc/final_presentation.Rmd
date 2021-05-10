@@ -61,7 +61,7 @@ knitr::include_graphics("presentation_images/workflow.png")
 
 ## Results - Exploratory Data Analysis
 
-```{r, echo = FALSE, out.width="600px", out.height= "400px" , fig.align = 'center'}
+```{r, echo = FALSE, out.width="700px", out.height= "435px" , fig.align = 'center'}
 knitr::include_graphics("../results/06_highest_cases_per_region.png")
 ```
 
@@ -81,9 +81,9 @@ knitr::include_graphics("../results/04_pca_projections_&_directions.png")
 ```
 
 ## Results - Linear regression model
-- <font size="4"> Deaths vs. (A) Population % above 65 years and (B) Population % living in urban areas. Grouped by income level. </font>
+<font size="4"> Deaths vs. (A) Population % above 65 years and (B) Population % living in urban areas. Grouped by income level. </font>
 
-```{r, echo = FALSE,out.width = "600px", out.height = "400px" , fig.align = 'center'}
+```{r, echo = FALSE, out.width = "600px", out.height = "400px" , fig.align = 'center'}
 knitr::include_graphics("../results/05_lm1_line_plot.png")
 ```
 
@@ -93,7 +93,7 @@ knitr::include_graphics("../results/05_lm1_line_plot.png")
 - <font size="4">population % above 65 years with high, upper middle and lower middle income</font>
 - <font size="4">population % in urban areas with upper middle income.</font>
 
-```{r, echo = FALSE,out.width = "600px", out.height = "400px" , fig.align = 'center'}
+```{r, echo = FALSE, out.width = "600px", out.height = "350px" , fig.align = 'center'}
 knitr::include_graphics("../results/05_lm1_Est_plot1.png")
 ```
 
@@ -102,15 +102,15 @@ knitr::include_graphics("../results/05_lm1_Est_plot1.png")
 - What is a good criteria for a wave?
   * We found that a weekly increase 10% in deaths is a good identifier
   
-```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+```{r, echo = FALSE, out.width = "700px", fig.align = 'center'}
 knitr::include_graphics("../results/07_country_wave_timeline.png")
 ```
 
 ## Results - Identifying covid waves
 
-- Do Covid-19 waves appear to be synchronized in different countries?
+Do Covid-19 waves appear to be synchronized in different countries?
 
-```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+```{r, echo = FALSE, out.width = "700px", out.height = "400px", fig.align = 'center'}
 knitr::include_graphics("../results/07_region_wave_trend.png")
 ```
 
@@ -118,7 +118,7 @@ knitr::include_graphics("../results/07_region_wave_trend.png")
 
 https://christianjohansen.shinyapps.io/covid-19_app/
 
-```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
+```{r, echo = FALSE, out.width = "700px", out.height = "400px", fig.align = 'center'}
 knitr::include_graphics("presentation_images/Shiny_pic.jpg")
 ```
 
