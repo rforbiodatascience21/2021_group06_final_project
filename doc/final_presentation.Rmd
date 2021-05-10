@@ -125,23 +125,38 @@ https://christianjohansen.shinyapps.io/covid-19_app/
 knitr::include_graphics("presentation_images/Shiny_pic.jpg")
 ```
 
+
 ## Discussion
-- <font size="4"> 
-- In general from eda and linear regression, data suggests that more developed countries are  hit "harder" by Covid-19. 
-  * This could be due to less developed countries having a younger avg. age (higher general mortality rates), thus younger populations are less severely influenced by infection. Slide 9 figure we see that low income countries have smallest range in the percent of pop. above 65 yrs. 
-  * However, here we have not considered for example:
-    - Data quality/under reporting between countries. i.e. higher income countries will have better ability and excess to testing, thus more cases and deaths will be reported.
+
+**In general from eda and linear regression, data suggests that more developed countries are  hit "harder" by Covid-19. **
+
+ - <font size="4">  This could be due to less developed/lower income countries having a younger avg. age (higher general mortality rates), thus younger populations are less severely influenced by infection.  </font>
+ - <font size="4"> However, there may be data quality issues and under reporting between countries. </font>
     
-- We see that Covid "waves" are not synchronous between global regions. 
-  * Some regions had very visually distinct peaks of waves over time (Europe & Central Asia), while other were less distinct (Asia & Pacific)
-  * Regionally Europe & Central Asia had the highest percentage of countries in waves at a certen time. At the highest peak almost 70% of the countries in the region were in a wave.  </font>
+**Things to note:**
 
+ - <font size="4"> Correlations do not infer causation.</font>
+ - <font size="4">  Linear model is not dealing with collinearity of features.</font>
  
-## Conclusion: 
+## Discussion: 
 
-We want to point out that by looking at at correlations we are not inferring causation. 
-In addition our linear model is not dealing with collinearity of features.
+**We see that Covid "waves" are not synchronous between global regions.** 
 
-Overall we found that 
+ - <font size="4"> Some regions had very visually distinct peaks of waves over time (Europe & Central Asia), while other were less distinct (Asia & Pacific)</font>
+ - <font size="4">  The region Europe & Central Asia had the highest percentage of countries in waves at a certen time. At the highest peak almost 70% of the countries in the region were in a wave.  </font>
 
-Moving forward __ 
+```{r, echo = FALSE, out.width = "450px", out.height = "225px", fig.align = 'center'}
+knitr::include_graphics("presentation_images/wave_covid.png")
+```
+<center><font size="1"> photo from:https://constructionexec.com/article/how-a-second-covid-19-wave-is-changing-construction-manufacturing"</font>
+<center>
+
+## Questions: 
+<center>
+```{r, echo = FALSE, out.width = "500px", out.height = "300px", fig.align = 'center'}
+knitr::include_graphics("presentation_images/question_mark.jpg")
+```
+<center>
+<center><font size="1"> photo from:https://www.aarp.org/health/conditions-treatments/info-2020/coronavirus-myths.html"</font>
+<center>
+
