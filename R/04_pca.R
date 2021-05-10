@@ -104,8 +104,7 @@ variance_explained_plot <- pca_fit %>%
   ggplot(aes(x = PC,
              y = percent)) +
   geom_col(fill = "#56B4E9",
-           alpha = 0.8, ) +
-  scale_x_continuous(breaks = 1:6) +
+           alpha = 0.8, )+
   scale_y_continuous(labels = scales::percent_format())+
   labs(x = "Principal Component", 
        y = "Percent", 
