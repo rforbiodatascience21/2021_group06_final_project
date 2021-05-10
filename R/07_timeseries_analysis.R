@@ -27,7 +27,6 @@ timeseries_data_single_country <- timeseries_data %>%
 # Plot data ---------------------------------------------------------------
 
 # plotting the number of death colored by whether a country fulfill the wave
-
 country_wave_plot <- timeseries_data_single_country %>% 
   drop_na(Wave_status) %>% 
   ggplot(mapping = aes(x = Date,
@@ -43,15 +42,15 @@ country_wave_plot <- timeseries_data_single_country %>%
   labs(title = str_c("Identifying waves in ", selected_country),
        subtitle = "Waves are identified as 10 % increase in deaths over a period of 7 days",
        x = "Date",
-       y = "Daily number of confirmed deaths")
+       y = "Daily number of confirmed deaths",
+       color = "Wave Status")
 
 # Plotting the mean (14-day mean) number of countries that actively have a wave
-
 global_wave_trend_plot <- timeseries_data %>% 
   drop_na(Wave_status) %>%
-  group_by(Date) %>% 
+  group_by(Date) %>%
   summarise(Global_wave_percentage = 
-              sum(Wave_status == "Wave", na.rm = T) / n()) %>%
+              sum(Wave_status == "Wave") / n()) %>%
   ggplot(mapping = aes(x = Date,
                        y = Global_wave_percentage)) +
   geom_point(alpha = 0.5) +
@@ -73,7 +72,7 @@ region_wave_trend_plot <- timeseries_data %>%
   drop_na(Region, Wave_status) %>% 
   group_by(Region, Date) %>% 
   summarise(Region_wave_percentage = 
-              sum(Wave_status == "Wave", na.rm = T)/n()) %>%
+              sum(Wave_status == "Wave")/n()) %>%
   ggplot(mapping = aes(x = Date,
                        y = Region_wave_percentage)) +
   geom_line(size = 1) +

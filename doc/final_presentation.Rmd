@@ -59,8 +59,8 @@ knitr::include_graphics("presentation_images/workflow.png")
 
 - <font size="4"> PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?</font>
 - <font size="4"> 2 linear regression models ($y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$): </font>
-  *  <font size="4"> $x_1$ = Pop % above 65, $x_2$ = Urban pop %. Grouped by income level </font>
-  * <font size="4"> $x_1$ = GDP, $x_2$ = Pop density. Grouped by region </font>
+  *  <font size="4"> $x_1$ = Population % above 65, $x_2$ = Urban pop %. Grouped by income level </font>
+  * <font size="4"> $x_1$ = GDP, $x_2$ = Population density. Grouped by region </font>
     
 **Exploring Covid "waves" and case fatality**
 
@@ -122,15 +122,6 @@ knitr::include_graphics("../results/07_country_wave_timeline.png")
 knitr::include_graphics("../results/07_region_wave_trend.png")
 ```
 
-## Covid-19 overview Shiny App
-
-https://christianjohansen.shinyapps.io/covid-19_app/
-
-```{r, echo = FALSE, out.width = "700px", out.height = "400px", fig.align = 'center'}
-knitr::include_graphics("presentation_images/Shiny_pic.jpg")
-```
-
-
 ## Discussion
 
 **In general from eda and linear regression, data suggests that more developed countries are  hit "harder" by Covid-19. **
@@ -156,6 +147,14 @@ knitr::include_graphics("presentation_images/wave_covid.png")
 ```
 <center><font size="1"> photo from:https://constructionexec.com/article/how-a-second-covid-19-wave-is-changing-construction-manufacturing"</font>
 <center>
+
+## Covid-19 overview Shiny App
+
+https://christianjohansen.shinyapps.io/covid-19_app/
+
+```{r, echo = FALSE, out.width = "700px", out.height = "400px", fig.align = 'center'}
+knitr::include_graphics("presentation_images/Shiny_pic.jpg")
+```
 
 ## Questions
 <center>

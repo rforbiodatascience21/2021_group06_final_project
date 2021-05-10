@@ -6,9 +6,7 @@ library("tidyverse")
 library("broom")
 library("patchwork")
 library("ggrepel")
-library("cowplot")
 source("R/99_functions.R")
-
 
 # Load Data ---------------------------------------------------------------
 timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
@@ -57,7 +55,7 @@ deaths_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
                          true = Country,
-                         false = '')) %>%
+                         false = "")) %>%
   ggplot(mapping = aes(x = .fittedPC1, 
                        y = .fittedPC2, 
                        color = Deaths_per_100k_citizen,

@@ -28,8 +28,8 @@ gapminder_data <- gapminder_data %>%
 
 # Loading the non-gapminder data
 income_grp         <- read_csv("data/_raw/Income_grp.csv")
-population_above65 <- read_csv("data/_raw/Population_65.csv")
-urban_pop_per      <- read_csv("data/_raw/urban_pop_perct.csv")
+population_above65 <- read_csv("data/_raw/Population_65.csv", skip=3)
+urban_pop_per      <- read_csv("data/_raw/urban_pop_perct.csv", skip=3)
 
 
 # Wrangle Data ------------------------------------------------------------
