@@ -6,9 +6,7 @@ library("tidyverse")
 library("broom")
 library("patchwork")
 library("ggrepel")
-library("cowplot")
 source("R/99_functions.R")
-
 
 # Load Data ---------------------------------------------------------------
 timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
