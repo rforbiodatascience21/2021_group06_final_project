@@ -2,7 +2,7 @@
 # Further we take a look into case fatality ratios and investigate the best
 # ways to calculate them
 
-rm(list=ls(all=TRUE))
+rm(list = ls(all = TRUE))
 # Load Libraries ----------------------------------------------------------
 
 library("tidyverse")
@@ -10,13 +10,12 @@ library("lubridate")
 
 # Load Data ---------------------------------------------------------------
 
-augmented_timeseries <- read_csv("data/03_augmented_timeseries.csv",
-                                 col_types = cols(
-                                   "Rolling_mean_confirmed" = col_double(),
-                                   "Rolling_mean_deaths" = col_double(),
-                                   "Rolling_case_fatality" = col_double(),
-                                   "Wave_status" = col_character()))
-
+timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
+                            col_types = cols(
+                              "Rolling_mean_confirmed" = col_double(),
+                              "Rolling_mean_deaths"    = col_double(),
+                              "Rolling_case_fatality"  = col_double(),
+                              "Wave_status"            = col_character()))
 
 # Wrangle Data ------------------------------------------------------------
 
