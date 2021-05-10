@@ -48,9 +48,9 @@ country_wave_plot <- timeseries_data_single_country %>%
 # Plotting the mean (14-day mean) number of countries that actively have a wave
 global_wave_trend_plot <- timeseries_data %>% 
   drop_na(Wave_status) %>%
-  group_by(Date) %>% 
+  group_by(Date) %>%
   summarise(Global_wave_percentage = 
-              sum(Wave_status == "Wave", na.rm = T) / n()) %>%
+              sum(Wave_status == "Wave") / n()) %>%
   ggplot(mapping = aes(x = Date,
                        y = Global_wave_percentage)) +
   geom_point(alpha = 0.5) +
@@ -72,7 +72,7 @@ region_wave_trend_plot <- timeseries_data %>%
   drop_na(Region, Wave_status) %>% 
   group_by(Region, Date) %>% 
   summarise(Region_wave_percentage = 
-              sum(Wave_status == "Wave", na.rm = T)/n()) %>%
+              sum(Wave_status == "Wave")/n()) %>%
   ggplot(mapping = aes(x = Date,
                        y = Region_wave_percentage)) +
   geom_line(size = 1) +
