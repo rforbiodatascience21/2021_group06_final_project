@@ -67,9 +67,9 @@ get_year_2020_data <- function(tbl, var_name) {
 
 # Using the get_year_2020_data function to extraxt year 2020 data from all datasets
 gapminder_data <- gapminder_data %>% 
-  mutate(`2020_data` = purrr::map2(.x = Raw_data, 
-                                   .y = Variable_name, 
-                                   ~get_year_2020_data(.x, .y)))
+  mutate(`2020_data` = map2(.x = Raw_data, 
+                            .y = Variable_name, 
+                            ~get_year_2020_data(.x, .y)))
 
 # Joining the gapminder data with the non-gapminder data
 combined_tibble <- gapminder_data %>% 

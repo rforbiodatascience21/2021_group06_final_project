@@ -114,8 +114,6 @@ variance_explained_plot <- pca_fit %>%
        title = "Variance explained by each principal component")+
   theme_minimal()
 
-
-
 # Save results ------------------------------------------------------------
 
 ggsave("results/04_pca_projections.png", 

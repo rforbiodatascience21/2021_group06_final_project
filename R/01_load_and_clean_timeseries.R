@@ -27,18 +27,18 @@ covid_data <- covid_data %>%
 
 # Pivot the data and join the pivoted dataframes
 covid_data <- covid_data %>% 
-  mutate(Pivoted_data = purrr::map2(.x = Raw_data,
-                                    .y = Variable_name, 
-                                    ~pivot_longer(data = .x, 
-                                                  cols = matches("\\d+/\\d+/\\d+"),
-                                                  names_to = "Date",
-                                                  values_to = .y))) %>% 
+  mutate(Pivoted_data = map2(.x = Raw_data,
+                             .y = Variable_name, 
+                             ~pivot_longer(data = .x, 
+                                           cols = matches("\\d+/\\d+/\\d+"),
+                                           names_to = "Date",
+                                           values_to = .y))) %>% 
   pluck("Pivoted_data") %>% 
-  purrr::reduce(left_join, by = c("Province/State",
-                                  "Country/Region",
-                                  "Lat",
-                                  "Long",
-                                  "Date"))
+  reduce(left_join, by = c("Province/State",
+                           "Country/Region",
+                           "Lat",
+                           "Long",
+                           "Date"))
 
 # Sum up variable on country level and reformat date.
 covid_data <- covid_data %>% 

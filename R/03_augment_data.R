@@ -38,9 +38,12 @@ timeseries_augment <- timeseries_augment %>%
 
 timeseries_augment <- timeseries_augment %>% 
   mutate(Wave_status = case_when(
-    Rolling_mean_deaths < 1 & lead(x = Rolling_mean_deaths, n = 7) < 1 ~ "Non_Wave",
-    lead(x = Rolling_mean_deaths, n = 7) / Rolling_mean_deaths >= 1.1 ~ "Wave",
-    lead(x = Rolling_mean_deaths, n = 7) / Rolling_mean_deaths < 1.1 ~ "Non_Wave")
+    Rolling_mean_deaths < 1 & lead(x = Rolling_mean_deaths, n = 7) < 1 
+    ~ "Non_Wave",
+    lead(x = Rolling_mean_deaths, n = 7) / Rolling_mean_deaths >= 1.1 
+    ~ "Wave",
+    lead(x = Rolling_mean_deaths, n = 7) / Rolling_mean_deaths < 1.1 
+    ~ "Non_Wave")
   )
 
 # Add Lat and Long to country level data ----------------------------------

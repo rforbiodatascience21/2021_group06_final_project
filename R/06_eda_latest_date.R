@@ -64,7 +64,7 @@ deaths_by_income_region_plot<- latest_date_data  %>%
                                                   "High income"))) %>%
   ggplot(aes(x = Deaths_per_100k_citizen,
              y = IncomeGroup,
-             size = `Population`,
+             size = Population,
              color = Region)) +
   geom_point(alpha = 0.5,
              position = position_jitter(w = 0.2, h = 0.2)) +

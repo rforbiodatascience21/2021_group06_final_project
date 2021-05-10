@@ -67,7 +67,8 @@ global_wave_trend_plot <- timeseries_data %>%
        x = "Date",
        y = "Percentage of countries in a wave")
 
-# Plotting the mean (14-day mean) number of countries that actively have a wave by region
+# Plotting the mean (14-day mean) number of countries
+# that actively have a wave by region
 region_wave_trend_plot <- timeseries_data %>% 
   drop_na(Region, Wave_status) %>% 
   group_by(Region, Date) %>% 
