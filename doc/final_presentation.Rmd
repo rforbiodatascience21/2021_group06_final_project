@@ -136,10 +136,11 @@ knitr::include_graphics("../results/07_region_wave_trend.png")
  
 ## Discussion 
 
-**We see that Covid "waves" are not synchronous between global regions.** 
+**Could the large co-occurrence of waves in 'Europe and central Asia' be due to socio-economic factors?** 
 
- - <font size="4"> Some regions had very visually distinct peaks of waves over time (Europe & Central Asia), while other were less distinct (Asia & Pacific)</font>
- - <font size="4">  The region Europe & Central Asia had the highest percentage of countries in waves at a certain time. At the highest peak almost 70% of the countries in the region were in a wave.  </font>
+ - <font size="4">  The region 'Europe & Central Asia' had the highest percentage of countries in waves at a certain time. At the highest peak almost 70% of the countries in the region were in a wave.  </font>
+ - <font size="4">  Maybe 'Europe & Central Asia' had the most waves due to the abundance of affluent countries </font>
+ - <font size="4">  But that does not explain why the waves are synchronized. </font>
 
 ```{r, echo = FALSE, out.width = "450px", out.height = "225px", fig.align = 'center'}
 knitr::include_graphics("presentation_images/wave_covid.png")
