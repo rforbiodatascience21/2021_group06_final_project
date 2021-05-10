@@ -55,8 +55,8 @@ knitr::include_graphics("presentation_images/workflow.png")
 - modelling:
   * PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?
   * 2 linear regression models ($y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$):
-    +  $x_1$ = Pop % above65,  $x_2$ = Urban pop %. Grouped by income level.
-    +  $x_1$ = GDP,  $x_2$ = Pop density. Grouped by region.
+    +  $x_1$ = Pop % above65,  $x_2$ = Urban pop %. Grouped by income level
+    +  $x_1$ = GDP,  $x_2$ = Pop density. Grouped by region
     
 - Exploring Covid "waves" and case fatality
 
