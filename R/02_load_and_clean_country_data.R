@@ -79,9 +79,8 @@ combined_tibble <- gapminder_data %>%
   reduce(left_join, by = "Country")
 
 # Replacing inconsistent country names -------------------------------------
-# Fix discrepancies between country name in this data and timeseries
 
-## Replacement
+# Fix discrepancies between country name in this data and timeseries
 combined_tibble <- combined_tibble %>%
   mutate(Country = recode(Country,
       "Myanmar" = "Burma",
@@ -100,8 +99,7 @@ combined_tibble <- combined_tibble %>%
       "United States" = "US",
       "Palestine" = "West Bank and Gaza"))
 
-# Rename world data -------------------------------------------------------
-
+# Rename world data
 world_map <- 
   world_map %>% 
   rename(Country = region) %>%
