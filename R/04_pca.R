@@ -38,7 +38,7 @@ pca_fit <- latest_date_data %>%
 confirmed_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
-                         true = `Country/Region`,
+                         true = Country,
                          false = "")) %>%
   ggplot(aes(x = .fittedPC1,
              y = .fittedPC2, 
@@ -60,7 +60,7 @@ confirmed_plot <- pca_fit %>%
 deaths_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
-                         true = `Country/Region`,
+                         true = Country,
                          false = '')) %>%
   
   ggplot(aes(x = .fittedPC1, 

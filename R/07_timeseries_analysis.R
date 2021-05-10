@@ -25,7 +25,7 @@ augmented_timeseries <- read_csv("data/03_augmented_timeseries.csv",
 selected_country <- "Denmark"
 
 augmented_timeseries_single_country <- augmented_timeseries %>% 
-  filter(`Country/Region` == selected_country)
+  filter(Country == selected_country)
 
 
 # Plot data ---------------------------------------------------------------

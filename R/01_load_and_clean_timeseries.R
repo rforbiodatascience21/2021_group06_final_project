@@ -1,4 +1,3 @@
-
 rm(list=ls(all=TRUE))
 
 # Load Libraries ----------------------------------------------------------
@@ -41,7 +40,8 @@ covid_data <- covid_data %>%
 
 #Sum up variable on country level and reformat date.
 covid_data <- covid_data %>% 
-  group_by(`Country/Region`, Date) %>%
+  rename(Country = `Country/Region`) %>%
+  group_by(Country, Date) %>%
   summarise(Confirmed = sum(Confirmed),
             Deaths = sum(Deaths),
             Recovered = sum(Recovered)) %>% 

@@ -37,7 +37,7 @@ urban_pop_per <- read_csv("data/_raw/urban_pop_perct.csv")
 #Wraggling the non-gapminder data
 income_grp <- income_grp %>%
   select(Region, IncomeGroup, TableName) %>%
-  rename(country = TableName) %>%
+  rename(Country = TableName) %>%
   mutate(Region = recode(Region,
                          "South Asia" = "Asia & Pacific",
                          "North America" = "Americas & Caribbean",
@@ -47,22 +47,22 @@ income_grp <- income_grp %>%
 population_above65 <- 
   population_above65 %>%
   select(`Country Name`, "2019") %>% #no data fr 2020, so most recent yr then
-  rename(country = `Country Name`,
+  rename(Country = `Country Name`,
          `Pop%_above65` = "2019")
 
 urban_pop_per <-
   urban_pop_per %>%
   select(`Country Name`,"2019") %>% #no data for 2020, so most recent yr then
-  rename(country = `Country Name`,
+  rename(Country = `Country Name`,
          Urban_pop_perct = "2019")
 
 #Wraggling the gapminder data
-
 #defining a function to extract data from year 2020
 get_year_2020_data <- function(tbl, var_name) {
   tbl %>% 
     select(country, "2020") %>% 
-    rename(!!var_name := "2020")
+    rename(!!var_name := "2020",
+           Country = country)
 }
 
 #using the get_year_2020_data function to extraxt year 2020 data from all datasets
@@ -75,7 +75,7 @@ gapminder_data <- gapminder_data %>%
 combined_tibble <- gapminder_data %>% 
   pluck("2020_data") %>%
   append(list(income_grp, population_above65, urban_pop_per)) %>%
-  reduce(left_join, by = "country")
+  reduce(left_join, by = "Country")
 
 
 # Replacing inconsistent country names -------------------------------------
@@ -83,7 +83,7 @@ combined_tibble <- gapminder_data %>%
 
 ## Replacement
 combined_tibble <- combined_tibble %>%
-  mutate(country = recode(country,
+  mutate(Country = recode(Country,
       "Myanmar" = "Burma",
       "Cape Verde" = "Cabo Verde",
       "Congo, Rep."= "Congo (Brazzaville)",
@@ -108,9 +108,9 @@ combined_tibble <- combined_tibble %>%
 
 world_map <- 
   world_map %>% 
-  rename(country = region) %>%
+  rename(Country = region) %>%
   select(-subregion) %>% 
-  mutate(country = recode(country, 
+  mutate(Country = recode(Country, 
      "USA" = "US",
      "UK" = "United Kingdom",
      "Democratic Republic of the Congo" = "Congo (Kinshasa)",
