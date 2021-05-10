@@ -18,14 +18,11 @@ timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
                               "Rolling_case_fatality"  = col_double(),
                               "Wave_status"            = col_character()))
 
-
-
 # Wrangle data ------------------------------------------------------------
 
 # Subset to latest date
 latest_date_data <- get_latest_date_data(timeseries_data) %>%
   drop_na(Population, Pop_density, Age_median, Gdp, Sex_ratio, Inequality)
-
 
 # PCA ---------------------------------------------------------------------
 
@@ -33,7 +30,7 @@ pca_fit <- latest_date_data %>%
   select(Population, Pop_density, Age_median, Gdp, Sex_ratio, Inequality) %>%
   prcomp(scale = TRUE)
 
-
+# PCA projections plots
 confirmed_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
@@ -79,7 +76,7 @@ deaths_plot <- pca_fit %>%
 
 cases_death_pca_plot <- confirmed_plot + deaths_plot
 
-
+# PCA loadings plot
 arrow_style <- arrow(angle = 20, 
                      ends = "first", 
                      type = "closed", 
@@ -103,6 +100,7 @@ PC_directions_plot <- pca_fit %>%
 
 loadings_and_score_plot <- confirmed_plot + PC_directions_plot
 
+# PCA variance explained plot
 variance_explained_plot <- pca_fit %>%
   tidy(matrix = "eigenvalues") %>%
   ggplot(aes(x = PC,

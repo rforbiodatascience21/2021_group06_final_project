@@ -72,7 +72,7 @@ global_wave_trend_plot <- timeseries_data %>%
        x = "Date",
        y = "Percentage of countries in a wave")
 
-# plotting the mean (14-day mean) number of countries that actively have a wave by region
+# Plotting the mean (14-day mean) number of countries that actively have a wave by region
 region_wave_trend_plot <- timeseries_data %>% 
   drop_na(Region, Wave_status) %>% 
   count(Wave_status, Date, Region) %>%
@@ -96,7 +96,7 @@ region_wave_trend_plot <- timeseries_data %>%
        y="Percentage of countries in region")
 
 
-
+# Plotting case fatality timeseries for selected country
 country_case_fatality_plot <- timeseries_data_single_country %>% 
   ggplot(mapping = aes(x = Date,
                        y = Case_fatality)) +
@@ -114,7 +114,7 @@ country_case_fatality_plot <- timeseries_data_single_country %>%
                         " over time"),
        y = "Case fatality")
 
-
+# Plotting both cummulative and rolling case fataility over time
 country_rolling_case_fatility_plot <- timeseries_data_single_country %>% 
   ggplot(mapping = aes(x = Date)) +
   geom_point(mapping = aes(y = Case_fatality * 100,
