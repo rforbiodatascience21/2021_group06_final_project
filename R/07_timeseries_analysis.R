@@ -52,7 +52,6 @@ global_wave_trend_plot <- timeseries_data %>%
   group_by(Date) %>% 
   summarise(Global_wave_percentage = 
               sum(Wave_status == "Wave", na.rm = T) / n()) %>%
-  filter(row_number() <= n() - 7) %>%
   ggplot(mapping = aes(x = Date,
                        y = Global_wave_percentage)) +
   geom_point(alpha = 0.5) +
@@ -74,7 +73,6 @@ region_wave_trend_plot <- timeseries_data %>%
   group_by(Region, Date) %>% 
   summarise(Region_wave_percentage = 
               sum(Wave_status == "Wave", na.rm = T)/n()) %>%
-  filter(row_number() <= n() - 7) %>%
   ggplot(mapping = aes(x = Date,
                        y = Region_wave_percentage)) +
   geom_line(size = 1) +
