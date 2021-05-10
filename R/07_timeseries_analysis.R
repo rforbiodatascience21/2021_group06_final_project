@@ -7,7 +7,6 @@ rm(list=ls(all=TRUE))
 
 library("tidyverse")
 library("lubridate")
-source("R/03_augment_data.R")
 
 # Load Data ---------------------------------------------------------------
 
@@ -46,11 +45,7 @@ country_wave_plot <- augmented_timeseries_single_country %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   labs(title = str_c("Identifying waves in ", 
                      selected_country),
-       subtitle = str_c("Waves are identified as ",
-                        (increase_factor-1) * 100,
-                        "% growth over a period of ",
-                        no_of_days,
-                        " days"),
+       subtitle = str_c("Waves are identified as 10 % growth over a period of 7 days"),
        x = "Date",
        y = "Daily number of confirmed deaths")
 
