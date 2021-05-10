@@ -69,8 +69,12 @@ deaths_by_income_region_plot<- latest_date_data  %>%
   geom_point(alpha = 0.5,
              position = position_jitter(w = 0.2, h = 0.2)) +
   labs(x = "Deaths per 100k citizens",
-       title = "Detailed View of Income Groups and Number of Deaths")+
+       title = "Detailed View of Income Groups and Number of Deaths",
+       size = "Popoulation (millions)")+
   theme_minimal()+
+  scale_size(range = c(0.1, 10),
+                            breaks = 1000000 * c(250, 500, 750, 1000, 1250),
+                            labels = c("250", "500", "750", "1000", "1250")) +
   theme(axis.title.y = element_blank())
 
 # figure for the slides ---------------------------------------------------
