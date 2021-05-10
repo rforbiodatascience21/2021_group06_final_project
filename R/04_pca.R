@@ -37,12 +37,12 @@ pca_fit <- latest_date_data %>%
 confirmed_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
-                         true = `Country/Region`,
+                         true = Country,
                          false = "")) %>%
   ggplot(mapping = aes(x = .fittedPC1,
-             y = .fittedPC2, 
-             color = Confirmed_per_100k_citizen,
-             label = label)) + 
+                       y = .fittedPC2, 
+                       color = Confirmed_per_100k_citizen,
+                       label = label)) + 
   geom_point(size = 1.5,
              alpha = 0.7) +
   geom_text_repel() +
@@ -59,7 +59,7 @@ confirmed_plot <- pca_fit %>%
 deaths_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
-                         true = `Country/Region`,
+                         true = Country,
                          false = '')) %>%
   ggplot(mapping = aes(x = .fittedPC1, 
                        y = .fittedPC2, 

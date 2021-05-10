@@ -41,7 +41,7 @@ model_data <- latest_date_data %>%
 
 ## Plot results ------------------------------------------------------------
   
-# scatter plots
+# Scatter plots
 lm1_p1 <- 
   latest_date_data%>%
   ggplot(mapping = aes(x = `Pop%_above65`,
@@ -141,7 +141,7 @@ Est_plot_lm1_sig <-
 
 Est_plot_lm1_sig
   
-## second GLM model -----------------------------------------------------------
+## Second GLM model -----------------------------------------------------------
 
 model_data2 <- 
   latest_date_data %>% 
@@ -156,7 +156,7 @@ model_data2 <-
 
 ## Plot results ------------------------------------------------------------
 
-# scatter plots
+# Scatter plots
 lm2_p1 <- 
   latest_date_data %>%
   ggplot(mapping = aes(x = Gdp, 
@@ -195,7 +195,7 @@ lm2_Final_line_plot
 
 # Slope Estimate plots
 
-# all the data 
+# All the data 
 Est_plot_lm2 <- 
   model_data2 %>%
   filter(term != "(Intercept)") %>%

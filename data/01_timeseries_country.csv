@@ -1,4 +1,4 @@
-Country/Region,Date,Confirmed,Deaths,Recovered
+Country,Date,Confirmed,Deaths,Recovered
 Afghanistan,2021-01-01,51526,2191,41727
 Afghanistan,2021-01-10,53489,2277,43948
 Afghanistan,2021-01-11,53538,2288,44137

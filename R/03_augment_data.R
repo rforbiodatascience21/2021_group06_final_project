@@ -14,14 +14,14 @@ world_map          <- read_csv("data/02_world_map_data.csv")
 # Augment timeseries ------------------------------------------------------
 
 timeseries_augment <- timeseries_country %>%
-  left_join(country_data, by = c("Country/Region" = "country")) %>%
+  left_join(country_data, by = "Country") %>%
   mutate(Confirmed_per_100k_citizen = Confirmed / Population * 100000,
          Deaths_per_100k_citizen = Deaths / Population * 100000,
          Recovered_per_100k_citizen = Recovered / Population * 100000)
 
 # Calculating daily cases & deaths from cumsums. 
 timeseries_augment <- timeseries_augment %>% 
-  group_by(`Country/Region`) %>% 
+  group_by(Country) %>% 
   arrange(Date) %>% 
   mutate(New_confirmed = Confirmed - lag(Confirmed, n = 1),
          New_deaths = Deaths - lag(Deaths, n = 1),
@@ -47,12 +47,12 @@ timeseries_augment <- timeseries_augment %>%
 
 map_data_augment <- 
   country_data %>%
-  full_join(world_map, by = "country") 
+  full_join(world_map, by = "Country") 
 
 # Add the latest date data (cases, and deaths)
 map_data_augment <- timeseries_augment %>%
   get_latest_date_data() %>%
-  full_join(world_map, by = c("Country/Region" = "country"))
+  full_join(world_map, by = "Country")
   
 
 # Write Data --------------------------------------------------------------

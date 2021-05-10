@@ -48,7 +48,7 @@ shinyServer(function(input, output) {
         
     timeseries_plot <- 
         timeseries %>%
-        filter(`Country/Region` == country()) %>%
+        filter(Country == country()) %>%
             
             ggplot(mapping = aes(x = Date,
                                  y = !!sym(input$status),

@@ -1,4 +1,4 @@
-rm(list=ls(all=TRUE))
+rm(list = ls(all = TRUE))
 
 # Load Libraries ----------------------------------------------------------
 library("tidyverse")
@@ -25,15 +25,15 @@ strat_region_plot <- latest_date_data %>%
   arrange(desc(Confirmed_per_100k_citizen)) %>%
   slice_head(n = 10) %>%
   ungroup()  %>%
-  mutate(`Country/Region` = fct_reorder(`Country/Region`,
+  mutate(Country = fct_reorder(Country,
                                         Confirmed_per_100k_citizen)) %>%
   
   ggplot(mapping = aes(x = Confirmed_per_100k_citizen,
-                       y = `Country/Region`))+
+                       y = Country))+
   facet_wrap(~ Region, scales = "free_y")+
   geom_col()+
-  labs(x = 'Cases per 100k citizens',
-       title = 'Top 10 Countries with Highest Amount of Cases for Each Region')+
+  labs(x = "Cases per 100k citizens",
+       title = "Top 10 Countries with Highest Amount of Cases for Each Region")+
   theme_minimal() +
   theme(axis.title.y = element_blank())
 
@@ -69,7 +69,7 @@ deaths_by_income_region_plot<- latest_date_data  %>%
              position = position_jitter(w = 0.2, h = 0.2)) +
   labs(x = "Deaths per 100k citizens",
        title = "Detailed View of Income Groups and Number of Deaths",
-       size = "Popoulation (millions)")+
+       size = "Population (millions)")+
   theme_minimal()+
   scale_size(range = c(0.1, 10),
                             breaks = 1000000 * c(250, 500, 750, 1000, 1250),

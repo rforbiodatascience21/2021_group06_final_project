@@ -1,4 +1,4 @@
-country,Population,Pop_density,Age_median,Gdp,Sex_ratio,Inequality,Region,IncomeGroup,Pop%_above65,Urban_pop_perct
+Country,Population,Pop_density,Age_median,Gdp,Sex_ratio,Inequality,Region,IncomeGroup,Pop%_above65,Urban_pop_perct
 Afghanistan,38900000,59.6,18.4,1800,105,36.8,Asia & Pacific,Low income,2.615794214,25.754
 Albania,2880000,105,36.4,13200,104,29,Europe & Central Asia,Upper middle income,14.20263062,61.229
 Algeria,43900000,18.4,28.5,14000,102,27.6,Middle East & North Africa,Lower middle income,6.552777882,73.189

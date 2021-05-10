@@ -1,5 +1,5 @@
-
 rm(list = ls(all = TRUE))
+
 
 # Load Libraries ----------------------------------------------------------
 
@@ -25,7 +25,7 @@ covid_data <- covid_data %>%
 # Wrangle Data ------------------------------------------------------------
 
 
-#pivot the data and join the pivoted dataframes
+# Pivot the data and join the pivoted dataframes
 covid_data <- covid_data %>% 
   mutate(Pivoted_data = purrr::map2(.x = Raw_data,
                                     .y = Variable_name, 
@@ -40,9 +40,10 @@ covid_data <- covid_data %>%
                                   "Long",
                                   "Date"))
 
-#Sum up variable on country level and reformat date.
+# Sum up variable on country level and reformat date.
 covid_data <- covid_data %>% 
-  group_by(`Country/Region`, Date) %>%
+  rename(Country = `Country/Region`) %>%
+  group_by(Country, Date) %>%
   summarise(Confirmed = sum(Confirmed),
             Deaths = sum(Deaths),
             Recovered = sum(Recovered)) %>% 

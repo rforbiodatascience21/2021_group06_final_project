@@ -23,7 +23,7 @@ timeseries <-
 
 # Clean up country names to be compatible with map.where()
 timeseries <- timeseries %>%
-  mutate(`Country/Region` = recode(`Country/Region`, 
+  mutate(Country = recode(Country, 
                           "US" = "USA",
                           "United Kingdom" = "UK",
                           "Burma" = "Myanmar"))
