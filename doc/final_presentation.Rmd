@@ -23,9 +23,12 @@ knitr::include_graphics("presentation_images/globecovid.jpg")
 <font size="2"> photo from::https://sdbi.in/artificial-intelligence-and-big-data-to-control-covid-19"</font>
 
 ## Materials and methods | Datasets and workflow
-- Covid-19 data from the github repository of John Hopkins University 
-- Demographic and social factors on a country basis from gapminder and worldbank
-- Latitude and longitude data for countries is from the "maps" package dataset
+
+**Data sets used in this project:**
+
+- <font size="4">Covid-19 data from the github repository of John Hopkins University </font>
+- <font size="4">Demographic and social factors on a country basis from gapminder and worldbank </font>
+- <font size="4">Latitude and longitude data for countries is from the "maps" package dataset </font>
 
 ```{r, echo = FALSE, out.width= "700px", fig.align = 'center'}
 knitr::include_graphics("presentation_images/workflow.png")
@@ -50,14 +53,16 @@ knitr::include_graphics("presentation_images/workflow.png")
 
 ## Materials and methods | Data exploration and models
 
-- **Initial exploratory data analysis (eda)**
-- **Modelling**:
-  * <font size="4"> PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?</font>
-  * <font size="4"> 2 linear regression models ($y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$): </font>
-    +  <font size="4"> $x_1$ = Pop % above 65, $x_2$ = Urban pop %. Grouped by income level </font>
-    + <font size="4"> $x_1$ = GDP, $x_2$ = Pop density. Grouped by region </font>
+**Initial exploratory data analysis (eda)**
+
+**Modelling**:
+
+- <font size="4"> PCA analysis: any trends, clusters, outliers in cases via countries and dependent variables?</font>
+- <font size="4"> 2 linear regression models ($y=\beta_0 + \beta_1 x_1+ \beta_2 x_2 + \epsilon$): </font>
+  *  <font size="4"> $x_1$ = Pop % above 65, $x_2$ = Urban pop %. Grouped by income level </font>
+  * <font size="4"> $x_1$ = GDP, $x_2$ = Pop density. Grouped by region </font>
     
-- **Exploring Covid "waves" and case fatality**
+**Exploring Covid "waves" and case fatality**
 
 ## Results - Exploratory Data Analysis | Number of cases per 100 thousand in each region
 
