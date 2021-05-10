@@ -49,7 +49,9 @@ country_wave_plot <- timeseries_data_single_country %>%
 global_wave_trend_plot <- timeseries_data %>% 
   drop_na(Wave_status) %>%
   group_by(Date) %>% 
-  summarise(Global_wave_percentage = sum(Wave_status == "Wave", na.rm = T) / n()) %>%
+  summarise(Global_wave_percentage = 
+              sum(Wave_status == "Wave", na.rm = T) / n()) %>%
+  filter(row_number() <= n() - 7) %>%
   ggplot(mapping = aes(x = Date,
                        y = Global_wave_percentage)) +
   geom_point(alpha = 0.5) +
@@ -67,8 +69,10 @@ global_wave_trend_plot <- timeseries_data %>%
 # Plotting the mean (14-day mean) number of countries that actively have a wave by region
 region_wave_trend_plot <- timeseries_data %>% 
   drop_na(Region, Wave_status) %>% 
-  group_by(Date,Region) %>% 
-  summarise(Region_wave_percentage = sum(Wave_status == "Wave", na.rm = T)/n()) %>%
+  group_by(Region, Date) %>% 
+  summarise(Region_wave_percentage = 
+              sum(Wave_status == "Wave", na.rm = T)/n()) %>%
+  filter(row_number() <= n() - 7) %>%
   ggplot(mapping = aes(x = Date,
                        y = Region_wave_percentage)) +
   geom_line(size = 1) +
@@ -82,7 +86,7 @@ region_wave_trend_plot <- timeseries_data %>%
   facet_wrap(~Region) +
   labs(title = "Do Covid-waves occur at the same time in a region?",
        subtitle = "Percentage of countries in a region with a 10% increase in deaths cases over a 7 day period",
-       y="Percentage of countries in region in a wave")
+       y = "Percentage of countries in region in a wave")
 
 
 # Plotting case fatality timeseries for selected country
