@@ -40,9 +40,9 @@ confirmed_plot <- pca_fit %>%
                          true = Country,
                          false = "")) %>%
   ggplot(mapping = aes(x = .fittedPC1,
-             y = .fittedPC2, 
-             color = Confirmed_per_100k_citizen,
-             label = label)) + 
+                       y = .fittedPC2, 
+                       color = Confirmed_per_100k_citizen,
+                       label = label)) + 
   geom_point(size = 1.5,
              alpha = 0.7) +
   geom_text_repel() +
