@@ -24,15 +24,9 @@ shinyUI(fluidPage(
                         choices = c("Cases" = "Confirmed", 
                                     "Deaths" = "Deaths")),
             checkboxInput(inputId = "yLog", 
-                          label = "Display Y-Axis on a Log Scale?")
-        ),
-    
-    
-        # Main panel for displaying outputs ----
+                          label = "Display Y-Axis on a Log Scale?")),
         mainPanel(
-            plotOutput(outputId = "timeseries_plot")
-            
-        ),
+            plotOutput(outputId = "timeseries_plot")),
         position = c("left", "right"))
 ))
 

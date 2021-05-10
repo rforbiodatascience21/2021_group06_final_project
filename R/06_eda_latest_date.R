@@ -24,13 +24,12 @@ strat_region_plot <- latest_date_data %>%
   group_by(Region) %>%
   arrange(desc(Confirmed_per_100k_citizen)) %>%
   slice_head(n = 10) %>%
-  ungroup()  %>%
+  ungroup() %>%
   mutate(Country = fct_reorder(Country,
                                Confirmed_per_100k_citizen)) %>%
-  
   ggplot(mapping = aes(x = Confirmed_per_100k_citizen,
                        y = Country)) +
-  facet_wrap(~ Region, 
+  facet_wrap(~Region, 
              scales = "free_y") +
   geom_col() +
   labs(x = "Cases per 100k citizens",

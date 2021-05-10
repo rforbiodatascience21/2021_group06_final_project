@@ -27,7 +27,6 @@ timeseries_data_single_country <- timeseries_data %>%
 # Plot data ---------------------------------------------------------------
 
 # plotting the number of death colored by whether a country fulfill the wave
-
 country_wave_plot <- timeseries_data_single_country %>% 
   drop_na(Wave_status) %>% 
   ggplot(mapping = aes(x = Date,
@@ -47,7 +46,6 @@ country_wave_plot <- timeseries_data_single_country %>%
        color = "Wave Status")
 
 # Plotting the mean (14-day mean) number of countries that actively have a wave
-
 global_wave_trend_plot <- timeseries_data %>% 
   drop_na(Wave_status) %>%
   group_by(Date) %>% 
