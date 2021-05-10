@@ -58,10 +58,11 @@ country_wave_plot <- augmented_timeseries_single_country %>%
 
 global_wave_trend_plot <- augmented_timeseries %>% 
   drop_na(Wave_status) %>%
-  count(Wave_status, Date) %>%
+  count(Wave_status, Date, 
+        name = "Counts") %>%
   pivot_wider(id_cols = Date,
               names_from = Wave_status,
-              values_from = n) %>%
+              values_from = Counts) %>% 
   mutate(global_wave_percentage = Wave / (Non_Wave + Wave)) %>%
   ggplot(mapping = aes(x = Date,
                        y = global_wave_percentage)) +
@@ -88,15 +89,15 @@ region_wave_trend_plot <- augmented_timeseries %>%
   ggplot(mapping = aes(x = Date,
                        y = region_wave_percentage)) +
   geom_line(size = 1)+
-  scale_x_date(date_breaks = "1 month", 
+  scale_x_date(date_breaks = "2 month", 
                date_labels =  "%b %Y") +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title.x = element_blank())+
   facet_wrap(~Region)+
   labs(title = "How many countries in a region were in a wave at any given date",
        subtitle = "Percentage of countries in a reion with an increase of 10% in confirmed cases over a 7 day period",
-       x="Date",
        y="Percentage of countries in region")
 
 
@@ -109,75 +110,35 @@ country_case_fatality_plot <- augmented_timeseries_single_country %>%
                date_labels =  "%b %Y") +
   scale_y_continuous(labels = scales::percent_format())+
   theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title.x = element_blank())+
   labs(title = "Does the case-fatality change over time?",
        subtitle = str_c("Cummulative case fatility in ",
                         selected_country,
                         " over time"),
-       x = "Date",
        y = "Case fatality")
 
-### ISSUE, want to have dual axis, one for case fatality and one for new_case
+
 country_rolling_case_fatility_plot <- augmented_timeseries_single_country %>% 
-  ggplot(aes(x = Date))+
-  geom_point(aes(y = Case_fatality * 100,
-                 color = "Cummulative Case Fatility")) +
-  geom_point(aes(y = Rolling_case_fatality * 100,
-                 color = "Rolling Case Fatility")) +
-  geom_point(aes(y = log10(New_confirmed),
-                 color = "Log10 of daily cases"))+
+  ggplot(mapping = aes(x = Date))+
+  geom_point(mapping = aes(y = Case_fatality * 100,
+                           color = "Cummulative Case Fatility")) +
+  geom_point(mapping = aes(y = Rolling_case_fatality * 100,
+                           color = "Rolling Case Fatility")) +
   scale_x_date(date_breaks = "1 month", 
                date_labels =  "%b %Y") +
   scale_y_continuous(
-    name = "Case Fatality", labels = scales::percent_format(scale = 1),
-    sec.axis = sec_axis(~.*1, name = "Log10 of daily confirmed cases")
+    name = "Case Fatality", labels = scales::percent_format(scale = 1)
   )+ 
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 45, 
                                    hjust = 1),
-        legend.position = "bottom")+
+        legend.position = "bottom",
+        axis.title.x = element_blank(),
+        legend.title = element_blank())+
   labs(title = "Case fatality ratio spike right after a drop of confirmed cases",
        subtitle = str_c("Number of new confirmed cases and Case fatility rates over time in ",
-                        selected_country),
-       x = "Date")
-
-country_shifted_case_fatility_plot <- augmented_timeseries_single_country %>% 
-  mutate(lag7_case_fatality =
-           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 7),
-         lag14_case_fatality = 
-           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 14),
-         lag21_case_fatality = 
-           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 21),
-         lag28_case_fatality = 
-           Rolling_mean_deaths/lag(Rolling_mean_confirmed, n = 28)
-         ) %>% 
-  ggplot(aes(x = Date))+
-  geom_line(aes(y = Rolling_case_fatality * 100,
-                color = "Rolling Case Fatility"), alpha = 0.5) +
-  geom_line(aes(y = lag7_case_fatality * 100,
-                color = "7 day lag Rolling Case Fatility")) +
-  geom_line(aes(y = lag14_case_fatality * 100,
-                color = "14 day lag Rolling Case Fatility"),
-            size = 1) +
-  geom_line(aes(y = lag21_case_fatality * 100,
-                color = "21 day lag Rolling Case Fatility"),
-            size = 1) +
-  geom_line(aes(y = lag28_case_fatality * 100,
-                color = "28 day lag Rolling Case Fatility")) +
-  scale_x_date(date_breaks = "1 month", 
-               date_labels =  "%b %Y", 
-               limits = c(as_date("2020-04-01"), as_date("2021-04-01"))) +
-  scale_y_continuous(
-    limits = c(0, 10),
-    name = "Case Fatality (%)")+ 
-  theme_minimal()+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "bottom")+
-  labs(title = "Case fatality ratio should be calculated with a 14-21 day delay",
-       subtitle = str_c("Case fatality ratio in ",
-                        selected_country,
-                        " accounting for 7, 14 ,21 & days delay of death"),
-       x = "Date")
+                        selected_country))
 
 
 # Write plots -------------------------------------------------------------
@@ -202,9 +163,3 @@ ggsave("results/07_country_rolling_case_fatality.png",
        plot = country_rolling_case_fatility_plot,
        height = 6,
        width = 12)
-ggsave("results/07_country_shifted_case_fatality.png",
-       plot = country_shifted_case_fatility_plot,
-       height = 6,
-       width = 12)
-
-

@@ -12,6 +12,10 @@ shinyUI(fluidPage(
     
     # App title ----
     titlePanel("Covid-19 Pandemic Overview"),
+    h4("World map colored by status per 100k citizens"),
+    # Output: global map ----
+    plotOutput(outputId = "Heatmap",
+               click = "map_click"),
     sidebarLayout(
         
         sidebarPanel(
@@ -26,10 +30,6 @@ shinyUI(fluidPage(
     
         # Main panel for displaying outputs ----
         mainPanel(
-            h4("World map colored by status per 100k citizens"),
-            # Output: global map ----
-            plotOutput(outputId = "Heatmap",
-                       click = "map_click"),
             plotOutput(outputId = "timeseries_plot")
             
         ),

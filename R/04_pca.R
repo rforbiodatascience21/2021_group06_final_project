@@ -39,7 +39,7 @@ confirmed_plot <- pca_fit %>%
   augment(latest_date_data) %>%
   mutate(label = if_else(condition = .fittedPC1 > 1 & .fittedPC2 > 0,
                          true = `Country/Region`,
-                         false = '')) %>%
+                         false = "")) %>%
   ggplot(aes(x = .fittedPC1,
              y = .fittedPC2, 
              color = Confirmed_per_100k_citizen,
@@ -106,7 +106,7 @@ PC_directions_plot <- pca_fit %>%
 loadings_and_score_plot <- confirmed_plot + PC_directions_plot
 
 variance_explained_plot <- pca_fit %>%
-  tidy(matrix = "eigenvalues") 
+  tidy(matrix = "eigenvalues") %>%
   ggplot(aes(x = PC,
              y = percent)) +
   geom_col(fill = "#56B4E9",

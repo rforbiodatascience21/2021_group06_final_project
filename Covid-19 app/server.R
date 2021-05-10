@@ -20,7 +20,7 @@ shinyServer(function(input, output) {
     country <- reactive({map.where(database = "world",
                                   x = input$map_click$x,
                                   y = input$map_click$y) %>%
-                        str_extract("[^:]+")})
+                        str_extract("^[^:]+")})
     
     output$country <- renderText(country)
     output$Heatmap <- renderPlot({
@@ -35,14 +35,10 @@ shinyServer(function(input, output) {
             coord_map(xlim=c(-180, 180), 
                       ylim=c(-55, 90))+ 
             theme_classic()+
-            theme(axis.ticks.x = element_blank(), 
-                  axis.ticks.y = element_blank(),
-                  axis.text.x = element_blank(), 
-                  axis.text.y = element_blank(),
-                  axis.title.y= element_blank(),
-                  axis.title.x= element_blank(),
-                  axis.line.x = element_blank(),
-                  axis.line.y = element_blank())+
+            theme(axis.ticks = element_blank(),
+                  axis.text = element_blank(),
+                  axis.title= element_blank(),
+                  axis.line = element_blank())+
             labs(fill = str_c(input$status, " per 100k citizen"))
     })
     

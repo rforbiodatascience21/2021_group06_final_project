@@ -37,10 +37,6 @@ model_data <- latest_date_data %>%
          mdl_tidy = purrr::map(mdl, tidy, conf.int = TRUE)) %>%
   unnest(mdl_tidy)
 
-# Is this used for anything or just a remnant?
-model_data  %>%
-  filter(term != "(Intercept)",
-         p.value < 0.05)
 
 ## Plot results ------------------------------------------------------------
   
@@ -52,8 +48,7 @@ lm1_p1 <-
                        color = IncomeGroup)) +
   geom_point() +
   geom_smooth(method = "lm", se=F) +
-  facet_wrap(IncomeGroup ~ .,
-             scale="free_x")+
+  facet_wrap(IncomeGroup ~ .)+
   theme_minimal()+
   labs(y = "Deaths per 100k",
        x = "Population % > 65 yrs",
@@ -66,8 +61,7 @@ lm1_p2 <-
                        color = IncomeGroup)) +
   geom_point() +
   geom_smooth(method ="lm", se=F) +
-  facet_wrap(IncomeGroup ~ ., 
-             scale="free_x")+
+  facet_wrap(IncomeGroup ~ .)+
   theme_minimal()+
   labs(x = "Population % living in urban ", 
        color = "Income Group")+
@@ -111,7 +105,8 @@ model_data %>%
        title = "Slope estimates for deaths per 100k with conf. intervals")+
   scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"), 
                      values = c("deepskyblue1", "tomato2"))+ 
-  geom_text(nudge_x = 0.5, 
+  geom_text(size = 6,
+            nudge_x = 0.5, 
             nudge_y = 0.1)
 
 Est_plot_lm1
@@ -165,8 +160,7 @@ lm2_p1 <-
                        color = Region)) +
   geom_point() +
   geom_smooth(method ="lm", se = F) +
-  facet_wrap(Region ~ .,
-             scale = "free_x")+
+  facet_wrap(Region ~ .)+
   theme_minimal()+
   labs(y = "Cases per 100k",
        x = "GDP",
@@ -179,8 +173,7 @@ lm2_p2 <-
                        color = Region)) +
   geom_point() +
   geom_smooth(method ="lm", se=F) +
-  facet_wrap(Region ~ ., 
-             scale="free_x")+
+  facet_wrap(Region ~ .)+
   theme_minimal()+
   labs(y = "Cases per 100k",
        x = "Population Density",
@@ -205,7 +198,7 @@ Est_plot_lm2 <-
   mutate(significant = if_else(condition = p.value < 0.05,
                               true = "*",
                               false = "")) %>%
-  ggplot(maping = aes(x = estimate,
+  ggplot(mapping = aes(x = estimate,
                       y = Region,
                       color = term,
                       xmin = conf.low,
@@ -223,7 +216,8 @@ Est_plot_lm2 <-
        caption = "* indicates significance with p < 0.05")+
   scale_color_manual(labels = c("Gdp", "Pop Density"),
                      values = c("deepskyblue1", "tomato2"))+ 
-  geom_text(nudge_x = 0.5, 
+  geom_text(size = 6,
+            nudge_x = 0.5, 
             nudge_y = 0.1)
   
 Est_plot_lm2

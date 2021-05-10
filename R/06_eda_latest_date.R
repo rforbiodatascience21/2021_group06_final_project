@@ -25,15 +25,14 @@ strat_region_plot <- latest_date_data %>%
   group_by(Region) %>%
   arrange(desc(Confirmed_per_100k_citizen)) %>%
   slice_head(n = 10) %>%
-  ungroup() %>%
-  mutate(`Country/Region` = as_factor(`Country/Region`)) %>%
+  ungroup()  %>%
   mutate(`Country/Region` = fct_reorder(`Country/Region`,
                                         Confirmed_per_100k_citizen)) %>%
   
   ggplot(mapping = aes(x = Confirmed_per_100k_citizen,
                        y = `Country/Region`))+
-  facet_wrap(~ Region, scales = "free")+
-  geom_bar(stat="identity")+
+  facet_wrap(~ Region, scales = "free_y")+
+  geom_col()+
   labs(x = 'Cases per 100k citizens',
        title = 'Top 10 Countries with Highest Amount of Cases for Each Region')+
   theme_minimal() +
@@ -42,7 +41,6 @@ strat_region_plot <- latest_date_data %>%
 
 deaths_income <- latest_date_data %>%
   drop_na(IncomeGroup) %>%
-  mutate(IncomeGroup = as_factor(IncomeGroup)) %>%
   mutate(IncomeGroup = fct_relevel(IncomeGroup, c("Low income",
                                                   "Lower middle income",
                                                   "Upper middle income", 
@@ -73,17 +71,17 @@ deaths_by_income_region_plot<- latest_date_data  %>%
   labs(x = "Deaths per 100k citizens",
        title = "Detailed View of Income Groups and Number of Deaths")+
   theme_minimal()+
-  theme(axis.title.y = element_blank())+
-  guides(size=FALSE)
+  theme(axis.title.y = element_blank())
 
 # figure for the slides ---------------------------------------------------
 
 eda_slide_plot <- (deaths_income + 
-                     theme(title = element_blank(),
+                     theme(plot.title = element_blank(),
                            axis.title.x = element_text())  +
                    deaths_by_income_region_plot + 
-                     theme(title = element_blank(),
-                           axis.title.x = element_text())) +
+                     theme(plot.title = element_blank(),
+                           axis.title.x = element_text(),
+                           axis.text.y = element_blank())) +
   plot_annotation(tag_levels = "A",
                   title = "Relationship between Income Group and Deaths",
                   theme = theme(plot.title = element_text(hjust = 0.5)))
