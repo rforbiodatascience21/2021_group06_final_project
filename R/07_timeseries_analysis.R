@@ -68,7 +68,7 @@ global_wave_trend_plot <- timeseries_data %>%
        x = "Date",
        y = "Percentage of countries in a wave")
 
-# plotting the mean (14-day mean) number of countries that actively have a wave by region
+# Plotting the mean (14-day mean) number of countries that actively have a wave by region
 region_wave_trend_plot <- timeseries_data %>% 
   drop_na(Region, Wave_status) %>% 
   group_by(Date,Region) %>% 
@@ -89,7 +89,7 @@ region_wave_trend_plot <- timeseries_data %>%
        y="Percentage of countries in region in a wave")
 
 
-
+# Plotting case fatality timeseries for selected country
 country_case_fatality_plot <- timeseries_data_single_country %>% 
   ggplot(mapping = aes(x = Date,
                        y = Case_fatality)) +
@@ -102,15 +102,16 @@ country_case_fatality_plot <- timeseries_data_single_country %>%
                                    hjust = 1),
         axis.title.x = element_blank()) +
   labs(title = "Does the case-fatality change over time?",
-       subtitle = str_c("Cummulative case fatility in ",
+       subtitle = str_c("Cumulative case fatility in ",
                         selected_country,
                         " over time"),
        y = "Case fatality")
 
+# Plotting both cumulative and rolling case fatality over time
 country_rolling_case_fatility_plot <- timeseries_data_single_country %>% 
   ggplot(mapping = aes(x = Date)) +
   geom_point(mapping = aes(y = Case_fatality,
-                           color = "Cummulative Case Fatility")) +
+                           color = "Cumulative Case Fatility")) +
   geom_point(mapping = aes(y = Rolling_case_fatality,
                            color = "Rolling Case Fatility")) +
   scale_x_date(date_breaks = "1 month", 
@@ -124,7 +125,7 @@ country_rolling_case_fatility_plot <- timeseries_data_single_country %>%
         axis.title.x = element_blank(),
         legend.title = element_blank()) +
   labs(title = "Case fatality spikes in brief periods",
-       subtitle = str_c("Cummulative case fatality and 14-day rolling mean case-fatality in",
+       subtitle = str_c("Cumulative case fatality and 14-day rolling mean case-fatality in",
                         selected_country))
 
 

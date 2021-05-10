@@ -13,12 +13,12 @@ timeseries_data <- read_csv("data/03_augmented_timeseries.csv",
                               "Rolling_case_fatality"  = col_double(),
                               "Wave_status"            = col_character()))
 # Subset to latest date
-
 latest_date_data <- get_latest_date_data(timeseries_data)
 
 
 # Plots -------------------------------------------------------------------
 
+# Highest number of cases per region plot
 strat_region_plot <- latest_date_data %>%
   drop_na(Region) %>%
   group_by(Region) %>%
@@ -38,7 +38,7 @@ strat_region_plot <- latest_date_data %>%
   theme_minimal() +
   theme(axis.title.y = element_blank())
 
-
+# Deaths stratified on income plot
 deaths_income <- latest_date_data %>%
   drop_na(IncomeGroup) %>%
   mutate(IncomeGroup = fct_relevel(IncomeGroup, c("Low income",
@@ -55,7 +55,7 @@ deaths_income <- latest_date_data %>%
   theme(legend.position = "none", 
         axis.title.y = element_blank())
 
-
+# More detailed deaths and income plot
 deaths_by_income_region_plot<- latest_date_data  %>%
   drop_na(IncomeGroup) %>%
   mutate(IncomeGroup = fct_relevel(IncomeGroup, c("Low income",

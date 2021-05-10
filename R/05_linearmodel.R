@@ -78,8 +78,6 @@ lm1_Final_line_plot <-
       plot_layout(guides = "collect") &
       theme(legend.position = "bottom")
 
-lm1_Final_line_plot
-
 # Slope Estimate plots
 
 Est_plot_lm1 <-
@@ -88,7 +86,6 @@ Est_plot_lm1 <-
   mutate(significant = if_else(condition = p.value < 0.05,
                                true = "*",
                                false = "")) %>%
-  
   ggplot(mapping = aes(x = estimate,
                        y = IncomeGroup,
                        color = term, 
@@ -113,8 +110,6 @@ Est_plot_lm1 <-
             nudge_y = 0.1,
             show.legend = FALSE)
 
-Est_plot_lm1
-
 Est_plot_lm1_sig <- 
   model_data %>%
   filter(term != "(Intercept)",
@@ -138,8 +133,6 @@ Est_plot_lm1_sig <-
   scale_color_manual(labels = c("Pop. % > 65", "Urban Pop. %"),
                      values = c("deepskyblue1", "tomato2"))
  
-
-Est_plot_lm1_sig
   
 ## Second GLM model -----------------------------------------------------------
 
@@ -191,8 +184,6 @@ lm2_Final_line_plot <-
   plot_layout(guides = "collect") &
   theme(legend.position = "bottom")
 
-lm2_Final_line_plot
-
 # Slope Estimate plots
 
 # All the data 
@@ -225,7 +216,6 @@ Est_plot_lm2 <-
             nudge_y = 0.1,
             show.legend = FALSE)
   
-Est_plot_lm2
 
 # Only the sig ones. 
 Est_plot_lm2_sig <- 
@@ -249,7 +239,6 @@ model_data2 %>%
   scale_color_manual(labels = c("Gdp", "Pop Density"), 
                      values = c("deepskyblue1", "tomato2"))
 
-Est_plot_lm2_sig
 
 # Write plots -------------------------------------------------------------
 

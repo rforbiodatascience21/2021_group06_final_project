@@ -56,7 +56,6 @@ urban_pop_per <-
   rename(Country = `Country Name`,
          Urban_pop_perct = "2019")
 
-
 # Wrangling the gapminder data
 # Defining a function to extract data from year 2020
 get_year_2020_data <- function(tbl, var_name) {
@@ -77,7 +76,6 @@ combined_tibble <- gapminder_data %>%
   pluck("2020_data") %>%
   append(list(income_grp, population_above65, urban_pop_per)) %>%
   reduce(left_join, by = "Country")
-
 
 # Replacing inconsistent country names -------------------------------------
 # Fix discrepancies between country name in this data and timeseries
@@ -101,11 +99,7 @@ combined_tibble <- combined_tibble %>%
       "United States" = "US",
       "Palestine" = "West Bank and Gaza"))
 
-
-
-
 # Rename world data -------------------------------------------------------
-
 
 world_map <- 
   world_map %>% 
